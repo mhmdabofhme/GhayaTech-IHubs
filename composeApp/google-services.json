@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "938462037862",
+    "project_id": "i-hup-420a6",
+    "storage_bucket": "i-hup-420a6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:938462037862:android:e8325f47de98344d2c6aa7",
+        "android_client_info": {
+          "package_name": "ghayatech.ihubs"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4xGB3NqrjXYXffiJ3qCXSRkoG8QcdRlI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:938462037862:android:ccba127d48c886682c6aa7",
+        "android_client_info": {
+          "package_name": "ghayatech.ihubs.android"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4xGB3NqrjXYXffiJ3qCXSRkoG8QcdRlI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
