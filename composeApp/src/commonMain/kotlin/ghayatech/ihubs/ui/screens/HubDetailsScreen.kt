@@ -35,12 +35,7 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import com.russhwolf.settings.Settings
 import ihubs.composeapp.generated.resources.Res
 import ihubs.composeapp.generated.resources.bold
-import ihubs.composeapp.generated.resources.book_now
-import ihubs.composeapp.generated.resources.contactus
-import ihubs.composeapp.generated.resources.hub_features
 import ihubs.composeapp.generated.resources.location
-import ihubs.composeapp.generated.resources.no_data
-import ihubs.composeapp.generated.resources.place_photos
 import ihubs.composeapp.generated.resources.resource_default
 import ihubs.composeapp.generated.resources.star
 import ghayatech.ihubs.networking.models.WorkspaceDetails
@@ -52,6 +47,7 @@ import ghayatech.ihubs.ui.components.CText
 import ghayatech.ihubs.ui.components.ImageSlider
 import ghayatech.ihubs.ui.components.NetworkImage
 import ghayatech.ihubs.ui.theme.AppColors
+import ghayatech.ihubs.ui.theme.AppStringsProvider
 import ghayatech.ihubs.utils.WhatsAppHelper
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
@@ -67,7 +63,7 @@ class HubDetailsScreen(private val id: Int) : Screen {
         val settings: Settings = rememberKoinInject()
         val viewModel: MainViewModel = rememberKoinInject()
         val whatsAppHelper: WhatsAppHelper = getKoin().get()
-
+        val strings = AppStringsProvider.current()
         val img = painterResource(Res.drawable.resource_default)
 
         var snackbarMessage by remember { mutableStateOf<String?>(null) }
@@ -159,7 +155,7 @@ class HubDetailsScreen(private val id: Int) : Screen {
                         Spacer(modifier = Modifier.size(14.dp))
 
                         CText(
-                            stringResource(Res.string.place_photos),
+                            strings.place_photos,
                             fontSize = 18.sp,
                             fontFamily = Res.font.bold
                         )
@@ -175,7 +171,7 @@ class HubDetailsScreen(private val id: Int) : Screen {
                             ImageSlider(images = images)
                         } else {
                             CText(
-                                text = stringResource(Res.string.no_data),
+                                text = strings.no_data,
                                 color = AppColors.TextSecondary,
                             )
                         }
@@ -185,7 +181,7 @@ class HubDetailsScreen(private val id: Int) : Screen {
                     }
                     Spacer(modifier = Modifier.size(15.dp))
                     CText(
-                        stringResource(Res.string.hub_features),
+                        strings.hub_features,
                         style = TextDecoration.Underline,
                         color = AppColors.Secondary,
                         fontWeight = FontWeight.Bold
@@ -209,20 +205,20 @@ class HubDetailsScreen(private val id: Int) : Screen {
                         }
                     } else {
                         CText(
-                            text = stringResource(Res.string.no_data),
+                            text = strings.no_data,
                             color = AppColors.TextSecondary,
                         )
                     }
 
                     Spacer(modifier = Modifier.size(20.dp))
                     CButton(
-                        text = stringResource(Res.string.book_now),
+                        text = strings.book_now,
                         onClick = {
                             navigator.push(OurPackagesScreen(id))
                         })
                     Spacer(modifier = Modifier.height(10.dp))
                     CButton(
-                        text = stringResource(Res.string.contactus),
+                        text = strings.contactus,
                         isOutlined = true,
                         onClick = {
                             whatsAppHelper.openWhatsApp("+970597204724")

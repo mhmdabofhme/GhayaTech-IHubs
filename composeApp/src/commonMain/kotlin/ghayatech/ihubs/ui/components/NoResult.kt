@@ -12,14 +12,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import ghayatech.ihubs.ui.theme.AppColors
+import ghayatech.ihubs.ui.theme.AppStringsProvider
 import ihubs.composeapp.generated.resources.Res
 import ihubs.composeapp.generated.resources.no_result
-import ihubs.composeapp.generated.resources.no_results
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun NoResult(message: String = stringResource(Res.string.no_results)) {
+fun NoResult(message: String = AppStringsProvider.current().no_results) {
     Column(
         modifier = Modifier.fillMaxSize()
 //            .background(AppColors.White)

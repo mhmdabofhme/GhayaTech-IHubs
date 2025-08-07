@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.sp
 import ihubs.composeapp.generated.resources.Res
 import ihubs.composeapp.generated.resources.back
 import ghayatech.ihubs.ui.theme.AppColors
+import ghayatech.ihubs.ui.theme.AppStringsProvider
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -32,6 +33,6 @@ fun Back(onBackClick: () -> Unit,modifier: Modifier = Modifier) {
                 .size(14.dp)
             , tint = AppColors.Black
         )
-        CText(stringResource(Res.string.back), fontSize = 16.sp, fontWeight = FontWeight.Bold)
+        CText(AppStringsProvider.current().back, fontSize = 16.sp, fontWeight = FontWeight.Bold)
     }
 }

@@ -22,8 +22,9 @@ import androidx.compose.ui.unit.sp
 import ihubs.composeapp.generated.resources.Res
 import ihubs.composeapp.generated.resources.list
 import ihubs.composeapp.generated.resources.search
-import ihubs.composeapp.generated.resources.search_on_hubs
 import ghayatech.ihubs.ui.theme.AppColors
+import ghayatech.ihubs.ui.theme.AppStrings
+import ghayatech.ihubs.ui.theme.AppStringsProvider
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -32,7 +33,7 @@ fun SearchBar(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    placeholder: String = stringResource(Res.string.search_on_hubs),
+    placeholder: String = AppStringsProvider.current().search_on_hubs,
     leadingIcon: Painter = painterResource(Res.drawable.search),
     trailingIcon: Painter = painterResource(Res.drawable.list),
     onTrailingIconClick: (() -> Unit)? = null,

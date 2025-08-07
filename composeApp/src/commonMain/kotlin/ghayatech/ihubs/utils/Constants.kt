@@ -3,6 +3,7 @@ package ghayatech.ihubs.utils
 object Constants {
 
     const val TOKEN = "AuthToken"
+    const val LANGUAGE = "Language"
     const val USER_DATA = "user_data"
     const val THEME_MODE = "ThemeMode"
     const val USER_ID = "userId"

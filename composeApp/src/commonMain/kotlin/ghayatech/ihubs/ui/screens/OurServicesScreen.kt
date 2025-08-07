@@ -31,8 +31,6 @@ import ghayatech.ihubs.networking.models.CreateServiceRequest
 import ghayatech.ihubs.networking.models.Service
 import ghayatech.ihubs.networking.models.ServiceListResponse
 import ihubs.composeapp.generated.resources.Res
-import ihubs.composeapp.generated.resources.our_services
-import ihubs.composeapp.generated.resources.search_on_services
 import ghayatech.ihubs.networking.models.Workspace
 import ghayatech.ihubs.networking.viewmodel.HandleUiState
 import ghayatech.ihubs.networking.viewmodel.MainViewModel
@@ -43,8 +41,8 @@ import ghayatech.ihubs.ui.components.GridContent
 import ghayatech.ihubs.ui.components.SearchBar
 import ghayatech.ihubs.ui.components.ServiceItem
 import ghayatech.ihubs.ui.theme.AppColors
+import ghayatech.ihubs.ui.theme.AppStringsProvider
 import ghayatech.ihubs.utils.Logger
-import ihubs.composeapp.generated.resources.service_created_successfully
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.rememberKoinInject
@@ -58,8 +56,11 @@ class OurServicesScreen(val id: Int, val bookingId: Int) : Screen {
         val viewModel: MainViewModel = rememberKoinInject()
         val logger: Logger = rememberKoinInject()
         val tag = "TAG OurPackagesScreen:"
+        val strings = AppStringsProvider.current()
+
+
         var snackbarMessage by remember { mutableStateOf<String?>(null) }
-        var successMessage = stringResource(Res.string.service_created_successfully)
+        var successMessage = strings.service_created_successfully
 
 
         var showDialog by rememberSaveable { mutableStateOf(false) }
@@ -86,7 +87,7 @@ class OurServicesScreen(val id: Int, val bookingId: Int) : Screen {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                CustomTopBar(title = stringResource(Res.string.our_services), onBackClick = {
+                CustomTopBar(title = strings.our_services, onBackClick = {
                     navigator.pop()
                 })
                 Spacer(modifier = Modifier.size(24.dp))
@@ -98,7 +99,7 @@ class OurServicesScreen(val id: Int, val bookingId: Int) : Screen {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     SearchBar(
-                        placeholder = stringResource(Res.string.search_on_services),
+                        placeholder = strings.search_on_services,
                         value = searchInput,
                         onValueChange = { searchInput = it },
                         modifier = Modifier.height(58.dp).padding(horizontal = 10.dp),

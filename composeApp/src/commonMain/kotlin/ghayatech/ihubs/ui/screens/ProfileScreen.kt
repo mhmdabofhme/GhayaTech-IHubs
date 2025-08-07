@@ -52,26 +52,18 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import cafe.adriel.voyager.transitions.SlideTransition
 import com.russhwolf.settings.Settings
 import ihubs.composeapp.generated.resources.Res
-import ihubs.composeapp.generated.resources.about_us
 import ihubs.composeapp.generated.resources.bold
-import ihubs.composeapp.generated.resources.bookings
 import ihubs.composeapp.generated.resources.camera
 import ihubs.composeapp.generated.resources.camera_add
 import ihubs.composeapp.generated.resources.correct
-import ihubs.composeapp.generated.resources.dark_theme
-import ihubs.composeapp.generated.resources.done
 import ihubs.composeapp.generated.resources.edit
 import ihubs.composeapp.generated.resources.file
-import ihubs.composeapp.generated.resources.fullname
 import ihubs.composeapp.generated.resources.info
 import ihubs.composeapp.generated.resources.logout
 import ihubs.composeapp.generated.resources.major
-import ihubs.composeapp.generated.resources.mobile_number
 import ihubs.composeapp.generated.resources.notification
-import ihubs.composeapp.generated.resources.notifications
 import ihubs.composeapp.generated.resources.page
 import ihubs.composeapp.generated.resources.phone
-import ihubs.composeapp.generated.resources.privacy_policy
 import ihubs.composeapp.generated.resources.profile
 import ihubs.composeapp.generated.resources.theme
 import ihubs.composeapp.generated.resources.user
@@ -82,12 +74,15 @@ import ghayatech.ihubs.networking.viewmodel.MainViewModel
 import ghayatech.ihubs.ui.components.CText
 import ghayatech.ihubs.ui.components.CTextField
 import ghayatech.ihubs.ui.components.CustomTopBar
+import ghayatech.ihubs.ui.components.LanguageSwitcher
 import ghayatech.ihubs.ui.components.NetworkImage
 import ghayatech.ihubs.ui.components.ThemeIconOption
 import ghayatech.ihubs.ui.theme.AppColors
+import ghayatech.ihubs.ui.theme.AppStringsProvider
 import ghayatech.ihubs.ui.theme.AppThemeMode
 import ghayatech.ihubs.ui.theme.LocalThemeViewModel
 import ghayatech.ihubs.ui.theme.ThemeViewModel
+import ihubs.composeapp.generated.resources.language
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -102,6 +97,7 @@ class ProfileScreen() : Screen {
         val settings: Settings = rememberKoinInject()
         val viewModel: MainViewModel = rememberKoinInject()
         val themeViewModel: ThemeViewModel = rememberKoinInject()
+        val strings = AppStringsProvider.current()
 
         val currentThemeMode by themeViewModel.currentThemeMode.collectAsState()
 
@@ -152,7 +148,7 @@ class ProfileScreen() : Screen {
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 CustomTopBar(
-                    title = stringResource(Res.string.profile),
+                    title = strings.profile,
                     onBackClick = {navigator.pop()},
                     endContent = {
                         if (isEditing) {
@@ -176,7 +172,7 @@ class ProfileScreen() : Screen {
                                 )
                                 Spacer(modifier = Modifier.size(4.dp))
                                 CText(
-                                    text = stringResource(Res.string.done),
+                                    text = strings.done,
                                     color = AppColors.Primary
                                 )
                                 img = painterResource(Res.drawable.camera_add)
@@ -184,14 +180,15 @@ class ProfileScreen() : Screen {
                         } else {
                             Column(
                                 modifier = Modifier.clickable { isEditing = !isEditing },
-                                verticalArrangement = Arrangement.Center
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally
                             ) {
                                 Image(
                                     painterResource(Res.drawable.edit),
                                     contentDescription = "Edit"
                                 )
                                 CText(
-                                    text = stringResource(Res.string.edit),
+                                    text = strings.edit,
                                     color = AppColors.Primary
                                 )
                                 img = painterResource(Res.drawable.camera)
@@ -210,7 +207,7 @@ class ProfileScreen() : Screen {
 
                 // الحقول القابلة للتعديل
                 EditableField(
-                    label = stringResource(Res.string.fullname),
+                    label = strings.fullname,
                     value = username,
                     isEditing = isEditing,
                     icon = painterResource(Res.drawable.user),
@@ -218,7 +215,7 @@ class ProfileScreen() : Screen {
                 )
 
                 EditableField(
-                    label = stringResource(Res.string.mobile_number),
+                    label = strings.mobile_number,
                     value = mobileNumber,
                     isEditing = isEditing,
                     onValueChange = { mobileNumber = it },
@@ -228,7 +225,7 @@ class ProfileScreen() : Screen {
                 )
 
                 EditableField(
-                    label = stringResource(Res.string.major),
+                    label = strings.major,
                     value = major,
                     isEditing = isEditing,
                     icon = painterResource(Res.drawable.major),
@@ -239,14 +236,14 @@ class ProfileScreen() : Screen {
 
 //        // العناصر الثابتة
                 ProfileItem(
-                    label = stringResource(Res.string.bookings),
+                    label = strings.bookings,
                     icon = painterResource(Res.drawable.file)
                 ) {
                     navigator.push(BookingsScreen())
                 }
 
                 ProfileItem(
-                    label = stringResource(Res.string.notifications),
+                    label = strings.notifications,
                     icon = painterResource(Res.drawable.notification)
                 ) {
                     navigator.push(NotificationsScreen())
@@ -286,8 +283,10 @@ class ProfileScreen() : Screen {
                     )
                 }
 
+                LanguageItem()
+
                 ProfileItem(
-                    label = stringResource(Res.string.about_us),
+                    label = strings.about_us,
                     icon = painterResource(Res.drawable.info)
                 ) {
 
@@ -295,14 +294,14 @@ class ProfileScreen() : Screen {
                 }
 
                 ProfileItem(
-                    label = stringResource(Res.string.privacy_policy),
+                    label = strings.privacy_policy,
                     icon = painterResource(Res.drawable.page)
                 ) {
                     navigator.push(PrivacyScreen())
                 }
 
                 ProfileItem(
-                    label = stringResource(Res.string.logout),
+                    label = strings.logout,
                     icon = painterResource(Res.drawable.logout)
                 ) {
                     settings.clear()
@@ -454,11 +453,36 @@ class ProfileScreen() : Screen {
 
 
     @Composable
+    fun LanguageItem() {
+        Column {
+            val strings = AppStringsProvider.current()
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 12.dp)
+            ) {
+                Image(painterResource(Res.drawable.language), contentDescription = null, modifier = Modifier.size(22.dp))
+                Spacer(modifier = Modifier.width(8.dp))
+                CText(strings.language, fontFamily = Res.font.bold, modifier = Modifier.weight(1f))
+                LanguageSwitcher()
+
+            }
+            Box(
+                modifier = Modifier.height(2.dp).fillMaxWidth()
+                    .background(AppColors.itemBackground)
+
+            )
+        }
+    }
+
+    @Composable
     fun ThemeSelectionRow(
         modifier: Modifier = Modifier,
         themeViewModel: ThemeViewModel = rememberKoinInject<ThemeViewModel>() // حقن ThemeViewModel
     ) {
         val currentThemeMode by themeViewModel.currentThemeMode.collectAsState()
+        val strings = AppStringsProvider.current()
 
         Row(
             modifier = modifier
@@ -469,7 +493,7 @@ class ProfileScreen() : Screen {
         ) {
             // النص على اليسار ويأخذ المساحة المتاحة
             CText(
-                stringResource(Res.string.dark_theme),
+                strings.dark_theme,
                 modifier = Modifier.weight(1f),
                 fontFamily = Res.font.bold
             )

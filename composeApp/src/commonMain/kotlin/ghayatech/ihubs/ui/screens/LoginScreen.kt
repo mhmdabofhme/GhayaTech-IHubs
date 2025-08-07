@@ -46,6 +46,7 @@ import org.jetbrains.compose.resources.stringResource
 import ghayatech.ihubs.networking.viewmodel.HandleUiState
 import ghayatech.ihubs.networking.viewmodel.UiState
 import ghayatech.ihubs.ui.components.CustomSnackbar
+import ghayatech.ihubs.ui.theme.AppStringsProvider
 import ghayatech.ihubs.utils.Constants
 import ghayatech.ihubs.utils.UserPreferences
 import ghayatech.ihubs.utils.isValid
@@ -59,7 +60,7 @@ class LoginScreen() : Screen {
         val settings: Settings = rememberKoinInject()
         val viewModel: MainViewModel = rememberKoinInject()
         val userPreferences: UserPreferences = rememberKoinInject()
-
+        val strings = AppStringsProvider.current()
 
         var phoneNumber by rememberSaveable { mutableStateOf("") }
         var password by rememberSaveable { mutableStateOf("") }
@@ -78,8 +79,8 @@ class LoginScreen() : Screen {
 
         Box(modifier = Modifier.fillMaxSize()) {
 
-            val errorMessage = stringResource(Res.string.missing_fields)
-            val phoneMessage = stringResource(Res.string.missing_phone)
+            val errorMessage = strings.missing_fields
+            val phoneMessage = strings.missing_phone
 
             Column(
                 modifier = Modifier
@@ -91,7 +92,7 @@ class LoginScreen() : Screen {
             ) {
 
                 CText(
-                    text = stringResource(Res.string.login),
+                    text = strings.login,
                     fontSize = 20.sp,
                     color = AppColors.Black,
                     fontWeight = FontWeight.SemiBold
@@ -100,12 +101,12 @@ class LoginScreen() : Screen {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Image(imgWelcome, contentDescription = "welcome")
                     CText(
-                        text = stringResource(Res.string.welcome),
+                        text = strings.welcome,
                         fontWeight = FontWeight.SemiBold,
                         fontSize = 20.sp
                     )
                     CText(
-                        text = stringResource(Res.string.sign_in_to_access),
+                        text = strings.sign_in_to_access,
                         fontSize = 14.sp,
                     )
                 }
@@ -113,7 +114,7 @@ class LoginScreen() : Screen {
                 Spacer(modifier = Modifier.size(48.dp))
 
                 CTextField(
-                    placeholder = stringResource(Res.string.mobile_number),
+                    placeholder = strings.mobile_number,
                     inputType = KeyboardType.Number,
                     value = phoneNumber,
                     onValueChange = { phoneNumber = it }
@@ -122,7 +123,7 @@ class LoginScreen() : Screen {
                 Spacer(modifier = Modifier.height(12.dp))
 
                 CTextField(
-                    placeholder = stringResource(Res.string.password),
+                    placeholder = strings.password,
                     inputType = KeyboardType.Password,
                     isPassword = true,
                     value = password,
@@ -131,7 +132,7 @@ class LoginScreen() : Screen {
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 CText(
-                    text = stringResource(Res.string.forget_your_password),
+                    text = strings.forget_your_password,
                     style = TextDecoration.Underline,
                     color = AppColors.Secondary,
                     fontWeight = FontWeight.Bold,
@@ -151,7 +152,7 @@ class LoginScreen() : Screen {
                 Spacer(modifier = Modifier.height(10.dp))
 
                 CButton(
-                    text = stringResource(Res.string.login),
+                    text = strings.login,
                     modifier = Modifier.fillMaxWidth(),
                     enabled = loginState !is UiState.Loading,
                     onClick = {
@@ -166,7 +167,7 @@ class LoginScreen() : Screen {
 
                 Spacer(modifier = Modifier.height(10.dp))
                 CButton(
-                    text = stringResource(Res.string.create_new_account),
+                    text = strings.create_new_account,
                     isOutlined = true,
                     onClick = {
                         navigator.push(SignupScreen())

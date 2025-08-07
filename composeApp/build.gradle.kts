@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.composeHotReload)
+//    alias(libs.plugins.composeResources)
 
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.googleGmsGoogleServices)
@@ -50,7 +51,7 @@ kotlin {
             implementation(compose.material3)
             implementation(compose.materialIconsExtended)
             implementation(compose.ui)
-
+            implementation(libs.compose.ui.text)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
             implementation(libs.multiplatform.settings)

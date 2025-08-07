@@ -11,7 +11,6 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import ihubs.composeapp.generated.resources.Res
-import ihubs.composeapp.generated.resources.fullname
 import ghayatech.ihubs.ui.theme.AppColors
 import org.jetbrains.compose.resources.stringResource
 import androidx.compose.foundation.layout.Box

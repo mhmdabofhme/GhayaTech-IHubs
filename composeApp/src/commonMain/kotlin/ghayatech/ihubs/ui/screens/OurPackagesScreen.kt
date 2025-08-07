@@ -44,10 +44,7 @@ import com.russhwolf.settings.Settings
 import ihubs.composeapp.generated.resources.Res
 import ihubs.composeapp.generated.resources.bold
 import ihubs.composeapp.generated.resources.diamond
-import ihubs.composeapp.generated.resources.fullname
 import ihubs.composeapp.generated.resources.ils
-import ihubs.composeapp.generated.resources.no_data
-import ihubs.composeapp.generated.resources.resource_default
 import ghayatech.ihubs.networking.models.CreateBookingRequest
 import ghayatech.ihubs.networking.models.CreateBookingResponse
 import ghayatech.ihubs.networking.models.CreateBookingWithHoursRequest
@@ -61,14 +58,9 @@ import ghayatech.ihubs.ui.components.CText
 import ghayatech.ihubs.ui.components.CustomTopBar
 import ghayatech.ihubs.ui.components.NetworkImage
 import ghayatech.ihubs.ui.theme.AppColors
+import ghayatech.ihubs.ui.theme.AppStringsProvider
 import ghayatech.ihubs.utils.Logger
-import ghayatech.ihubs.utils.getLogger
-import ihubs.composeapp.generated.resources.booking_info
-import ihubs.composeapp.generated.resources.booking_not_available
-import ihubs.composeapp.generated.resources.booking_success
-import ihubs.composeapp.generated.resources.done
 import ihubs.composeapp.generated.resources.first
-import ihubs.composeapp.generated.resources.payment_available
 import ihubs.composeapp.generated.resources.second
 import ihubs.composeapp.generated.resources.star
 import ihubs.composeapp.generated.resources.third
@@ -86,6 +78,8 @@ class OurPackagesScreen(private val id: Int) : Screen {
         val viewModel: MainViewModel = rememberKoinInject()
         val logger: Logger = rememberKoinInject()
         val tag = "TAG OurPackagesScreen:"
+        val strings = AppStringsProvider.current()
+
         var showDialog by remember { mutableStateOf(false) }
 
         val hasTime = remember { mutableStateOf(false) }
@@ -104,7 +98,7 @@ class OurPackagesScreen(private val id: Int) : Screen {
         val booking = remember { mutableStateOf<CreateBookingResponse?>(null) }
         val bookingState by viewModel.createBookingState.collectAsState()
 
-        val bookingNotAvailable = stringResource(Res.string.booking_not_available)
+        val bookingNotAvailable = strings.booking_not_available
 
 
         LaunchedEffect(id) {
@@ -114,9 +108,9 @@ class OurPackagesScreen(private val id: Int) : Screen {
 
         BottomSheetScreen(
             openBottomSheet,
-            title = stringResource(Res.string.booking_success),
-            description = stringResource(Res.string.booking_info),
-            buttonText = stringResource(Res.string.done),
+            title = strings.booking_success,
+            description = strings.booking_info,
+            buttonText = strings.done,
         ) {
             navigator.push(BookingDetailsScreen())
         }
@@ -201,7 +195,10 @@ class OurPackagesScreen(private val id: Int) : Screen {
                                     shape = RoundedCornerShape(15.dp)
                                 )
                                 .clickable {
-                                    logger.debug(tag," ${packagesResponse.value?.payment?.bankPaymentSupported}")
+                                    logger.debug(
+                                        tag,
+                                        " ${packagesResponse.value?.payment?.bankPaymentSupported}"
+                                    )
 //                                    print("TAG Booking: ${packagesResponse.value?.payment?.bankPaymentSupported}")
 
                                     if (packagesResponse.value?.payment?.bankPaymentSupported != null && packagesResponse.value?.payment?.bankPaymentSupported.equals(
@@ -347,7 +344,10 @@ class OurPackagesScreen(private val id: Int) : Screen {
                                 if (hasTime.value) {
                                     logger.debug(tag, " Booking true date ${it.date}")
                                     logger.debug(tag, " Booking true time ${it.time}")
-                                    logger.debug(tag, " Booking true numberOfHours ${it.numberOfHours}")
+                                    logger.debug(
+                                        tag,
+                                        " Booking true numberOfHours ${it.numberOfHours}"
+                                    )
 //
 //                                    print("TAG Booking:true in")
 //                                    print("TAG Booking:true ${it.date}")

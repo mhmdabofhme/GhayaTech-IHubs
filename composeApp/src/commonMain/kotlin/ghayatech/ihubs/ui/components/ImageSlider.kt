@@ -69,7 +69,7 @@ fun ImageSlider(
                 url = images[page],
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(125.dp)
+                    .height(175.dp)
                     .clip(RoundedCornerShape(25.dp)),
                 onSuccess = {
                     imageLoadedStates[page] = true

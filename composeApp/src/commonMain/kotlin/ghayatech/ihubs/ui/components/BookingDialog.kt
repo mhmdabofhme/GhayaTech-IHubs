@@ -34,15 +34,10 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ihubs.composeapp.generated.resources.Res
-import ihubs.composeapp.generated.resources.account_number
 import ihubs.composeapp.generated.resources.bold
-import ihubs.composeapp.generated.resources.book_now
 import ihubs.composeapp.generated.resources.copy
 import ihubs.composeapp.generated.resources.date
-import ihubs.composeapp.generated.resources.mobile_number
 import ihubs.composeapp.generated.resources.time
-import ihubs.composeapp.generated.resources.transfer_details
-import ihubs.composeapp.generated.resources.works_hours
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
 import network.chaintech.kmp_date_time_picker.ui.datepicker.WheelDatePickerView
@@ -52,8 +47,8 @@ import network.chaintech.kmp_date_time_picker.utils.TimeFormat
 import network.chaintech.kmp_date_time_picker.utils.now
 import ghayatech.ihubs.networking.models.PaymentInfo
 import ghayatech.ihubs.ui.theme.AppColors
+import ghayatech.ihubs.ui.theme.AppStringsProvider
 import ghayatech.ihubs.utils.handleTime
-import ihubs.composeapp.generated.resources.books_date
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -65,6 +60,7 @@ fun BookingDialog(
     onBookClick: (Request) -> Unit,
     hasTime: Boolean = false,
 ) {
+    val strings = AppStringsProvider.current()
 
     var worksHours by rememberSaveable { mutableStateOf("") }
     var request by remember { mutableStateOf<Request?>(null) }
@@ -107,12 +103,11 @@ fun BookingDialog(
             ) {
 
 
-
                 if (hasTime) {
                     CTextField(
                         value = worksHours,
                         onValueChange = { worksHours = it },
-                        placeholder = stringResource(Res.string.works_hours),
+                        placeholder = strings.works_hours,
                         inputType = KeyboardType.Number,
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -120,7 +115,7 @@ fun BookingDialog(
 //                WheelDatePickerView(height = 56.dp)
 
                     selectedTime =
-                        if (selectedTime.isEmpty()) stringResource(Res.string.books_date) else selectedTime
+                        selectedTime.ifEmpty { strings.books_date }
 
                     Spacer(modifier = Modifier.size(12.dp))
                     BookingItem(
@@ -136,7 +131,7 @@ fun BookingDialog(
                 }
 
                 selectedDate =
-                    if (selectedDate.isEmpty()) stringResource(Res.string.books_date) else selectedDate
+                    selectedDate.ifEmpty { strings.books_date }
 
                 BookingItem(
                     text = selectedDate,
@@ -148,20 +143,20 @@ fun BookingDialog(
                 Spacer(modifier = Modifier.height(20.dp))
 
                 CText(
-                    text = stringResource(Res.string.transfer_details),
+                    text = strings.transfer_details,
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp,
                     modifier = Modifier.padding(bottom = 12.dp)
                 )
 
                 TransferRow(
-                    label = stringResource(Res.string.account_number),
+                    label = strings.account_number,
                     value = paymentInfo.bankAccountNumber,
                     copyable = true,
                     isRed = true
                 )
                 TransferRow(
-                    label = stringResource(Res.string.mobile_number),
+                    label = strings.mobile_number,
                     value = paymentInfo.mobilePaymentNumber,
                     copyable = true,
                     isRed = true
@@ -170,7 +165,7 @@ fun BookingDialog(
                 Spacer(modifier = Modifier.height(24.dp))
 
                 CButton(
-                    text = stringResource(Res.string.book_now),
+                    text = strings.book_now,
                     onClick = {
                         onBookClick(
                             Request(

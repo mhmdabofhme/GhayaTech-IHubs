@@ -13,6 +13,8 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.text.intl.Locale
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.transitions.FadeTransition
 import cafe.adriel.voyager.transitions.SlideTransition
@@ -20,30 +22,46 @@ import ghayatech.ihubs.networking.viewmodel.MainViewModel
 import ghayatech.ihubs.ui.screens.SplashScreen
 import ghayatech.ihubs.ui.theme.AppColors
 import ghayatech.ihubs.ui.theme.AppThemeMode
+import ghayatech.ihubs.ui.theme.LocalLocalizationViewModel
 import ghayatech.ihubs.ui.theme.LocalThemeViewModel
+import ghayatech.ihubs.ui.theme.LocalizationViewModel
 import ghayatech.ihubs.ui.theme.ThemeViewModel
+import ghayatech.ihubs.ui.theme.stringsFor
+import ghayatech.ihubs.utils.LocalizationManager
 import ghayatech.ihubs.utils.SetSystemUiColors
+import ghayatech.ihubs.utils.UserPreferences
+import ghayatech.ihubs.utils.getLayoutDirection
+import ghayatech.ihubs.utils.getLocale
 import org.koin.compose.koinInject
+
+
 
 @Composable
 fun AppMain() {
     val themeViewModel: ThemeViewModel = koinInject()
-//    val currentThemeMode by themeViewModel.currentThemeMode.collectAsState()
-//
-//    val useDarkIcons = when(currentThemeMode) {
-//        AppThemeMode.LIGHT -> true  // الوضع النهاري: الخلفية فاتحة -> نريد أيقونات داكنة
-//        AppThemeMode.DARK -> false // الوضع الليلي: الخلفية داكنة -> نريد أيقونات فاتحة
-//        AppThemeMode.SYSTEM -> !isSystemInDarkTheme() // الوضع الافتراضي: إذا كان النظام داكناً، نريد أيقونات فاتحة (لا داكنة)
-//    }
-//    SetSystemUiColors(useDarkIcons = useDarkIcons)
+    val userPreferences: UserPreferences = koinInject()
+    val localizationViewModel: LocalizationViewModel = koinInject()
 
-    CompositionLocalProvider(LocalThemeViewModel provides themeViewModel) {
+    // 1. الاستماع إلى تغييرات اللغة
+    // هذا يجعل `currentLanguage` متغيراً من نوع State، مما يضمن إعادة البناء عند تغيره.
+    val currentLanguage by localizationViewModel.currentLanguage.collectAsState()
+
+    // 2. تحديد اتجاه الواجهة بناءً على اللغة الحالية
+    // هذا يجعل `layoutDirection` ديناميكياً ويحدث مع تغير اللغة.
+    val layoutDirection = getLayoutDirection(currentLanguage)
+
+    CompositionLocalProvider(
+        LocalThemeViewModel provides themeViewModel,
+        LocalLocalizationViewModel provides localizationViewModel,
+        LocalLayoutDirection provides layoutDirection
+    ) {
         MaterialTheme {
             Surface(
-                modifier = Modifier.fillMaxSize().background(AppColors.White)
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(AppColors.White)
                     .windowInsetsPadding(WindowInsets.navigationBars)
             ) {
-//            val viewModel: MainViewModel = rememberKoinInject()
                 Navigator(SplashScreen()) { navigator ->
                     SlideTransition(navigator)
                 }

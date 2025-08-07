@@ -35,16 +35,8 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import org.jetbrains.compose.resources.painterResource
 import ihubs.composeapp.generated.resources.Res
-import ihubs.composeapp.generated.resources.already_have_account
 import ihubs.composeapp.generated.resources.back
-import ihubs.composeapp.generated.resources.by_creating_a_free_account
-import ihubs.composeapp.generated.resources.confirm_password
-import ihubs.composeapp.generated.resources.create_new_account
-import ihubs.composeapp.generated.resources.fullname
-import ihubs.composeapp.generated.resources.get_started
 import ihubs.composeapp.generated.resources.major
-import ihubs.composeapp.generated.resources.missing_fields
-import ihubs.composeapp.generated.resources.mobile_number
 import ihubs.composeapp.generated.resources.password
 import ihubs.composeapp.generated.resources.welcome
 import ihubs.composeapp.generated.resources.white_welcome
@@ -58,6 +50,7 @@ import ghayatech.ihubs.utils.isValid
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.rememberKoinInject
 import com.russhwolf.settings.Settings
+import ghayatech.ihubs.ui.theme.AppStringsProvider
 import ghayatech.ihubs.utils.UserPreferences
 
 //import ghayatech.ihubs.app_navigation.Screen
@@ -77,6 +70,7 @@ class SignupScreen() : Screen {
         var password by remember { mutableStateOf("") }
         var confirmPassword by remember { mutableStateOf("") }
         val imgBack = painterResource(Res.drawable.back)
+        val strings = AppStringsProvider.current()
 
         val imgWelcome =
             if (isSystemInDarkTheme()) painterResource(Res.drawable.welcome)
@@ -94,7 +88,7 @@ class SignupScreen() : Screen {
             Modifier.fillMaxSize()
         ) {
             Box(Modifier.fillMaxSize()) {
-                val errorMessage = stringResource(Res.string.missing_fields)
+                val errorMessage = strings.missing_fields
 
                 Column(
                     modifier = Modifier
@@ -111,7 +105,7 @@ class SignupScreen() : Screen {
                     }, verticalAlignment = Alignment.CenterVertically) {
                         Icon(imgBack, contentDescription = "Back", tint = AppColors.TextSecondary)
                         CText(
-                            stringResource(Res.string.back),
+                            strings.back,
                             fontSize = 14.sp,
                             color = AppColors.Black,
                             fontWeight = FontWeight.SemiBold,
@@ -125,12 +119,12 @@ class SignupScreen() : Screen {
                     ) {
                         Image(imgWelcome, "welcome")
                         CText(
-                            stringResource(Res.string.get_started),
+                            strings.get_started,
                             fontWeight = FontWeight.SemiBold,
                             fontSize = 20.sp
                         )
                         CText(
-                            stringResource(Res.string.by_creating_a_free_account),
+                            strings.by_creating_a_free_account,
                             fontSize = 14.sp
                         )
                     }
@@ -139,7 +133,7 @@ class SignupScreen() : Screen {
                     Spacer(modifier = Modifier.size(48.dp))
 
                     CTextField(
-                        placeholder = stringResource(Res.string.fullname),
+                        placeholder = strings.fullname,
                         inputType = KeyboardType.Text,
                         value = fullName,
                         onValueChange = { fullName = it }
@@ -148,7 +142,7 @@ class SignupScreen() : Screen {
                     Spacer(modifier = Modifier.height(12.dp))
 
                     CTextField(
-                        placeholder = stringResource(Res.string.mobile_number),
+                        placeholder = strings.mobile_number,
                         inputType = KeyboardType.Number,
                         value = phoneNumber,
                         onValueChange = { phoneNumber = it }
@@ -158,7 +152,7 @@ class SignupScreen() : Screen {
                     Spacer(modifier = Modifier.height(12.dp))
 
                     CTextField(
-                        placeholder = stringResource(Res.string.major),
+                        placeholder = strings.major,
                         inputType = KeyboardType.Text,
                         value = major,
                         onValueChange = { major = it }
@@ -167,7 +161,7 @@ class SignupScreen() : Screen {
                     Spacer(modifier = Modifier.height(12.dp))
 
                     CTextField(
-                        placeholder = stringResource(Res.string.password),
+                        placeholder = strings.password,
                         inputType = KeyboardType.Password,
                         isPassword = true,
                         value = password,
@@ -177,7 +171,7 @@ class SignupScreen() : Screen {
                     Spacer(modifier = Modifier.height(12.dp))
 
                     CTextField(
-                        placeholder = stringResource(Res.string.confirm_password),
+                        placeholder = strings.confirm_password,
                         inputType = KeyboardType.Password,
                         isPassword = true,
                         value = confirmPassword,
@@ -185,7 +179,7 @@ class SignupScreen() : Screen {
                     )
 
                     Spacer(modifier = Modifier.height(35.dp))
-                    CButton(text = stringResource(Res.string.create_new_account), onClick = {
+                    CButton(text = strings.create_new_account, onClick = {
                         if (isValid(
                                 listOf(phoneNumber, password, confirmPassword, major, fullName)
                             )
@@ -213,7 +207,7 @@ class SignupScreen() : Screen {
                         horizontalArrangement = Arrangement.Center
                     ) {
                         CText(
-                            text = stringResource(Res.string.already_have_account),
+                            text = strings.already_have_account,
                             style = TextDecoration.Underline,
                             color = AppColors.Secondary,
                             fontWeight = FontWeight.Medium,

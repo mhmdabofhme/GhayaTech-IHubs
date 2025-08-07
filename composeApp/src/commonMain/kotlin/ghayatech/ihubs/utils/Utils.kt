@@ -2,6 +2,8 @@ package ghayatech.ihubs.utils
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.text.intl.Locale
+import androidx.compose.ui.unit.LayoutDirection
 import com.russhwolf.settings.Settings
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.encodeToString
@@ -125,6 +127,23 @@ fun getPackageIcon(packageName: String): Painter {
 
 fun boolToIntString(value: Boolean): String {
     return if (value) "1" else "0"
+}
+
+fun getLayoutDirection(languageCode: String): LayoutDirection {
+    return if (languageCode == "ar") {
+        LayoutDirection.Rtl
+    } else {
+        LayoutDirection.Ltr
+    }
+}
+
+
+fun getLocale(languageCode: String): Locale {
+    return if (languageCode == "ar") {
+        Locale("ar")
+    } else {
+        Locale("en")
+    }
 }
 
 //fun formatLocalDateToIso(localDate: LocalDate): String {

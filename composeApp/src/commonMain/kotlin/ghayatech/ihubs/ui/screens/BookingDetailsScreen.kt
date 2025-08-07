@@ -52,22 +52,11 @@ import com.russhwolf.settings.Settings
 import ghayatech.ihubs.Greeting
 import ihubs.composeapp.generated.resources.Res
 import ihubs.composeapp.generated.resources.bold
-import ihubs.composeapp.generated.resources.booking_details
-import ihubs.composeapp.generated.resources.books_date
-import ihubs.composeapp.generated.resources.books_time
-import ihubs.composeapp.generated.resources.contactus
 import ihubs.composeapp.generated.resources.date
 import ihubs.composeapp.generated.resources.ghayatech
-import ihubs.composeapp.generated.resources.our_services
-import ihubs.composeapp.generated.resources.`package`
 import ihubs.composeapp.generated.resources.password
 import ihubs.composeapp.generated.resources.profile
-import ihubs.composeapp.generated.resources.remaining_time
-import ihubs.composeapp.generated.resources.resource_default
-import ihubs.composeapp.generated.resources.seat_free
-import ihubs.composeapp.generated.resources.seat_number
 import ihubs.composeapp.generated.resources.time
-import ihubs.composeapp.generated.resources.username
 import ghayatech.ihubs.networking.models.CreateBookingResponse
 import ghayatech.ihubs.networking.models.WorkspaceDetails
 import ghayatech.ihubs.networking.viewmodel.HandleUiState
@@ -79,6 +68,7 @@ import ghayatech.ihubs.ui.components.CountdownText
 import ghayatech.ihubs.ui.components.CustomTopBar
 import ghayatech.ihubs.ui.components.NetworkImage
 import ghayatech.ihubs.ui.theme.AppColors
+import ghayatech.ihubs.ui.theme.AppStringsProvider
 import ghayatech.ihubs.utils.Logger
 import ghayatech.ihubs.utils.UserPreferences
 import ghayatech.ihubs.utils.WhatsAppHelper
@@ -106,6 +96,7 @@ class BookingDetailsScreen() : Screen {
         val whatsAppHelper: WhatsAppHelper = getKoin().get()
         val logger: Logger = rememberKoinInject()
         val tag = "TAG BookingDetailsScreen:"
+        val strings = AppStringsProvider.current()
 
 
         val countdownDuration = 447_720_000L
@@ -154,7 +145,7 @@ class BookingDetailsScreen() : Screen {
 
                 CustomTopBar(
                     showBackButton = true,
-                    title = stringResource(Res.string.booking_details),
+                    title = strings.booking_details,
                     endContent = {
                         CIcon(
                             img = painterResource(Res.drawable.profile),
@@ -202,11 +193,12 @@ class BookingDetailsScreen() : Screen {
 //                                .width(340.dp)
                                 .fillParentMaxWidth()
                                 .wrapContentHeight()
+                                .padding(top = 20.dp)
                                 .padding(5.dp)
                                 .shadow(
-                                    elevation = 5.dp, // قوة الظل
                                     shape = RoundedCornerShape(25.dp),
-                                    clip = false // اجعله false لتطبيق الظل خارج الشك
+                                    elevation = 5.dp, // قوة الظل
+                                    clip = true // اجعله false لتطبيق الظل خارج الشك
                                 )
                                 .background(
                                     AppColors.Background,
@@ -215,15 +207,20 @@ class BookingDetailsScreen() : Screen {
                                 .padding(vertical = 16.dp, horizontal = 12.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
+
                             NetworkImage(
                                 workspace.value?.logo, modifier = Modifier
                                     .size(56.dp)
-                                    .shadow(5.dp, shape = RoundedCornerShape(15.dp), clip = false)
+                                    .shadow(
+                                        shape = RoundedCornerShape(15.dp),
+                                        elevation = 2.dp,
+                                        clip = true
+                                    )
                             )
 
                             Spacer(modifier = Modifier.size(8.dp))
                             CText(
-                                text = stringResource(Res.string.ghayatech),
+                                text = strings.ghayatech,
                                 fontFamily = Res.font.bold
                             )
                             Spacer(modifier = Modifier.size(20.dp))
@@ -234,7 +231,7 @@ class BookingDetailsScreen() : Screen {
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 CText(
-                                    text = "${stringResource(Res.string.`package`)} :",
+                                    text = "${strings.`package`} :",
                                     color = AppColors.Secondary,
                                     fontFamily = Res.font.bold
 
@@ -258,13 +255,13 @@ class BookingDetailsScreen() : Screen {
                             // Seat
                             Row(Modifier.fillMaxWidth()) {
                                 CText(
-                                    text = "${stringResource(Res.string.seat_number)} :",
+                                    text = "${strings.seat_number} :",
                                     color = AppColors.Secondary,
                                     fontFamily = Res.font.bold
                                 )
                                 Spacer(modifier = Modifier.size(12.dp))
                                 CText(
-                                    text = item.seatNumber ?: stringResource(Res.string.seat_free),
+                                    text = item.seatNumber ?: strings.seat_free,
                                     color = AppColors.Black,
                                     fontFamily =
                                         Res.font.bold,
@@ -281,8 +278,9 @@ class BookingDetailsScreen() : Screen {
                                     painterResource(Res.drawable.date),
                                     contentDescription = "date",
                                 )
+                                Spacer(modifier = Modifier.size(4.dp))
                                 CText(
-                                    text = "${stringResource(Res.string.books_date)} :",
+                                    text = "${strings.books_date} :",
                                     color = AppColors.Secondary,
                                     fontFamily = Res.font.bold
                                 )
@@ -309,8 +307,10 @@ class BookingDetailsScreen() : Screen {
                                     painterResource(Res.drawable.time),
                                     contentDescription = "time",
                                 )
+                                Spacer(modifier = Modifier.size(4.dp))
+
                                 CText(
-                                    text = "${stringResource(Res.string.books_time)} :",
+                                    text = "${strings.books_time} :",
                                     color = AppColors.Secondary,
                                     fontFamily = Res.font.bold
 
@@ -333,16 +333,16 @@ class BookingDetailsScreen() : Screen {
                                     painterResource(Res.drawable.profile),
                                     contentDescription = "username",
                                 )
-                                Spacer(modifier = Modifier.size(4.dp))
+                                Spacer(modifier = Modifier.size(8.dp))
 
                                 CText(
-                                    text = "${stringResource(Res.string.username)} :",
+                                    text = "${strings.username} :",
                                     color = AppColors.Secondary,
                                     fontFamily = Res.font.bold
                                 )
                                 Spacer(modifier = Modifier.size(12.dp))
                                 CText(
-                                    text = stringResource(Res.string.username),
+                                    text = strings.username,
                                     color = AppColors.Black,
                                     fontFamily = Res.font.bold,
                                 )
@@ -356,15 +356,16 @@ class BookingDetailsScreen() : Screen {
                                     painterResource(Res.drawable.password),
                                     contentDescription = "password",
                                 )
+                                Spacer(modifier = Modifier.size(4.dp))
 
                                 CText(
-                                    text = "${stringResource(Res.string.password)} :",
+                                    text = "${strings.password} :",
                                     color = AppColors.Secondary,
                                     fontFamily = Res.font.bold
                                 )
                                 Spacer(modifier = Modifier.size(12.dp))
                                 CText(
-                                    text = stringResource(Res.string.password),
+                                    text = strings.password,
                                     color = AppColors.Black,
                                     fontFamily = Res.font.bold,
                                 )
@@ -372,7 +373,7 @@ class BookingDetailsScreen() : Screen {
 
                             Spacer(modifier = Modifier.size(26.dp))
                             CText(
-                                text = "${stringResource(Res.string.remaining_time)} :",
+                                text = "${strings.remaining_time} :",
                                 color = AppColors.Secondary,
                                 fontFamily = Res.font.bold
                             )
@@ -384,26 +385,26 @@ class BookingDetailsScreen() : Screen {
 
 
                             Row {
-                                CButton(text = stringResource(Res.string.contactus), onClick = {
+                                CButton(text = strings.contactus, onClick = {
                                     // TODO PASS CONVERSATION ID
                                     whatsAppHelper.openWhatsApp("970597204724")
 
                                 }, modifier = Modifier.weight(1F))
-                                if (workspace.value != null) {
-                                    Spacer(modifier = Modifier.size(10.dp))
-                                    CButton(
-                                        text = stringResource(Res.string.our_services),
-                                        onClick = {
-                                            navigator.push(
-                                                OurServicesScreen(
-                                                    workspace.value!!.id,
-                                                    item.id
-                                                )
+//                                if (workspace.value != null) {
+                                Spacer(modifier = Modifier.size(10.dp))
+                                CButton(
+                                    text = strings.our_services,
+                                    onClick = {
+                                        navigator.push(
+                                            OurServicesScreen(
+                                                workspace.value!!.id,
+                                                item.id
                                             )
-                                        },
-                                        modifier = Modifier.weight(1F)
-                                    )
-                                }
+                                        )
+                                    },
+                                    modifier = Modifier.weight(1F)
+                                )
+//                                }
 
                             }
 

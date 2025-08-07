@@ -14,13 +14,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import ihubs.composeapp.generated.resources.Res
 import ihubs.composeapp.generated.resources.error
-import ihubs.composeapp.generated.resources.unknown
 import ghayatech.ihubs.ui.theme.AppColors
+import ghayatech.ihubs.ui.theme.AppStringsProvider
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun ErrorPage(message: String = stringResource(Res.string.unknown)) {
+fun ErrorPage(message: String = AppStringsProvider.current().unknown) {
     Column(
         modifier = Modifier.fillMaxSize()
             .background(AppColors.White),

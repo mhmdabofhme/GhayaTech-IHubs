@@ -34,14 +34,7 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import com.russhwolf.settings.Settings
 import ihubs.composeapp.generated.resources.back
 import ihubs.composeapp.generated.resources.bold
-import ihubs.composeapp.generated.resources.check_now
-import ihubs.composeapp.generated.resources.missing_fields
-import ihubs.composeapp.generated.resources.receive_code
-import ihubs.composeapp.generated.resources.resend_code
-import ihubs.composeapp.generated.resources.s
 import ihubs.composeapp.generated.resources.verification
-import ihubs.composeapp.generated.resources.verification_code
-import ihubs.composeapp.generated.resources.verification_message
 import kotlinx.coroutines.delay
 import ghayatech.ihubs.networking.models.VerifyPhoneRequest
 import ghayatech.ihubs.networking.viewmodel.HandleUiState
@@ -52,13 +45,11 @@ import ghayatech.ihubs.ui.components.CustomTopBar
 import ghayatech.ihubs.ui.components.OtpCodeInput
 //import ghayatech.ihubs.components.OtpInputField
 import ghayatech.ihubs.ui.theme.AppColors
+import ghayatech.ihubs.ui.theme.AppStringsProvider
 import ghayatech.ihubs.utils.Constants
 import ghayatech.ihubs.utils.UserPreferences
 import ihubs.composeapp.generated.resources.Res
 import ihubs.composeapp.generated.resources.bold
-import ihubs.composeapp.generated.resources.start_experience
-import ihubs.composeapp.generated.resources.verification_success
-import ihubs.composeapp.generated.resources.verification_success_message
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -75,13 +66,14 @@ class ResetPasswordScreen(
         val navigator = LocalNavigator.currentOrThrow
         val userPreferences: UserPreferences = rememberKoinInject()
         val viewModel: MainViewModel = rememberKoinInject()
+        val strings = AppStringsProvider.current()
 
         val openBottomSheet = remember { mutableStateOf(false) }
         BottomSheetScreen(
             openBottomSheet,
-            title = stringResource(Res.string.verification_success),
-            description = stringResource(Res.string.verification_success_message),
-            buttonText = stringResource(Res.string.start_experience),
+            title = strings.verification_success,
+            description = strings.verification_success_message,
+            buttonText = strings.start_experience,
         ) {
 
         }
@@ -127,7 +119,7 @@ class ResetPasswordScreen(
         Box(
             Modifier.fillMaxSize()
         ) {
-            val errorMessage = stringResource(Res.string.missing_fields)
+            val errorMessage = strings.missing_fields
 
             snackbarMessage = code
             print("Code is: $code")
@@ -142,7 +134,7 @@ class ResetPasswordScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                CustomTopBar(title = stringResource(Res.string.verification_code), onBackClick = {
+                CustomTopBar(title = strings.verification_code, onBackClick = {
                     navigator.pop()
                 })
 
@@ -151,7 +143,7 @@ class ResetPasswordScreen(
                 Image(painterResource(Res.drawable.verification), "Verification Code")
 
                 CText(
-                    stringResource(Res.string.verification_message),
+                    strings.verification_message,
                     fontSize = 14.sp,
                     modifier = Modifier.padding(10.dp)
                 )
@@ -175,20 +167,20 @@ class ResetPasswordScreen(
                     modifier = Modifier.padding(horizontal = 10.dp)
                 ) {
                     CText(
-                        stringResource(Res.string.receive_code),
+                        strings.receive_code,
                         fontSize = 16.sp,
                         fontFamily = Res.font.bold,
                         fontWeight = FontWeight.Bold
                     )
                     Spacer(modifier = Modifier.size(5.dp))
                     CText(
-                        stringResource(Res.string.resend_code),
+                        strings.resend_code,
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
                         style = TextDecoration.Underline
                     )
                     CText(
-                        "$totalSeconds ${stringResource(Res.string.s)}",
+                        "$totalSeconds ${strings.s}",
                         fontSize = 14.sp,
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.End,
@@ -198,7 +190,7 @@ class ResetPasswordScreen(
                 }
                 Spacer(modifier = Modifier.size(20.dp))
 
-                CButton(text = stringResource(Res.string.check_now), onClick = {
+                CButton(text = strings.check_now, onClick = {
                     openBottomSheet.value = true
                 })
 

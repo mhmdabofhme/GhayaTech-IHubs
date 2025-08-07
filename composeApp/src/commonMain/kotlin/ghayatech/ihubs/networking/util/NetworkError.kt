@@ -1,14 +1,9 @@
 package ghayatech.ihubs.networking.util
 
 import androidx.compose.runtime.Composable
+import ghayatech.ihubs.ui.theme.AppStrings
+import ghayatech.ihubs.ui.theme.AppStringsProvider
 import ihubs.composeapp.generated.resources.Res
-import ihubs.composeapp.generated.resources.conflict
-import ihubs.composeapp.generated.resources.no_internet
-import ihubs.composeapp.generated.resources.request_timeout
-import ihubs.composeapp.generated.resources.server_error
-import ihubs.composeapp.generated.resources.too_many_requests
-import ihubs.composeapp.generated.resources.unauthorized
-import ihubs.composeapp.generated.resources.unknown
 import org.jetbrains.compose.resources.stringResource
 
 
@@ -27,16 +22,19 @@ sealed class NetworkError : Error {
 
 @Composable
 fun NetworkError.getMessage(): String {
+
+    val strings = AppStringsProvider.current()
+
     return when (this) {
-        is NetworkError.Unauthorized -> stringResource(Res.string.unauthorized)
-        is NetworkError.Conflict -> stringResource(Res.string.conflict)
-        is NetworkError.PayloadTooLarge -> stringResource(Res.string.too_many_requests)
-        is NetworkError.TooManyRequests -> stringResource(Res.string.too_many_requests)
-        is NetworkError.ServerError -> stringResource(Res.string.server_error)
-        is NetworkError.Serialization -> stringResource(Res.string.unknown)
-        is NetworkError.NoInternet -> stringResource(Res.string.no_internet)
-        is NetworkError.RequestTimeout -> stringResource(Res.string.request_timeout)
-        is NetworkError.Unknown -> stringResource(Res.string.unknown)
+        is NetworkError.Unauthorized -> strings.unauthorized
+        is NetworkError.Conflict -> strings.conflict
+        is NetworkError.PayloadTooLarge -> strings.too_many_requests
+        is NetworkError.TooManyRequests -> strings.too_many_requests
+        is NetworkError.ServerError -> strings.server_error
+        is NetworkError.Serialization -> strings.unknown
+        is NetworkError.NoInternet -> strings.no_internet
+        is NetworkError.RequestTimeout -> strings.request_timeout
+        is NetworkError.Unknown -> strings.unknown
         is NetworkError.HttpError -> this.message
     }
 }

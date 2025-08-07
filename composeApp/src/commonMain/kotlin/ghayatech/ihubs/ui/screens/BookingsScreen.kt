@@ -37,27 +37,22 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import com.russhwolf.settings.Settings
 import ihubs.composeapp.generated.resources.Res
 import ihubs.composeapp.generated.resources.bold
-import ihubs.composeapp.generated.resources.bookings
-import ihubs.composeapp.generated.resources.books_date
-import ihubs.composeapp.generated.resources.books_time
 import ihubs.composeapp.generated.resources.date
 import ihubs.composeapp.generated.resources.ghayatech
-import ihubs.composeapp.generated.resources.`package`
 import ihubs.composeapp.generated.resources.password
 import ihubs.composeapp.generated.resources.profile
-import ihubs.composeapp.generated.resources.seat_free
-import ihubs.composeapp.generated.resources.seat_number
 import ihubs.composeapp.generated.resources.time
-import ihubs.composeapp.generated.resources.username
 import ghayatech.ihubs.networking.models.CreateBookingResponse
 import ghayatech.ihubs.networking.models.WorkspaceDetails
 import ghayatech.ihubs.networking.viewmodel.HandleUiState
 import ghayatech.ihubs.networking.viewmodel.MainViewModel
 //import ghayatech.ihubs.app_navigation.Screen
 import ghayatech.ihubs.ui.components.CText
+import ghayatech.ihubs.ui.components.CustomSnackbar
 import ghayatech.ihubs.ui.components.CustomTopBar
 import ghayatech.ihubs.ui.components.NetworkImage
 import ghayatech.ihubs.ui.theme.AppColors
+import ghayatech.ihubs.ui.theme.AppStringsProvider
 import ghayatech.ihubs.utils.Logger
 import ghayatech.ihubs.utils.getPackageIcon
 import ihubs.composeapp.generated.resources.diamond
@@ -82,7 +77,7 @@ class BookingsScreen() : Screen {
         val viewModel: MainViewModel = rememberKoinInject()
         val logger: Logger = rememberKoinInject()
         val tag = "TAG BookingsScreen:"
-
+        val strings = AppStringsProvider.current()
 
         var snackbarMessage by rememberSaveable { mutableStateOf<String?>(null) }
         val bookingState by viewModel.bookingState.collectAsState()
@@ -109,7 +104,7 @@ class BookingsScreen() : Screen {
                     .padding(top = 60.dp, start = 16.dp, end = 16.dp)
 
             ) {
-                CustomTopBar(title = stringResource(Res.string.bookings), onBackClick = {
+                CustomTopBar(title = strings.bookings, onBackClick = {
                     navigator.pop()
                 })
 
@@ -179,9 +174,12 @@ class BookingsScreen() : Screen {
                                 Column(modifier = Modifier.fillMaxWidth()) {
                                     Spacer(modifier = Modifier.size(10.dp))
                                     // Package
-                                    Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
                                         CText(
-                                            text = "${stringResource(Res.string.`package`)} :",
+                                            text = "${strings.`package`} :",
                                             color = AppColors.Primary,
                                             fontFamily = Res.font.bold
                                         )
@@ -204,14 +202,14 @@ class BookingsScreen() : Screen {
                                     // Seat
                                     Row(modifier = Modifier.fillMaxWidth()) {
                                         CText(
-                                            text = "${stringResource(Res.string.seat_number)} :",
+                                            text = "${strings.seat_number} :",
                                             color = AppColors.Primary,
                                             fontFamily = Res.font.bold
                                         )
                                         Spacer(modifier = Modifier.size(12.dp))
                                         CText(
                                             text = item.seatNumber
-                                                ?: stringResource(Res.string.seat_free),
+                                                ?: strings.seat_free,
                                             color = AppColors.Black,
                                             fontFamily = Res.font.bold,
                                         )
@@ -229,7 +227,7 @@ class BookingsScreen() : Screen {
                                     contentDescription = "date",
                                 )
                                 CText(
-                                    text = "${stringResource(Res.string.books_date)} :",
+                                    text = "${strings.books_date} :",
                                     color = AppColors.Primary,
                                     fontFamily = Res.font.bold
                                 )
@@ -251,7 +249,7 @@ class BookingsScreen() : Screen {
                                     contentDescription = "time",
                                 )
                                 CText(
-                                    text = "${stringResource(Res.string.books_time)} :",
+                                    text = "${strings.books_time} :",
                                     color = AppColors.Primary,
                                     fontFamily = Res.font.bold
                                 )
@@ -276,13 +274,13 @@ class BookingsScreen() : Screen {
                                 Spacer(modifier = Modifier.size(4.dp))
 
                                 CText(
-                                    text = "${stringResource(Res.string.username)} :",
+                                    text = "${strings.username} :",
                                     color = AppColors.Primary,
                                     fontFamily = Res.font.bold
                                 )
                                 Spacer(modifier = Modifier.size(12.dp))
                                 CText(
-                                    text = stringResource(Res.string.username),
+                                    text = strings.username,
                                     color = AppColors.Black,
                                     fontFamily = Res.font.bold,
                                 )
@@ -298,13 +296,13 @@ class BookingsScreen() : Screen {
                                 )
 
                                 CText(
-                                    text = "${stringResource(Res.string.password)} :",
+                                    text = "${strings.password} :",
                                     color = AppColors.Primary,
                                     fontFamily = Res.font.bold
                                 )
                                 Spacer(modifier = Modifier.size(12.dp))
                                 CText(
-                                    text = stringResource(Res.string.password),
+                                    text = strings.password,
                                     color = AppColors.Black,
                                     fontFamily = Res.font.bold,
                                 )

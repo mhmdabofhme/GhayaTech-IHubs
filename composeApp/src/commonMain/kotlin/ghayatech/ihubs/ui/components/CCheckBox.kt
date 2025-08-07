@@ -11,10 +11,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 import ghayatech.ihubs.ui.theme.AppColors
+import ghayatech.ihubs.ui.theme.AppStringsProvider
 import ihubs.composeapp.generated.resources.Res
 import ihubs.composeapp.generated.resources.bold
 import ihubs.composeapp.generated.resources.normal
-import ihubs.composeapp.generated.resources.payment_available
 import org.jetbrains.compose.resources.FontResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -32,6 +32,7 @@ fun CCheckBox(
     fontSize: TextUnit = 10.sp,
 
     ) {
+
 
     Row(modifier, verticalAlignment = Alignment.CenterVertically) {
         Checkbox(

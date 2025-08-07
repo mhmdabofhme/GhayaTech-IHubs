@@ -24,10 +24,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import ihubs.composeapp.generated.resources.Res
-import ihubs.composeapp.generated.resources.describe_the_details_here
 import ihubs.composeapp.generated.resources.send
-import ihubs.composeapp.generated.resources.specify_details
 import ghayatech.ihubs.ui.theme.AppColors
+import ghayatech.ihubs.ui.theme.AppStringsProvider
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -35,7 +34,7 @@ fun DescriptionDialog(
     onDismiss: () -> Unit,
     onItemClick: (String) -> Unit
 ) {
-
+    val strings = AppStringsProvider.current()
     var description by rememberSaveable { mutableStateOf("") }
 
     val initialColor = AppColors.White
@@ -56,7 +55,7 @@ fun DescriptionDialog(
             ) {
 
                 CText(
-                    text = stringResource(Res.string.specify_details),
+                    text = strings.specify_details,
                     color = AppColors.Primary,
                     fontWeight = FontWeight.Bold,
                     fontSize = 20.sp,
@@ -65,7 +64,7 @@ fun DescriptionDialog(
                 CTextField(
                     value = description,
                     onValueChange = { description = it },
-                    placeholder = stringResource(Res.string.describe_the_details_here),
+                    placeholder = strings.describe_the_details_here,
                     singleLine = false,
                     minLines = 5,
                     maxLines = 15,
@@ -74,7 +73,7 @@ fun DescriptionDialog(
                 Spacer(modifier = Modifier.size(18.dp))
 
                 CButton(
-                    text = stringResource(Res.string.send),
+                    text = strings.send,
                     onClick = { onItemClick(description) })
 
             }

@@ -31,13 +31,14 @@ import com.russhwolf.settings.Settings
 import ihubs.composeapp.generated.resources.Res
 import ihubs.composeapp.generated.resources.ghayatech
 import ihubs.composeapp.generated.resources.logo
-import ihubs.composeapp.generated.resources.powered_by
 import ihubs.composeapp.generated.resources.white_logo
 import kotlinx.coroutines.delay
 import ghayatech.ihubs.networking.viewmodel.MainViewModel
 import ghayatech.ihubs.ui.components.CText
 import ghayatech.ihubs.ui.theme.AppColors
 import ghayatech.ihubs.ui.theme.AppColors.isDarkThemeBasedOnMode
+import ghayatech.ihubs.ui.theme.AppStrings
+import ghayatech.ihubs.ui.theme.AppStringsProvider
 import ghayatech.ihubs.utils.Constants
 import ghayatech.ihubs.utils.Logger
 import org.jetbrains.compose.resources.painterResource
@@ -51,6 +52,7 @@ class SplashScreen() : Screen {
         val settings: Settings = rememberKoinInject()
         val viewModel: MainViewModel = rememberKoinInject()
         val logger: Logger = rememberKoinInject()
+        val strings = AppStringsProvider.current()
 
         val navigator = LocalNavigator.currentOrThrow
         val backgroundColor = AppColors.White
@@ -112,7 +114,7 @@ class SplashScreen() : Screen {
                 ) {
                     val color  = if (isDarkThemeBasedOnMode()) AppColors.Black else AppColors.Primary
                     CText(
-                        text = stringResource(Res.string.powered_by),
+                        text = strings.powered_by,
                         color = color
                     )
                     Spacer(modifier = Modifier.width(8.dp))

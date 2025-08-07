@@ -55,6 +55,10 @@ fun createHttpClient(engine: HttpClientEngine,settings:Settings): HttpClient {
             if (token.isNotEmpty()) {
                 header(HttpHeaders.Authorization, "Bearer $token")
             }
+            val language = settings.getString(Constants.LANGUAGE,"ar")
+            if (language.isNotEmpty()) {
+                header(HttpHeaders.AcceptLanguage, language)
+            }
         }
     }
 }

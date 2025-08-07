@@ -44,4 +44,23 @@ class UserPreferences(val settings: Settings) {
         return AppThemeMode.valueOf(modeString)
     }
 
+    fun saveLanguage(language: String) {
+        settings[Constants.LANGUAGE] = language
+    }
+
+    fun getLanguage(): String {
+        return settings[Constants.LANGUAGE]?: "ar"
+    }
+
+    // اللغة الافتراضية
+//    var currentLanguage: String
+//        get() = settings.getString(Constants.LANGUAGE, "en")
+//        set(value) {
+//            settings.putString(Constants.LANGUAGE, value)
+//        }
+//
+//    fun setLanguage(languageCode: String) {
+//        currentLanguage = languageCode
+//    }
+
 }

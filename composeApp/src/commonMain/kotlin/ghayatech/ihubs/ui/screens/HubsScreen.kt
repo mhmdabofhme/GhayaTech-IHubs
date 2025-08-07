@@ -28,6 +28,8 @@ import ghayatech.ihubs.networking.viewmodel.MainViewModel
 import ghayatech.ihubs.networking.viewmodel.UiState
 import ghayatech.ihubs.ui.components.*
 import ghayatech.ihubs.ui.theme.AppColors
+import ghayatech.ihubs.ui.theme.AppStrings
+import ghayatech.ihubs.ui.theme.AppStringsProvider
 import ghayatech.ihubs.utils.Constants
 import ghayatech.ihubs.utils.Logger
 import ihubs.composeapp.generated.resources.*
@@ -48,7 +50,7 @@ class HubsScreen : Screen {
         val settings: Settings = rememberKoinInject()
         val viewModel: MainViewModel = rememberKoinInject()
         val logger: Logger = rememberKoinInject()
-
+        val strings = AppStringsProvider.current()
         // --- State Management: Group related variables together ---
 
         // UI State
@@ -70,8 +72,8 @@ class HubsScreen : Screen {
         var hasFree by rememberSaveable { mutableStateOf<Boolean?>(null) }
 
         val governoratesList = remember { mutableStateListOf<Governorate>() }
-        var selectedGovernorate by rememberSaveable { mutableStateOf<Governorate?>(null) }
-        var selectedRegion by rememberSaveable { mutableStateOf<Region?>(null) }
+        var selectedGovernorate by remember { mutableStateOf<Governorate?>(null) }
+        var selectedRegion by remember { mutableStateOf<Region?>(null) }
         val regionsList by remember(selectedGovernorate) {
             mutableStateOf(selectedGovernorate?.regions ?: emptyList())
         }
@@ -180,7 +182,7 @@ class HubsScreen : Screen {
                     Filter(
                         dataList = governoratesList.map { it.name },
                         selectedItem = selectedGovernorate?.name,
-                        placeholder = stringResource(Res.string.governorates),
+                        placeholder = strings.governorates,
                         onItemSelected = { selectedName ->
                             selectedGovernorate = governoratesList.find { it.name == selectedName }
                             selectedRegion = null // Reset region on governorate change
@@ -189,7 +191,7 @@ class HubsScreen : Screen {
                     Filter(
                         dataList = regionsList.map { it.name },
                         selectedItem = selectedRegion?.name,
-                        placeholder = stringResource(Res.string.regions),
+                        placeholder = strings.regions,
                         onItemSelected = { selectedName ->
                             selectedRegion = regionsList.find { it.name == selectedName }
                         }
@@ -199,27 +201,28 @@ class HubsScreen : Screen {
                 Row {
                     CCheckBox(
                         modifier = Modifier.fillMaxWidth().weight(1F),
-                        text = stringResource(Res.string.payment_available),
+                        text = strings.payment_available,
                         checkbox = hasBank ?: false,
                         onCheckedChange = { hasBank = it }
                     )
                     CCheckBox(
                         modifier = Modifier.fillMaxWidth().weight(1F),
-                        text = stringResource(Res.string.evening_shift),
+                        text = strings.evening_shift,
                         checkbox = hasShift ?: false,
                         onCheckedChange = { hasShift = it }
                     )
                     CCheckBox(
                         modifier = Modifier.fillMaxWidth().weight(1F),
-                        text = stringResource(Res.string.free),
+                        text = strings.free,
                         checkbox = hasFree ?: false,
                         onCheckedChange = { hasFree = it }
                     )
                 }
 
                 Box(modifier = Modifier.fillMaxSize()) {
-                    if (allWorkspaces.isEmpty()) {
+                    if (filteredWorkspaces.isEmpty()) {
                         // TODO: Add your NoResult() composable here
+//                        NoResult()
                     } else {
                         if (isList) {
                             ListContent(filteredWorkspaces) { item ->
@@ -232,7 +235,7 @@ class HubsScreen : Screen {
                         }
                     }
                     CButton(
-                        text = stringResource(Res.string.current_bookings),
+                        text = strings.current_bookings,
                         modifier = Modifier.align(Alignment.BottomCenter),
                         onClick = {
                             navigator.push(BookingDetailsScreen())

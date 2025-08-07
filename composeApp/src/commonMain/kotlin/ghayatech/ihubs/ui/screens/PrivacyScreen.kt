@@ -38,11 +38,11 @@ import ghayatech.ihubs.ui.components.CText
 import ghayatech.ihubs.ui.components.CustomTopBar
 import ghayatech.ihubs.ui.components.ExpandableText
 import ghayatech.ihubs.ui.theme.AppColors
+import ghayatech.ihubs.ui.theme.AppStringsProvider
 import ihubs.composeapp.generated.resources.Res
 import ihubs.composeapp.generated.resources.bold
 import ihubs.composeapp.generated.resources.light
 import ihubs.composeapp.generated.resources.normal
-import ihubs.composeapp.generated.resources.privacy_policy
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.rememberKoinInject
 
@@ -53,6 +53,7 @@ class PrivacyScreen() : Screen {
         val navigator = LocalNavigator.currentOrThrow
         val settings: Settings = rememberKoinInject()
         val viewModel: MainViewModel = rememberKoinInject()
+        val strings = AppStringsProvider.current()
 
 
         var snackbarMessage by rememberSaveable { mutableStateOf<String?>(null) }
@@ -83,7 +84,7 @@ class PrivacyScreen() : Screen {
                     .padding(top = 60.dp, start = 16.dp, end = 16.dp)
 
             ) {
-                CustomTopBar(title = stringResource(Res.string.privacy_policy), onBackClick = {
+                CustomTopBar(title = strings.privacy_policy, onBackClick = {
                     navigator.pop()
                 })
 

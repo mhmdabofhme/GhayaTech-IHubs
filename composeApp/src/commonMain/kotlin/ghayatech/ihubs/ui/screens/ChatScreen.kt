@@ -29,7 +29,6 @@ import com.russhwolf.settings.Settings
 import ghayatech.ihubs.networking.models.WorkspaceDetails
 import ghayatech.ihubs.networking.models.Message
 import ihubs.composeapp.generated.resources.Res
-import ihubs.composeapp.generated.resources.chat
 import ghayatech.ihubs.ui.components.ChatBubble
 import ghayatech.ihubs.ui.components.ChatInput
 import ghayatech.ihubs.ui.components.CustomTopBar

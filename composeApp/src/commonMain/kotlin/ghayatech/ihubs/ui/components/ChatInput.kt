@@ -31,8 +31,8 @@ import ihubs.composeapp.generated.resources.Res
 import ihubs.composeapp.generated.resources.add_image
 import ihubs.composeapp.generated.resources.link
 import ihubs.composeapp.generated.resources.send
-import ihubs.composeapp.generated.resources.start_chatting
 import ghayatech.ihubs.ui.theme.AppColors
+import ghayatech.ihubs.ui.theme.AppStringsProvider
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -40,7 +40,7 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun ChatInput(modifier: Modifier=Modifier ,onSend: (String) -> Unit) {
     var text by remember { mutableStateOf("") }
-
+    val strings = AppStringsProvider.current()
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -102,7 +102,7 @@ fun ChatInput(modifier: Modifier=Modifier ,onSend: (String) -> Unit) {
 
                     if (text.isEmpty()) {
                         CText(
-                            text = stringResource(Res.string.start_chatting),
+                            text = strings.start_chatting,
                             fontSize = 14.sp,
                             color = AppColors.chatText
                         )

@@ -18,6 +18,7 @@ import ihubs.composeapp.generated.resources.Res
 import ihubs.composeapp.generated.resources.back
 import ihubs.composeapp.generated.resources.bold
 import ghayatech.ihubs.ui.theme.AppColors
+import ghayatech.ihubs.ui.theme.AppStringsProvider
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -27,7 +28,7 @@ fun CustomTopBar(
     modifier: Modifier = Modifier,
     title: String,
     showBackButton: Boolean = true,
-    backButtonText: String = stringResource(Res.string.back),
+    backButtonText: String = AppStringsProvider.current().back,
     onBackClick: (() -> Unit)? = null,
     endContent: (@Composable () -> Unit)? = null
 ) {
