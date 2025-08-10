@@ -19,6 +19,8 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -53,8 +55,10 @@ import ghayatech.ihubs.networking.models.Workspace
 import ghayatech.ihubs.networking.models.WorkspaceDetails
 import ghayatech.ihubs.networking.viewmodel.HandleUiState
 import ghayatech.ihubs.networking.viewmodel.MainViewModel
+import ghayatech.ihubs.networking.viewmodel.UiState
 import ghayatech.ihubs.ui.components.BookingDialog
 import ghayatech.ihubs.ui.components.CText
+import ghayatech.ihubs.ui.components.CustomSnackbar
 import ghayatech.ihubs.ui.components.CustomTopBar
 import ghayatech.ihubs.ui.components.NetworkImage
 import ghayatech.ihubs.ui.theme.AppColors
@@ -71,6 +75,7 @@ import org.koin.compose.rememberKoinInject
 
 
 class OurPackagesScreen(private val id: Int) : Screen {
+    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
@@ -97,6 +102,7 @@ class OurPackagesScreen(private val id: Int) : Screen {
 
         val booking = remember { mutableStateOf<CreateBookingResponse?>(null) }
         val bookingState by viewModel.createBookingState.collectAsState()
+        var isRefreshing by remember { mutableStateOf(false) }
 
         val bookingNotAvailable = strings.booking_not_available
 
@@ -115,7 +121,23 @@ class OurPackagesScreen(private val id: Int) : Screen {
             navigator.push(BookingDetailsScreen())
         }
 
-        Box(Modifier.fillMaxSize()) {
+        LaunchedEffect(bookingState) {
+            if (bookingState is UiState.Success || bookingState is UiState.Error) {
+                isRefreshing = false
+            }
+        }
+
+        // --- UI Layout ---
+
+        PullToRefreshBox(
+            isRefreshing = isRefreshing,
+            onRefresh = {
+                isRefreshing = true
+                viewModel.getWorkspacePackages(id)
+                viewModel.getWorkspace(id)
+            },
+            modifier = Modifier.fillMaxSize()
+        ) {
 
 
             Column(
@@ -386,6 +408,11 @@ class OurPackagesScreen(private val id: Int) : Screen {
                 }
             }
 
+            CustomSnackbar(
+                message = snackbarMessage,
+                onDismiss = { snackbarMessage = null },
+                modifier = Modifier.align(Alignment.TopCenter)
+            )
 
             HandleUiState(
                 state = workspacePackagesState,

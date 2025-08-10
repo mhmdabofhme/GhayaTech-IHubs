@@ -120,7 +120,8 @@ data class AppStrings(
     val regions: String,
     val free: String,
     val service_created_successfully: String,
-    val language: String
+    val language: String,
+    val social_media: String,
 )
 
 fun stringsFor(language: String): AppStrings = when (language) {
@@ -228,7 +229,8 @@ fun stringsFor(language: String): AppStrings = when (language) {
         regions = "المناطق",
         free = "مجاني",
         service_created_successfully = "تم إنشاء الخدمة بنجاح",
-        language = "اللغة"
+        language = "اللغة",
+        social_media = "مواقع التواصل : - ",
     )
 
     else -> AppStrings(
@@ -336,6 +338,7 @@ fun stringsFor(language: String): AppStrings = when (language) {
         free = "Free",
         service_created_successfully = "Service created successfully",
         language = "Langauge",
+        social_media = "Social Media  : - ",
     )
 }
 

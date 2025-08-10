@@ -41,9 +41,10 @@ fun CTextField(
     fontSize: Int = 16,
     singleLine: Boolean = true,
     inputType: KeyboardType = KeyboardType.Text,
+    imeAction: ImeAction = ImeAction.Next,
     minLines: Int = 1,
     keyboardOptions: KeyboardOptions = KeyboardOptions(
-        keyboardType = inputType, imeAction = ImeAction.Next
+        keyboardType = inputType, imeAction = imeAction
     ),
 ) {
     var passwordVisible by rememberSaveable { mutableStateOf(false) }

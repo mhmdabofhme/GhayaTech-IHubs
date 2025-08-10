@@ -42,6 +42,7 @@ class OnBoardingScreen : Screen {
         val settings: Settings = rememberKoinInject()
         val viewModel: MainViewModel = rememberKoinInject()
         val strings = AppStringsProvider.current()
+
         Column(
             modifier = Modifier.fillMaxSize().background(AppColors.White)
                 .padding(top = 60.dp, start = 22.dp, end = 22.dp, bottom = 25.dp),

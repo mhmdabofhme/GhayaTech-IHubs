@@ -8,11 +8,8 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.composeHotReload)
-//    alias(libs.plugins.composeResources)
-
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.googleGmsGoogleServices)
-
 }
 
 kotlin {
@@ -37,13 +34,18 @@ kotlin {
     jvm()
     
     sourceSets {
+
+        iosMain.dependencies {
+            implementation(libs.ktor.client.darwin)
+
+        }
         androidMain.dependencies {
-            implementation(compose.preview)
             implementation(compose.preview)
             implementation(libs.koin.android)
             implementation(libs.ktor.client.okhttp)
             implementation(libs.firebase.messaging)
             implementation(libs.androidx.activity.compose)
+
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -69,8 +71,15 @@ kotlin {
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
+//        desktopMain.dependencies {
+//            // Correct dependency for Desktop
+//            implementation(compose.desktop.currentOs)
+//            implementation(libs.sqldelight.driver.sqlite.native)
+//        }
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
+//            implementation(libs.sqldelight.driver.sqlite.native)
+
 //            implementation(libs.kotlinx.coroutinesSwing)
         }
     }

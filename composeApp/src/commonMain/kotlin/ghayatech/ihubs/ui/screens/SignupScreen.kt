@@ -30,6 +30,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.input.ImeAction
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
@@ -173,6 +174,7 @@ class SignupScreen() : Screen {
                     CTextField(
                         placeholder = strings.confirm_password,
                         inputType = KeyboardType.Password,
+                        imeAction = ImeAction.Done,
                         isPassword = true,
                         value = confirmPassword,
                         onValueChange = { confirmPassword = it }

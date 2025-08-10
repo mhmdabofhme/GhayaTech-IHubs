@@ -318,6 +318,12 @@ class BookingsScreen() : Screen {
 
             }
 
+            CustomSnackbar(
+                message = snackbarMessage,
+                onDismiss = { snackbarMessage = null },
+                modifier = Modifier.align(Alignment.TopCenter)
+            )
+
             HandleUiState(
                 state = bookingState,
                 onMessage =

@@ -65,6 +65,7 @@ import ghayatech.ihubs.ui.components.CButton
 import ghayatech.ihubs.ui.components.CIcon
 import ghayatech.ihubs.ui.components.CText
 import ghayatech.ihubs.ui.components.CountdownText
+import ghayatech.ihubs.ui.components.CustomSnackbar
 import ghayatech.ihubs.ui.components.CustomTopBar
 import ghayatech.ihubs.ui.components.NetworkImage
 import ghayatech.ihubs.ui.theme.AppColors
@@ -445,6 +446,12 @@ class BookingDetailsScreen() : Screen {
 
                 }
             }
+
+            CustomSnackbar(
+                message = snackbarMessage,
+                onDismiss = { snackbarMessage = null },
+                modifier = Modifier.align(Alignment.TopCenter)
+            )
 
             HandleUiState(
                 state = bookingState,

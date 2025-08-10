@@ -57,7 +57,6 @@ class LoginScreen() : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-        val settings: Settings = rememberKoinInject()
         val viewModel: MainViewModel = rememberKoinInject()
         val userPreferences: UserPreferences = rememberKoinInject()
         val strings = AppStringsProvider.current()
@@ -117,6 +116,7 @@ class LoginScreen() : Screen {
                     placeholder = strings.mobile_number,
                     inputType = KeyboardType.Number,
                     value = phoneNumber,
+                    imeAction = ImeAction.Next,
                     onValueChange = { phoneNumber = it }
                 )
 
@@ -125,9 +125,9 @@ class LoginScreen() : Screen {
                 CTextField(
                     placeholder = strings.password,
                     inputType = KeyboardType.Password,
+                    imeAction = ImeAction.Done,
                     isPassword = true,
                     value = password,
-                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                     onValueChange = { password = it }
                 )
                 Spacer(modifier = Modifier.height(10.dp))
@@ -157,9 +157,8 @@ class LoginScreen() : Screen {
                     enabled = loginState !is UiState.Loading,
                     onClick = {
                         if (isValid(listOf(phoneNumber, password))) {
-                            viewModel.login(phoneNumber, password)
                             keyboardController?.hide()
-
+                            viewModel.login(phoneNumber, password)
                         } else {
                             snackbarMessage = errorMessage
                         }

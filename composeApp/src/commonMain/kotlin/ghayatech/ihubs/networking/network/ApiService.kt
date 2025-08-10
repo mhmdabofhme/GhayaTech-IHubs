@@ -1,5 +1,6 @@
 package ghayatech.ihubs.networking.network
 
+import ghayatech.ihubs.networking.models.About
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.plugins.logging.Logger
@@ -330,6 +331,23 @@ class ApiService(private val client: HttpClient) {
             Result.Error(e.toNetworkError())
         }
     }
+    // Upload image
+    suspend fun uploadImageRequest(
+        bookingId: Int,
+        data: CreateServiceRequest
+    ): Result<BaseResponse<Service>, NetworkError> {
+        return try {
+            val response =
+                client.post(ApiConstants.BASE_URL + ApiRoutes.CREATE_SERVICE_REQUEST(bookingId)) {
+                    contentType(ContentType.Application.Json)
+                    setBody(data)
+                }.body<BaseResponse<Service>>()
+            Result.Success(response)
+        } catch (e: Exception) {
+            println(e.message)
+            Result.Error(e.toNetworkError())
+        }
+    }
 
     suspend fun getServiceRequests(id: Int): Result<BaseResponse<ServiceListResponse>, NetworkError> {
         return try {
@@ -433,10 +451,10 @@ class ApiService(private val client: HttpClient) {
 //    }
 
     // Static Content
-    suspend fun getTerms(): Result<BaseResponse<StaticContentResponse>, NetworkError> {
+    suspend fun getTerms(): Result<BaseResponse<About>, NetworkError> {
         return try {
             val response = client.get(ApiConstants.BASE_URL + ApiRoutes.TERMS)
-                .body<BaseResponse<StaticContentResponse>>()
+                .body<BaseResponse<About>>()
             Result.Success(response)
         } catch (e: Exception) {
             println(e.message)
@@ -444,10 +462,10 @@ class ApiService(private val client: HttpClient) {
         }
     }
 
-    suspend fun getAbout(): Result<BaseResponse<StaticContentResponse>, NetworkError> {
+    suspend fun getAbout(): Result<BaseResponse<About>, NetworkError> {
         return try {
             val response = client.get(ApiConstants.BASE_URL + ApiRoutes.ABOUT)
-                .body<BaseResponse<StaticContentResponse>>()
+                .body<BaseResponse<About>>()
             Result.Success(response)
         } catch (e: Exception) {
             println(e.message)

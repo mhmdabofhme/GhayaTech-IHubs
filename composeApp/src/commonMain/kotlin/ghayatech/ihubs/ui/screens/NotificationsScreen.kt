@@ -40,13 +40,13 @@ import com.russhwolf.settings.Settings
 import ghayatech.ihubs.networking.viewmodel.HandleUiState
 import ghayatech.ihubs.networking.viewmodel.MainViewModel
 import ghayatech.ihubs.ui.components.CText
+import ghayatech.ihubs.ui.components.CustomSnackbar
 import ghayatech.ihubs.ui.components.CustomTopBar
 import ghayatech.ihubs.ui.components.ExpandableText
 import ghayatech.ihubs.ui.theme.AppColors
 import ghayatech.ihubs.ui.theme.AppStringsProvider
 import ihubs.composeapp.generated.resources.Res
 import ihubs.composeapp.generated.resources.bold
-import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.rememberKoinInject
 
 class NotificationsScreen : Screen {
@@ -54,7 +54,6 @@ class NotificationsScreen : Screen {
     override fun Content() {
 
         val navigator = LocalNavigator.currentOrThrow
-        val settings: Settings = rememberKoinInject()
         val viewModel: MainViewModel = rememberKoinInject()
         val strings = AppStringsProvider.current()
 
@@ -158,19 +157,27 @@ class NotificationsScreen : Screen {
 //                Spacer(Modifier.size(32.dp))
             }
 
-        }
 
-        HandleUiState(
-            state = privacyState,
-            onMessage =
-                {
-                    snackbarMessage = it
-                },
-            onSuccess =
-                { data ->
+
+            CustomSnackbar(
+                message = snackbarMessage,
+                onDismiss = { snackbarMessage = null },
+                modifier = Modifier.align(Alignment.TopCenter)
+            )
+
+            HandleUiState(
+                state = privacyState,
+                onMessage =
+                    {
+                        snackbarMessage = it
+                    },
+                onSuccess =
+                    { data ->
 //                    privacyList.addAll(data)
-                }
-        )
+                    }
+            )
+
+        }
 
     }
 }

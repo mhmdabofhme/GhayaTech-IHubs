@@ -35,7 +35,7 @@ fun LanguageSwitcher() {
     Row(
         modifier = Modifier
             .width(120.dp)
-            .height(36.dp)
+            .height(32.dp)
             .clip(RoundedCornerShape(10.dp))
             .background(AppColors.coolBackground)
     ) {

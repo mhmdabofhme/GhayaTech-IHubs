@@ -9,7 +9,5 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform) apply false
     alias(libs.plugins.kotlinSerialization) apply false
     alias(libs.plugins.googleGmsGoogleServices) apply false
-//    alias(libs.plugins.composeResources) apply false
-//    alias(libs.plugins.composeResource) apply false
 
 }

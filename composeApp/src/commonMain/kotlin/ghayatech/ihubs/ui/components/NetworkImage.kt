@@ -14,11 +14,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.painter.Painter
-import com.seiko.imageloader.rememberAsyncImagePainter
-import ihubs.composeapp.generated.resources.Res
-import ihubs.composeapp.generated.resources.resource_default
 import ghayatech.ihubs.ui.theme.AppColors
 import io.kamel.core.Resource
 import io.kamel.image.KamelImage

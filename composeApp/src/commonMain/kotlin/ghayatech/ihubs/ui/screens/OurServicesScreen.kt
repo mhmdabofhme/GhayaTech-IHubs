@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -34,6 +36,7 @@ import ihubs.composeapp.generated.resources.Res
 import ghayatech.ihubs.networking.models.Workspace
 import ghayatech.ihubs.networking.viewmodel.HandleUiState
 import ghayatech.ihubs.networking.viewmodel.MainViewModel
+import ghayatech.ihubs.networking.viewmodel.UiState
 import ghayatech.ihubs.ui.components.CustomSnackbar
 import ghayatech.ihubs.ui.components.CustomTopBar
 import ghayatech.ihubs.ui.components.DescriptionDialog
@@ -49,6 +52,7 @@ import org.koin.compose.rememberKoinInject
 
 
 class OurServicesScreen(val id: Int, val bookingId: Int) : Screen {
+    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
@@ -61,6 +65,7 @@ class OurServicesScreen(val id: Int, val bookingId: Int) : Screen {
 
         var snackbarMessage by remember { mutableStateOf<String?>(null) }
         var successMessage = strings.service_created_successfully
+        var isRefreshing by remember { mutableStateOf(false) }
 
 
         var showDialog by rememberSaveable { mutableStateOf(false) }
@@ -76,8 +81,21 @@ class OurServicesScreen(val id: Int, val bookingId: Int) : Screen {
             viewModel.getWorkspaceServices(id)
         }
 
-        Box(
-            modifier = Modifier.background(AppColors.White).fillMaxSize()
+        LaunchedEffect(servicesState) {
+            if (servicesState is UiState.Success || servicesState is UiState.Error) {
+                isRefreshing = false
+            }
+        }
+
+        // --- UI Layout ---
+
+        PullToRefreshBox(
+            isRefreshing = isRefreshing,
+            onRefresh = {
+                isRefreshing = true
+                viewModel.getWorkspaceServices(id)
+            },
+            modifier = Modifier.fillMaxSize()
         ) {
 
 

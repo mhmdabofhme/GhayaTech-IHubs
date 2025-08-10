@@ -26,9 +26,11 @@ import androidx.compose.material.icons.filled.AutoMode
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.Sync
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -51,6 +53,7 @@ import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import cafe.adriel.voyager.transitions.SlideTransition
 import com.russhwolf.settings.Settings
+import ghayatech.ihubs.networking.models.About
 import ihubs.composeapp.generated.resources.Res
 import ihubs.composeapp.generated.resources.bold
 import ihubs.composeapp.generated.resources.camera
@@ -71,8 +74,10 @@ import ghayatech.ihubs.networking.models.UpdateProfileRequest
 import ghayatech.ihubs.networking.models.User
 import ghayatech.ihubs.networking.viewmodel.HandleUiState
 import ghayatech.ihubs.networking.viewmodel.MainViewModel
+import ghayatech.ihubs.networking.viewmodel.UiState
 import ghayatech.ihubs.ui.components.CText
 import ghayatech.ihubs.ui.components.CTextField
+import ghayatech.ihubs.ui.components.CustomSnackbar
 import ghayatech.ihubs.ui.components.CustomTopBar
 import ghayatech.ihubs.ui.components.LanguageSwitcher
 import ghayatech.ihubs.ui.components.NetworkImage
@@ -91,6 +96,7 @@ import org.koin.compose.koinInject
 import org.koin.compose.rememberKoinInject
 
 class ProfileScreen() : Screen {
+    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
@@ -111,6 +117,7 @@ class ProfileScreen() : Screen {
         var changedMajor by rememberSaveable { mutableStateOf("") }
         var isDarkMode by rememberSaveable { mutableStateOf(false) }
         var img = painterResource(Res.drawable.camera)
+        var isRefreshing by remember { mutableStateOf(false) }
 
 
         var snackbarMessage by rememberSaveable { mutableStateOf<String?>(null) }
@@ -136,8 +143,22 @@ class ProfileScreen() : Screen {
 //                        // هنا يمكنك إضافة الكود لحفظ البيانات في الخادم أو قاعدة البيانات
 //
 //        }
+        LaunchedEffect(profileState) {
+            if (profileState is UiState.Success || profileState is UiState.Error) {
+                isRefreshing = false
+            }
+        }
 
-        Box(Modifier.fillMaxSize()) {
+        // --- UI Layout ---
+
+        PullToRefreshBox(
+            isRefreshing = isRefreshing,
+            onRefresh = {
+                isRefreshing = true
+                viewModel.getProfile()
+            },
+            modifier = Modifier.fillMaxSize()
+        ) {
 
             Column(
                 modifier = Modifier.fillMaxSize().background(AppColors.White)
@@ -149,7 +170,7 @@ class ProfileScreen() : Screen {
             ) {
                 CustomTopBar(
                     title = strings.profile,
-                    onBackClick = {navigator.pop()},
+                    onBackClick = { navigator.pop() },
                     endContent = {
                         if (isEditing) {
                             Row(
@@ -173,7 +194,7 @@ class ProfileScreen() : Screen {
                                 Spacer(modifier = Modifier.size(4.dp))
                                 CText(
                                     text = strings.done,
-                                    color = AppColors.Primary
+                                    color = AppColors.Secondary
                                 )
                                 img = painterResource(Res.drawable.camera_add)
                             }
@@ -189,7 +210,7 @@ class ProfileScreen() : Screen {
                                 )
                                 CText(
                                     text = strings.edit,
-                                    color = AppColors.Primary
+                                    color = AppColors.Secondary
                                 )
                                 img = painterResource(Res.drawable.camera)
 
@@ -247,15 +268,7 @@ class ProfileScreen() : Screen {
                     icon = painterResource(Res.drawable.notification)
                 ) {
                     navigator.push(NotificationsScreen())
-//            onNavigate("notifications")
                 }
-//
-//                ProfileItem(
-//                    label = stringResource(Res.string.add_fingerprint),
-//                    icon = painterResource(Res.drawable.small_fingerprint)
-//                ) {
-////            onNavigate("fingerprint")
-//                }
 
                 Column {
                     Row(
@@ -268,7 +281,7 @@ class ProfileScreen() : Screen {
                             modifier = Modifier.size(22.dp)
                         )
                         Spacer(modifier = Modifier.width(8.dp))
-                        ThemeSelectionRow(themeViewModel=themeViewModel)
+                        ThemeSelectionRow(themeViewModel = themeViewModel)
 //                        CText(
 //                            stringResource(Res.string.dark_theme),
 //                            modifier = Modifier.weight(1f),
@@ -289,7 +302,7 @@ class ProfileScreen() : Screen {
                     label = strings.about_us,
                     icon = painterResource(Res.drawable.info)
                 ) {
-
+                    navigator.push(AboutUsScreen())
 //            onNavigate("about")
                 }
 
@@ -310,6 +323,12 @@ class ProfileScreen() : Screen {
 
 
             }
+
+            CustomSnackbar(
+                message = snackbarMessage,
+                onDismiss = { snackbarMessage = null },
+                modifier = Modifier.align(Alignment.TopCenter)
+            )
 
 
             HandleUiState(
@@ -438,7 +457,7 @@ class ProfileScreen() : Screen {
 
     @Composable
     fun profileImage() {
-        var img = painterResource(Res.drawable.camera)
+        val img = painterResource(Res.drawable.camera)
 
         Image(
             painter = img,
@@ -448,6 +467,7 @@ class ProfileScreen() : Screen {
                 .background(AppColors.coolBackground, shape = CircleShape)
                 .border(width = 8.dp, color = AppColors.White, shape = CircleShape)
                 .padding(30.dp),
+
         )
     }
 
@@ -462,7 +482,11 @@ class ProfileScreen() : Screen {
                     .fillMaxWidth()
                     .padding(vertical = 12.dp)
             ) {
-                Image(painterResource(Res.drawable.language), contentDescription = null, modifier = Modifier.size(22.dp))
+                Image(
+                    painterResource(Res.drawable.language),
+                    contentDescription = null,
+                    modifier = Modifier.size(22.dp)
+                )
                 Spacer(modifier = Modifier.width(8.dp))
                 CText(strings.language, fontFamily = Res.font.bold, modifier = Modifier.weight(1f))
                 LanguageSwitcher()
@@ -537,6 +561,6 @@ class ProfileScreen() : Screen {
 
 @Preview
 @Composable
-fun PreviewProfileScreen(){
+fun PreviewProfileScreen() {
     Text("Hello from ProfileScreen Preview")
 }

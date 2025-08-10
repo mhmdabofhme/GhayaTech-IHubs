@@ -204,3 +204,14 @@ data class Region(
     val id: Int,
     val name: String,
 )
+
+
+@Serializable
+data class About(
+    val info: List<MapData> = emptyList(),
+    val contacts: List<MapData>? = null,
+    val links: List<MapData>? = null
+)
+
+@Serializable
+data class MapData(val key: String, val description: String)

@@ -1,6 +1,7 @@
 package ghayatech.ihubs.networking.viewmodel
 
 
+import ghayatech.ihubs.networking.models.About
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import ghayatech.ihubs.networking.models.BaseResponse
@@ -21,6 +22,7 @@ import ghayatech.ihubs.networking.models.SendMessage
 import ghayatech.ihubs.networking.models.Service
 import ghayatech.ihubs.networking.models.ServiceListResponse
 import ghayatech.ihubs.networking.models.StartConversationRequest
+import ghayatech.ihubs.networking.models.StaticContentResponse
 import ghayatech.ihubs.networking.models.UpdateProfileRequest
 import ghayatech.ihubs.networking.models.User
 import ghayatech.ihubs.networking.models.VerificationResponse
@@ -126,6 +128,15 @@ class MainViewModel(
     private val _governoratesState =
         MutableStateFlow<UiState<ListBaseResponse<Governorate>>?>(null)
     val governoratesState: StateFlow<UiState<ListBaseResponse<Governorate>>?> = _governoratesState
+
+    // About
+    private val _aboutState =
+        MutableStateFlow<UiState<BaseResponse<About>>?>(null)
+    val aboutState: StateFlow<UiState<BaseResponse<About>>?> = _aboutState
+
+
+    private val _termsState = MutableStateFlow<UiState<BaseResponse<About>>?>(null)
+    val termsState: StateFlow<UiState<BaseResponse<About>>?> = _termsState
 
 
 //    private val pushTokenProvider: PushTokenProvider
@@ -272,6 +283,12 @@ class MainViewModel(
         executeApiCall("getWorkspaces", {
             repository.getWorkspaces()
         }, _workspacesState)
+    }
+
+    fun getTerms() {
+        executeApiCall("getTerms", {
+            repository.getTerms()
+        }, _termsState)
     }
 
 //    fun searchWorkspaces(query:String) {
@@ -465,6 +482,12 @@ class MainViewModel(
         executeApiCall("getGovernorates", {
             repository.getGovernorate()
         }, _governoratesState)
+    }
+
+    fun getAbout() {
+        executeApiCall("getAbout", {
+            repository.getAbout()
+        }, _aboutState)
     }
 
 //    fun disconnect() {

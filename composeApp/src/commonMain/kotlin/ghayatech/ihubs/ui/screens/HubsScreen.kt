@@ -129,7 +129,6 @@ class HubsScreen : Screen {
         // --- UI Layout ---
 
         PullToRefreshBox(
-
             isRefreshing = isRefreshing,
             onRefresh = {
                 isRefreshing = true

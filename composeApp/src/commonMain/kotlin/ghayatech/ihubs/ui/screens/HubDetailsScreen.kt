@@ -44,6 +44,7 @@ import ghayatech.ihubs.networking.viewmodel.MainViewModel
 import ghayatech.ihubs.ui.components.Back
 import ghayatech.ihubs.ui.components.CButton
 import ghayatech.ihubs.ui.components.CText
+import ghayatech.ihubs.ui.components.CustomSnackbar
 import ghayatech.ihubs.ui.components.ImageSlider
 import ghayatech.ihubs.ui.components.NetworkImage
 import ghayatech.ihubs.ui.theme.AppColors
@@ -230,6 +231,14 @@ class HubDetailsScreen(private val id: Int) : Screen {
 
 
             }
+
+            CustomSnackbar(
+                message = snackbarMessage,
+                onDismiss = { snackbarMessage = null },
+                modifier = Modifier.align(Alignment.TopCenter)
+            )
+
+
             HandleUiState(
                 state = workspaceState,
                 onMessage = {

@@ -132,10 +132,10 @@ class ApiRepository(private val api: ApiService) {
 //        api.getMessages(conversationId)
 
     // Static Content
-    suspend fun getTerms(): Result<BaseResponse<StaticContentResponse>, NetworkError> =
+    suspend fun getTerms(): Result<BaseResponse<About>, NetworkError> =
         api.getTerms()
 
-    suspend fun getAbout(): Result<BaseResponse<StaticContentResponse>, NetworkError> =
+    suspend fun getAbout(): Result<BaseResponse<About>, NetworkError> =
         api.getAbout()
 
 
