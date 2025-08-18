@@ -4,6 +4,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Backspace
+import androidx.compose.material.icons.filled.BorderClear
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.ClearAll
+import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
@@ -42,7 +48,6 @@ import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.rememberKoinInject
 
 class HubsScreen : Screen {
-
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
@@ -99,6 +104,17 @@ class HubsScreen : Screen {
             }
 
             filteredWorkspaces = tempFilteredList
+
+        }
+
+        fun clearFilters() {
+            searchInput = ""
+            hasBank = null
+            hasShift = null
+            hasFree = null
+            selectedGovernorate = null
+            selectedRegion = null
+            filteredWorkspaces = allWorkspaces
         }
 
         // Fetch data once when the screen is first launched
@@ -149,6 +165,7 @@ class HubsScreen : Screen {
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
+
                     SearchBar(
                         value = searchInput,
                         onValueChange = { searchInput = it },
@@ -177,7 +194,7 @@ class HubsScreen : Screen {
                 Spacer(modifier = Modifier.size(10.dp))
 
                 // Filters
-                Row(horizontalArrangement = Arrangement.Center) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     Filter(
                         dataList = governoratesList.map { it.name },
                         selectedItem = selectedGovernorate?.name,
@@ -185,7 +202,8 @@ class HubsScreen : Screen {
                         onItemSelected = { selectedName ->
                             selectedGovernorate = governoratesList.find { it.name == selectedName }
                             selectedRegion = null // Reset region on governorate change
-                        }
+                        },
+                        modifier = Modifier.weight(1F)
                     )
                     Filter(
                         dataList = regionsList.map { it.name },
@@ -193,7 +211,24 @@ class HubsScreen : Screen {
                         placeholder = strings.regions,
                         onItemSelected = { selectedName ->
                             selectedRegion = regionsList.find { it.name == selectedName }
-                        }
+                        },
+                        modifier = Modifier.weight(1F)
+
+                    )
+
+                    // THIS ICON NEW TO CLEAR FILTERS
+
+                    Icon(
+                        painter = painterResource(Res.drawable.clear),
+                        contentDescription = "Clear Filters",
+                        modifier = Modifier
+                            .size(32.dp)
+                            .clip(CircleShape)
+                            .background(AppColors.Background)
+                            .padding(8.dp).clickable {
+                                clearFilters()
+                            },
+                        tint = AppColors.TextSecondary
                     )
                 }
 

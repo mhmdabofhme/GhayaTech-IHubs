@@ -156,7 +156,8 @@ class AboutUsScreen() : Screen {
 
                         items(about.value?.contacts ?: emptyList()) { item ->
                             Row(modifier = Modifier.wrapContentSize()) {
-                                logger.debug(tag, "item:contacts $item")
+
+                                
                                 CText(
                                     text = item.key,
                                     modifier = Modifier.wrapContentSize().padding(start = 20.dp),
@@ -179,7 +180,10 @@ class AboutUsScreen() : Screen {
                         if (about.value!!.links != null) {
 
                             item {
-                                Row(modifier = Modifier.wrapContentSize(),verticalAlignment = Alignment.CenterVertically) {
+                                Row(
+                                    modifier = Modifier.wrapContentSize(),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
                                     CText(
                                         text = strings.social_media,
                                         modifier = Modifier.wrapContentSize()

@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -19,9 +21,6 @@ import androidx.compose.ui.zIndex
 import ghayatech.ihubs.networking.viewmodel.UiState
 import ghayatech.ihubs.ui.theme.AppColors
 
-class ProgressBar {
-}
-
 @Composable
 fun ProgressBar(state: UiState<Nothing>) {
     AnimatedVisibility(visible = state is UiState.Loading) {
@@ -29,7 +28,8 @@ fun ProgressBar(state: UiState<Nothing>) {
             modifier = Modifier.fillMaxSize()
                 .clickable {  }
                 .background(Color.Black.copy(alpha = 0.3f)) // ← هنا
-                .zIndex(1f),
+                .zIndex(1f)
+            ,
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -40,8 +40,9 @@ fun ProgressBar(state: UiState<Nothing>) {
             Spacer(modifier = Modifier.height(12.dp))
             CText(
                 "Loading...",
+                modifier = Modifier.wrapContentSize(),
                 color = AppColors.Secondary,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
             )
         }
     }

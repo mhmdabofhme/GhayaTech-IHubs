@@ -31,8 +31,7 @@ fun CustomBottomSheetContent(
 
     Column(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(24.dp),
+            .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(

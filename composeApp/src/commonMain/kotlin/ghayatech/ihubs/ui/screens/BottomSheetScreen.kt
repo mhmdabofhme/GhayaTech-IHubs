@@ -79,7 +79,7 @@ fun BottomSheetScreen(
                     .background(AppColors.White,
                         RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
                     )
-                    .padding(24.dp)
+                    .padding(22.dp)
             ) {
                 CustomBottomSheetContent(
                     imagePainter = painterResource(Res.drawable.success),

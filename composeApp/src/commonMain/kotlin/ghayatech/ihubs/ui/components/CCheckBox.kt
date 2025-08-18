@@ -27,7 +27,7 @@ fun CCheckBox(
     onCheckedChange: (Boolean) -> Unit = {},
     textColor: Color = AppColors.Primary,
     checkedColor: Color = AppColors.Primary,
-    uncheckedColor: Color = AppColors.Secondary,
+    uncheckedColor: Color = AppColors.Primary,
     fontFamily: FontResource = Res.font.bold,
     fontSize: TextUnit = 10.sp,
 
@@ -50,6 +50,6 @@ fun CCheckBox(
             fontFamily = fontFamily,
             fontSize = fontSize
         )
-//                    CText(text = stringResource(Res.string.payment),)
+
     }
 }

@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,6 +29,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.russhwolf.settings.Settings
+import ghayatech.ihubs.networking.viewmodel.HandleUiState
 import ihubs.composeapp.generated.resources.Res
 import ihubs.composeapp.generated.resources.ghayatech
 import ihubs.composeapp.generated.resources.logo
@@ -35,6 +37,7 @@ import ihubs.composeapp.generated.resources.white_logo
 import kotlinx.coroutines.delay
 import ghayatech.ihubs.networking.viewmodel.MainViewModel
 import ghayatech.ihubs.ui.components.CText
+import ghayatech.ihubs.ui.components.UpdatePage
 import ghayatech.ihubs.ui.theme.AppColors
 import ghayatech.ihubs.ui.theme.AppColors.isDarkThemeBasedOnMode
 import ghayatech.ihubs.ui.theme.AppStrings
@@ -56,13 +59,31 @@ class SplashScreen() : Screen {
 
         val navigator = LocalNavigator.currentOrThrow
         val backgroundColor = AppColors.White
+        var showUpdatePage by remember { mutableStateOf(false) }
         var showLogo by remember { mutableStateOf(false) }
         var showDeveloperInfo by remember { mutableStateOf(false) }
+
+        val versionState by viewModel.versionState.collectAsState()
 
 
         val alphaLogo = remember { Animatable(0f) }
         val alphaContent = remember { Animatable(0f) }
 
+        val message: String = AppStringsProvider.current().update_required
+
+//
+//        LaunchedEffect(Unit) {
+//            viewModel.getVersion()
+//        }
+
+
+//        HandleUiState(versionState, onMessage = {
+//
+//        }, onSuccess = { data ->
+//            showUpdatePage = !data.isLatest
+//        })
+//
+//        if (showUpdatePage) UpdatePage()
 
         LaunchedEffect(true) {
             delay(300)
@@ -73,7 +94,7 @@ class SplashScreen() : Screen {
             showDeveloperInfo = true
             alphaContent.animateTo(1f, tween(1000))
 
-            logger.debug("TAG Splash screen","${settings.getStringOrNull(Constants.TOKEN)}")
+            logger.debug("TAG Splash screen", "${settings.getStringOrNull(Constants.TOKEN)}")
             delay(1000)
             if (settings.getBooleanOrNull(Constants.IS_ONBOARDING) != null) {
                 if (settings.getStringOrNull(Constants.TOKEN) != null) {
@@ -93,7 +114,10 @@ class SplashScreen() : Screen {
             contentAlignment = Alignment.Center
         ) {
             if (showLogo) {
-                val logo : Painter =if (isDarkThemeBasedOnMode()) painterResource(Res.drawable.white_logo) else painterResource(Res.drawable.logo)
+                val logo: Painter =
+                    if (isDarkThemeBasedOnMode()) painterResource(Res.drawable.white_logo) else painterResource(
+                        Res.drawable.logo
+                    )
                 Image(
                     painter = logo,
                     contentDescription = "Logo",
@@ -112,7 +136,7 @@ class SplashScreen() : Screen {
                         .graphicsLayer { alpha = alphaContent.value },
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    val color  = if (isDarkThemeBasedOnMode()) AppColors.Black else AppColors.Primary
+                    val color = if (isDarkThemeBasedOnMode()) AppColors.Black else AppColors.Primary
                     CText(
                         text = strings.powered_by,
                         color = color

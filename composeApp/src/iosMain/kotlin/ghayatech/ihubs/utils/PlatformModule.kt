@@ -11,6 +11,7 @@ val iosModule = module {
     single<Settings> {
         NSUserDefaultsSettings(NSUserDefaults.standardUserDefaults)
     }
+    single<SocialMediaOpener> { SocialMediaOpenerIos() }
 }
 
 //

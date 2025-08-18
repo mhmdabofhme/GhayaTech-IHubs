@@ -63,7 +63,7 @@ data class WorkspaceDetails(
     val images: List<String>,
     val features: List<String>,
     @SerialName("short_services") val shortServices: List<String>,
-    val secretary: Secretary,
+    val secretary: Secretary? = null,
 )
 
 
@@ -128,12 +128,11 @@ data class Booking(
     @SerialName("package_id") val packageId: Int
 )
 
-
 @Serializable
 data class CreateBookingResponse(
     val id: Int,
     @SerialName("workspace_name") val workspaceName: WorkspaceName,
-    @SerialName("workspace_id") val workspaceId: String,
+    @SerialName("workspace_id") val workspaceId: Int,
     @SerialName("package_name") val packageName: String,
     @SerialName("start_at") val startAt: String? = null,
     @SerialName("end_at") val endAt: String? = null,
@@ -142,6 +141,8 @@ data class CreateBookingResponse(
     @SerialName("wifi_password") val wifiPassword: String? = null,
     @SerialName("remaining_time") val remainingTime: String? = null,
 )
+
+
 
 @Serializable
 data class WorkspaceName(
@@ -215,3 +216,25 @@ data class About(
 
 @Serializable
 data class MapData(val key: String, val description: String)
+
+//"data":{
+//        "version": "v1",
+//        "latest": true,
+//        "supported": [
+//            "v1"
+//        ],
+//        "deprecated": []
+//       }
+
+@Serializable
+data class VersionResponse(
+    val version: String,
+    @SerialName("latest") val isLatest: Boolean,
+    val supported: List<String>,
+    val deprecated: List<String>
+)
+
+@Serializable
+data class FcmTokenResponse(
+    @SerialName("device_token") val deviceToken: String
+)

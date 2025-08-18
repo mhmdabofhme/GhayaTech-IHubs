@@ -13,10 +13,12 @@ import ghayatech.ihubs.networking.models.CreateBookingRequest
 import ghayatech.ihubs.networking.models.CreateBookingResponse
 import ghayatech.ihubs.networking.models.CreateBookingWithHoursRequest
 import ghayatech.ihubs.networking.models.CreateServiceRequest
+import ghayatech.ihubs.networking.models.FcmTokenResponse
 import ghayatech.ihubs.networking.models.Governorate
 import ghayatech.ihubs.networking.models.ListBaseResponse
 import ghayatech.ihubs.networking.models.LoginRequest
 import ghayatech.ihubs.networking.models.LoginResponse
+import ghayatech.ihubs.networking.models.MapData
 import ghayatech.ihubs.networking.models.Message
 import ghayatech.ihubs.networking.models.MessageListResponse
 import ghayatech.ihubs.networking.models.NotificationResponse
@@ -32,6 +34,7 @@ import ghayatech.ihubs.networking.models.UpdateProfileRequest
 import ghayatech.ihubs.networking.models.User
 import ghayatech.ihubs.networking.models.VerificationResponse
 import ghayatech.ihubs.networking.models.VerifyPhoneRequest
+import ghayatech.ihubs.networking.models.VersionResponse
 import ghayatech.ihubs.networking.models.Workspace
 import ghayatech.ihubs.networking.models.WorkspaceDetails
 import ghayatech.ihubs.networking.util.NetworkError
@@ -478,6 +481,30 @@ class ApiService(private val client: HttpClient) {
         return try {
             val response = client.get(ApiConstants.BASE_URL + ApiRoutes.GET_GOVERNORATES)
                 .body<ListBaseResponse<Governorate>>()
+            Result.Success(response)
+        } catch (e: Exception) {
+            println(e.message)
+            Result.Error(e.toNetworkError())
+        }
+    }
+
+
+    suspend fun getVersion(): Result<BaseResponse<VersionResponse>, NetworkError> {
+        return try {
+            val response = client.get(ApiConstants.BASE_URL + ApiRoutes.GET_VERSION)
+                .body<BaseResponse<VersionResponse>>()
+            Result.Success(response)
+        } catch (e: Exception) {
+            println(e.message)
+            Result.Error(e.toNetworkError())
+        }
+    }
+
+
+    suspend fun updateFcmToken(fcmToken: String): Result<BaseResponse<FcmTokenResponse>, NetworkError> {
+        return try {
+            val response = client.put(ApiConstants.BASE_URL + ApiRoutes.UPDATE_DEVICE_TOKEN(fcmToken))
+                .body<BaseResponse<FcmTokenResponse>>()
             Result.Success(response)
         } catch (e: Exception) {
             println(e.message)

@@ -16,7 +16,8 @@ object ApiRoutes {
     const val LIST_WORKSPACES = "/workspaces"
 
     fun WORKSPACE_DETAILS(id: Int) = "/workspaces/$id"
-//    fun SEARCH_WORKSPACE(query: String) = "/workspaces?search=$query"
+
+    //    fun SEARCH_WORKSPACE(query: String) = "/workspaces?search=$query"
 //    fun LOCATION_WORKSPACE(query: String) = "/workspaces?location=$query"
 //    fun BANK_WORKSPACE(query: Boolean) = "/workspaces?bank_payment_supported=$query"
     fun WORKSPACE_SERVICES(id: Int) = "/workspaces/$id/services"
@@ -51,6 +52,8 @@ object ApiRoutes {
     const val ABOUT = "/static/about"
 
     const val GET_GOVERNORATES = "/governorates"
+    const val GET_VERSION = "/version"
+    fun UPDATE_DEVICE_TOKEN(fcmToken: String) = "/auth/update-device-token?fcm_token=$fcmToken"
 
 
 }

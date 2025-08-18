@@ -87,6 +87,7 @@ import ghayatech.ihubs.ui.theme.AppStringsProvider
 import ghayatech.ihubs.ui.theme.AppThemeMode
 import ghayatech.ihubs.ui.theme.LocalThemeViewModel
 import ghayatech.ihubs.ui.theme.ThemeViewModel
+import ghayatech.ihubs.utils.UserPreferences
 import ihubs.composeapp.generated.resources.language
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
@@ -101,6 +102,7 @@ class ProfileScreen() : Screen {
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
         val settings: Settings = rememberKoinInject()
+        val userPreferences: UserPreferences = rememberKoinInject()
         val viewModel: MainViewModel = rememberKoinInject()
         val themeViewModel: ThemeViewModel = rememberKoinInject()
         val strings = AppStringsProvider.current()
@@ -196,7 +198,7 @@ class ProfileScreen() : Screen {
                                     text = strings.done,
                                     color = AppColors.Secondary
                                 )
-                                img = painterResource(Res.drawable.camera_add)
+//                                img = painterResource(Res.drawable.camera_add)
                             }
                         } else {
                             Column(
@@ -212,19 +214,21 @@ class ProfileScreen() : Screen {
                                     text = strings.edit,
                                     color = AppColors.Secondary
                                 )
-                                img = painterResource(Res.drawable.camera)
+//                                img = painterResource(Res.drawable.camera)
 
                             }
                         }
                     })
 
-                ProfileImageSection(
-                    imageUrl = null,
-                    isEditing = isEditing,
-                    onImageClick = {
-                        /* افتح المعرض أو الكاميرا */
-                    }
-                )
+//                ProfileImageSection(
+//                    imageUrl = null,
+//                    isEditing = isEditing,
+//                    onImageClick = {
+//                        /* افتح المعرض أو الكاميرا */
+//                    }
+//                )
+
+                Spacer(modifier = Modifier.size(20.dp))
 
                 // الحقول القابلة للتعديل
                 EditableField(
@@ -318,6 +322,8 @@ class ProfileScreen() : Screen {
                     icon = painterResource(Res.drawable.logout)
                 ) {
                     settings.clear()
+                    userPreferences.clearToken()
+                    userPreferences.clear()
                     navigator.push(LoginScreen())
                 }
 

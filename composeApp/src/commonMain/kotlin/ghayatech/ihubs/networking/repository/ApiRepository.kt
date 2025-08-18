@@ -143,4 +143,13 @@ class ApiRepository(private val api: ApiService) {
         api.getGovernorate()
 
 
+    suspend fun getVersion(): Result<BaseResponse<VersionResponse>, NetworkError> =
+        api.getVersion()
+
+
+
+    suspend fun updateFcmToken(fcmToken: String): Result<BaseResponse<FcmTokenResponse>, NetworkError> =
+        api.updateFcmToken(fcmToken)
+
+
 }

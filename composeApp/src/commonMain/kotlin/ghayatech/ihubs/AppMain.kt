@@ -26,9 +26,6 @@ import ghayatech.ihubs.ui.theme.LocalLocalizationViewModel
 import ghayatech.ihubs.ui.theme.LocalThemeViewModel
 import ghayatech.ihubs.ui.theme.LocalizationViewModel
 import ghayatech.ihubs.ui.theme.ThemeViewModel
-import ghayatech.ihubs.ui.theme.stringsFor
-import ghayatech.ihubs.utils.LocalizationManager
-import ghayatech.ihubs.utils.SetSystemUiColors
 import ghayatech.ihubs.utils.UserPreferences
 import ghayatech.ihubs.utils.getLayoutDirection
 import ghayatech.ihubs.utils.getLocale

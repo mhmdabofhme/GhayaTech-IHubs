@@ -15,6 +15,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.ui.Alignment
 import ghayatech.ihubs.ui.theme.AppColors
+import ihubs.composeapp.generated.resources.Res
+import ihubs.composeapp.generated.resources.resource_default
 import io.kamel.core.Resource
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
@@ -51,7 +53,23 @@ fun NetworkImage(
                     strokeWidth = 2.dp
                 )
             }
-        }
+        },
+//        onFailure = {
+//
+//            Box(
+//                modifier = modifier
+//                    .background(AppColors.Secondary, shape = RoundedCornerShape(12.dp))
+//                    .padding(8.dp),
+//                contentAlignment = Alignment.Center
+//            ) {
+//                Image(
+//                    painter = painterResource(Res.drawable.resource_default),
+//                    contentDescription = "Default Image",
+//                    modifier = Modifier.size(48.dp),
+//                    contentScale = ContentScale.Crop
+//                )
+//            }
+//        }
     )
 }
 

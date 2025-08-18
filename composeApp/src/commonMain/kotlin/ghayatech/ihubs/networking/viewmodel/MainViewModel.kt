@@ -10,10 +10,12 @@ import ghayatech.ihubs.networking.models.CreateBookingRequest
 import ghayatech.ihubs.networking.models.CreateBookingResponse
 import ghayatech.ihubs.networking.models.CreateBookingWithHoursRequest
 import ghayatech.ihubs.networking.models.CreateServiceRequest
+import ghayatech.ihubs.networking.models.FcmTokenResponse
 import ghayatech.ihubs.networking.models.Governorate
 import ghayatech.ihubs.networking.models.ListBaseResponse
 import ghayatech.ihubs.networking.models.LoginRequest
 import ghayatech.ihubs.networking.models.LoginResponse
+import ghayatech.ihubs.networking.models.MapData
 import ghayatech.ihubs.networking.models.Message
 import ghayatech.ihubs.networking.models.PackagesResponse
 import ghayatech.ihubs.networking.models.RegisterRequest
@@ -21,18 +23,20 @@ import ghayatech.ihubs.networking.models.RegisterResponse
 import ghayatech.ihubs.networking.models.SendMessage
 import ghayatech.ihubs.networking.models.Service
 import ghayatech.ihubs.networking.models.ServiceListResponse
+import ghayatech.ihubs.networking.models.SimpleData
 import ghayatech.ihubs.networking.models.StartConversationRequest
 import ghayatech.ihubs.networking.models.StaticContentResponse
 import ghayatech.ihubs.networking.models.UpdateProfileRequest
 import ghayatech.ihubs.networking.models.User
 import ghayatech.ihubs.networking.models.VerificationResponse
 import ghayatech.ihubs.networking.models.VerifyPhoneRequest
+import ghayatech.ihubs.networking.models.VersionResponse
 import ghayatech.ihubs.networking.models.Workspace
 import ghayatech.ihubs.networking.models.WorkspaceDetails
 import ghayatech.ihubs.networking.repository.ApiRepository
 import ghayatech.ihubs.networking.util.NetworkError
 import ghayatech.ihubs.networking.util.Result
-import ghayatech.ihubs.utils.PushTokenProvider
+import ghayatech.ihubs.utils.SocialMediaOpener
 import org.koin.compose.koinInject
 import org.koin.compose.rememberKoinInject
 
@@ -85,6 +89,8 @@ class MainViewModel(
     private val _isShiftEnabled = MutableStateFlow(false)
     private val _isFreeEnabled = MutableStateFlow(false)
 
+
+
     //    private val _searchWorkspacesState =
 //        MutableStateFlow<UiState<ListBaseResponse<Workspace>>?>(null)
 //    val searchWorkspacesState: StateFlow<UiState<ListBaseResponse<Workspace>>?> = _workspacesState
@@ -129,6 +135,11 @@ class MainViewModel(
         MutableStateFlow<UiState<ListBaseResponse<Governorate>>?>(null)
     val governoratesState: StateFlow<UiState<ListBaseResponse<Governorate>>?> = _governoratesState
 
+    // Version
+    private val _versionState =
+        MutableStateFlow<UiState<BaseResponse<VersionResponse>>?>(null)
+    val versionState: StateFlow<UiState<BaseResponse<VersionResponse>>?> = _versionState
+
     // About
     private val _aboutState =
         MutableStateFlow<UiState<BaseResponse<About>>?>(null)
@@ -137,6 +148,10 @@ class MainViewModel(
 
     private val _termsState = MutableStateFlow<UiState<BaseResponse<About>>?>(null)
     val termsState: StateFlow<UiState<BaseResponse<About>>?> = _termsState
+
+
+    private val _updateFcmToken = MutableStateFlow<UiState<BaseResponse<FcmTokenResponse>>?>(null)
+    val updateFcmToken: StateFlow<UiState<BaseResponse<FcmTokenResponse>>?> = _updateFcmToken
 
 
 //    private val pushTokenProvider: PushTokenProvider
@@ -484,11 +499,25 @@ class MainViewModel(
         }, _governoratesState)
     }
 
+    fun getVersion() {
+        executeApiCall("getVersion", {
+            repository.getVersion()
+        }, _versionState)
+    }
+
     fun getAbout() {
         executeApiCall("getAbout", {
             repository.getAbout()
         }, _aboutState)
     }
+
+    fun updateFcmToken(fcmToken: String) {
+        executeApiCall("updateFcmToken", {
+            repository.updateFcmToken(fcmToken)
+        }, _updateFcmToken)
+    }
+
+
 
 //    fun disconnect() {
 //        socketManager.disconnect()

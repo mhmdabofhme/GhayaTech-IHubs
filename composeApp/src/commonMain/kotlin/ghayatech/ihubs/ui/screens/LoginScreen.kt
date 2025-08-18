@@ -48,8 +48,13 @@ import ghayatech.ihubs.networking.viewmodel.UiState
 import ghayatech.ihubs.ui.components.CustomSnackbar
 import ghayatech.ihubs.ui.theme.AppStringsProvider
 import ghayatech.ihubs.utils.Constants
+import ghayatech.ihubs.utils.ITokenManager
+import ghayatech.ihubs.utils.Logger
+import ghayatech.ihubs.utils.TokenManagerFactory
 import ghayatech.ihubs.utils.UserPreferences
 import ghayatech.ihubs.utils.isValid
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 //import ghayatech.ihubs.utils.UserPreferences.saveUser
 import org.koin.compose.rememberKoinInject
 
@@ -59,7 +64,9 @@ class LoginScreen() : Screen {
         val navigator = LocalNavigator.currentOrThrow
         val viewModel: MainViewModel = rememberKoinInject()
         val userPreferences: UserPreferences = rememberKoinInject()
+        val logger: Logger = rememberKoinInject()
         val strings = AppStringsProvider.current()
+        val tokenManager: ITokenManager = TokenManagerFactory.createTokenManager()
 
         var phoneNumber by rememberSaveable { mutableStateOf("") }
         var password by rememberSaveable { mutableStateOf("") }
@@ -73,6 +80,7 @@ class LoginScreen() : Screen {
 //        val snackbarHostState = remember { SnackbarHostState() }
 //        val coroutineScope = rememberCoroutineScope()
         val loginState by viewModel.loginState.collectAsState()
+        val fcmState by viewModel.updateFcmToken.collectAsState()
         val keyboardController = LocalSoftwareKeyboardController.current
 
 
@@ -187,11 +195,27 @@ class LoginScreen() : Screen {
 //                    showErrorPage(it)
                 },
                 onSuccess = { data ->
-                    val token = data.token
-                    userPreferences.saveToken(token)
-//                    settings.putString(Constants.USER_ID, data.user?.id?)
-                    userPreferences.saveUser(data.user)
+                    logger.debug("Login Success:", data.toString())
+                    tokenManager.getFCMToken { fcmToken ->
+                        if (fcmToken != null) {
+                            val token = data.token
+                            userPreferences.saveToken(token)
+                            userPreferences.saveUser(data.user)
+                            logger.debug("onSuccess FCM Token:", fcmToken)
+                            viewModel.updateFcmToken(fcmToken)
+                        }
+                    }
+                }
+            )
+
+            HandleUiState(
+                fcmState,
+                onMessage = {
+                    logger.debug("FCM Token Update Error:", it)
+                }, onSuccess = {
+                    logger.debug("FCM Token Update Success:", "$it")
                     navigator.push(HubsScreen())
+
                 }
             )
 

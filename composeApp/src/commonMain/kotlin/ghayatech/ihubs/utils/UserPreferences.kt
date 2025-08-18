@@ -9,6 +9,9 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 class UserPreferences(val settings: Settings) {
+    fun clear() {
+        settings.clear()
+    }
 
     fun saveToken(token: String) {
         settings[Constants.TOKEN] = token

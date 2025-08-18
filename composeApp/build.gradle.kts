@@ -12,7 +12,10 @@ plugins {
     alias(libs.plugins.googleGmsGoogleServices)
 }
 
+
 kotlin {
+
+
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
@@ -43,8 +46,8 @@ kotlin {
             implementation(compose.preview)
             implementation(libs.koin.android)
             implementation(libs.ktor.client.okhttp)
-            implementation(libs.firebase.messaging)
             implementation(libs.androidx.activity.compose)
+            implementation(libs.firebase.messaging)
 
         }
         commonMain.dependencies {
@@ -53,7 +56,7 @@ kotlin {
             implementation(compose.material3)
             implementation(compose.materialIconsExtended)
             implementation(compose.ui)
-            implementation(libs.compose.ui.text)
+//            implementation(libs.compose.ui.text)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
             implementation(libs.multiplatform.settings)
@@ -64,24 +67,26 @@ kotlin {
             implementation(libs.voyager.transitions)
             implementation(libs.kmp.date.time.picker)
             implementation(libs.kamel.image)
-            implementation(libs.image.loader)
+//            implementation(libs.image.loader)
+
+
 
         }
 
-        commonTest.dependencies {
-            implementation(libs.kotlin.test)
-        }
+//        commonTest.dependencies {
+//            implementation(libs.kotlin.test)
+//        }
 //        desktopMain.dependencies {
 //            // Correct dependency for Desktop
 //            implementation(compose.desktop.currentOs)
 //            implementation(libs.sqldelight.driver.sqlite.native)
 //        }
-        jvmMain.dependencies {
-            implementation(compose.desktop.currentOs)
-//            implementation(libs.sqldelight.driver.sqlite.native)
-
-//            implementation(libs.kotlinx.coroutinesSwing)
-        }
+//        jvmMain.dependencies {
+//            implementation(compose.desktop.currentOs)
+////            implementation(libs.sqldelight.driver.sqlite.native)
+//
+////            implementation(libs.kotlinx.coroutinesSwing)
+//        }
     }
 
     // تأكد من أن المستودعات موجودة هنا أيضاً
@@ -122,14 +127,14 @@ dependencies {
     debugImplementation(compose.uiTooling)
 }
 
-compose.desktop {
-    application {
-        mainClass = "ghayatech.ihubs.MainKt"
-
-        nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "ghayatech.ihubs"
-            packageVersion = "1.0.0"
-        }
-    }
-}
+//compose.desktop {
+//    application {
+//        mainClass = "ghayatech.ihubs.MainKt"
+//
+//        nativeDistributions {
+//            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+//            packageName = "ghayatech.ihubs"
+//            packageVersion = "1.0.0"
+//        }
+//    }
+//}

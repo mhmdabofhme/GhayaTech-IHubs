@@ -2,6 +2,7 @@ package ghayatech.ihubs.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -49,7 +51,9 @@ import ghayatech.ihubs.ui.components.ImageSlider
 import ghayatech.ihubs.ui.components.NetworkImage
 import ghayatech.ihubs.ui.theme.AppColors
 import ghayatech.ihubs.ui.theme.AppStringsProvider
+import ghayatech.ihubs.utils.SocialMediaOpener
 import ghayatech.ihubs.utils.WhatsAppHelper
+import ihubs.composeapp.generated.resources.back
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -63,6 +67,8 @@ class HubDetailsScreen(private val id: Int) : Screen {
         val navigator = LocalNavigator.currentOrThrow
         val settings: Settings = rememberKoinInject()
         val viewModel: MainViewModel = rememberKoinInject()
+//        val socialMediaOpener: SocialMediaOpener = getKoin().get()
+
         val whatsAppHelper: WhatsAppHelper = getKoin().get()
         val strings = AppStringsProvider.current()
         val img = painterResource(Res.drawable.resource_default)
@@ -97,12 +103,23 @@ class HubDetailsScreen(private val id: Int) : Screen {
 
                     Box(modifier = Modifier.fillMaxWidth()) {
 
-                        Back(
-                            modifier = Modifier.align(Alignment.TopStart).padding(top = 20.dp),
-                            onBackClick = {
-                                navigator.pop()
-                            }
-                        )
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .align(Alignment.CenterStart)
+                                .clickable { navigator.pop() }
+                        ) {
+                            Icon(
+                                painter = painterResource(Res.drawable.back), // أو SVG مخصص
+
+                                contentDescription = "back",
+                                modifier = Modifier
+                                    .size(24.dp)
+                                , tint = AppColors.Black
+                            )
+
+                            CText(strings.back, fontSize = 14.sp, fontWeight = FontWeight.Bold,)
+                        }
 
                         NetworkImage(
                             workspace.value!!.logo,
@@ -222,6 +239,8 @@ class HubDetailsScreen(private val id: Int) : Screen {
                         text = strings.contactus,
                         isOutlined = true,
                         onClick = {
+//                            socialMediaOpener.openWhatsAppChat("970597204724")
+
                             whatsAppHelper.openWhatsApp("+970597204724")
 //                            navigator.push(ChatScreen(workspace.value!!.secretary.id))
                         })

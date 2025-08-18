@@ -122,6 +122,7 @@ data class AppStrings(
     val service_created_successfully: String,
     val language: String,
     val social_media: String,
+    val update_required: String,
 )
 
 fun stringsFor(language: String): AppStrings = when (language) {
@@ -222,7 +223,7 @@ fun stringsFor(language: String): AppStrings = when (language) {
         seat_free = "أي مقعد",
         show_less = "عرض أقل",
         show_more = "عرض المزيد",
-        payment_available = "الدفع عبر تطبيق البنك",
+        payment_available = "دفع بنكي",
         booking_not_available = "الحجوزات غير متاحة في هذه المساحة، لا يوجد دفع بنكي",
         evening_shift = "الفترة المسائية",
         governorates = "المحافظات",
@@ -231,6 +232,7 @@ fun stringsFor(language: String): AppStrings = when (language) {
         service_created_successfully = "تم إنشاء الخدمة بنجاح",
         language = "اللغة",
         social_media = "مواقع التواصل : - ",
+        update_required = "الرجاء تحديث التطبيق لاخر نسخة",
     )
 
     else -> AppStrings(
@@ -330,7 +332,7 @@ fun stringsFor(language: String): AppStrings = when (language) {
         seat_free = "Any seat",
         show_less = "show less",
         show_more = "show more",
-        payment_available = "Banking app payment",
+        payment_available = "Bank payment",
         booking_not_available = "Bookings are not available at this hub, no bank payment",
         evening_shift = "Evening shift",
         governorates = "Governorates",
@@ -339,6 +341,7 @@ fun stringsFor(language: String): AppStrings = when (language) {
         service_created_successfully = "Service created successfully",
         language = "Langauge",
         social_media = "Social Media  : - ",
+        update_required = "Please update your app to the latest version",
     )
 }
 

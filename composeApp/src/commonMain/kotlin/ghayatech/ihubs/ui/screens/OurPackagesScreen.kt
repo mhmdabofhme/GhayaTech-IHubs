@@ -112,14 +112,7 @@ class OurPackagesScreen(private val id: Int) : Screen {
             viewModel.getWorkspace(id)
         }
 
-        BottomSheetScreen(
-            openBottomSheet,
-            title = strings.booking_success,
-            description = strings.booking_info,
-            buttonText = strings.done,
-        ) {
-            navigator.push(BookingDetailsScreen())
-        }
+
 
         LaunchedEffect(bookingState) {
             if (bookingState is UiState.Success || bookingState is UiState.Error) {
@@ -127,7 +120,9 @@ class OurPackagesScreen(private val id: Int) : Screen {
             }
         }
 
+
         // --- UI Layout ---
+
 
         PullToRefreshBox(
             isRefreshing = isRefreshing,
@@ -358,24 +353,7 @@ class OurPackagesScreen(private val id: Int) : Screen {
                         onDismiss = { showDialog = false },
                         onBookClick =
                             {
-                                logger.debug(tag, " Booking hasTime${hasTime.value}")
-                                logger.debug(tag, " Booking id $id")
-                                logger.debug(tag, " Booking date ${it.date}")
-
-
                                 if (hasTime.value) {
-                                    logger.debug(tag, " Booking true date ${it.date}")
-                                    logger.debug(tag, " Booking true time ${it.time}")
-                                    logger.debug(
-                                        tag,
-                                        " Booking true numberOfHours ${it.numberOfHours}"
-                                    )
-//
-//                                    print("TAG Booking:true in")
-//                                    print("TAG Booking:true ${it.date}")
-//                                    print("TAG Booking:true ${it.time}")
-//                                    print("TAG Booking:true ${it.numberOfHours}")
-
                                     viewModel.createBookingWithHours(
                                         CreateBookingWithHoursRequest(
                                             workspaceId = id,
@@ -388,10 +366,6 @@ class OurPackagesScreen(private val id: Int) : Screen {
 
                                 } else {
                                     logger.debug(tag, " Booking false ${it.date}")
-
-                                    print("TAG Booking:false in")
-                                    print("TAG Booking:false ${it.date}")
-
                                     viewModel.createBooking(
                                         CreateBookingRequest(
                                             workspaceId = id,
@@ -400,12 +374,25 @@ class OurPackagesScreen(private val id: Int) : Screen {
                                         )
                                     )
                                 }
-                                openBottomSheet.value = true
                                 showDialog = false
                             },
                     )
 
                 }
+            }
+
+
+            if (openBottomSheet.value) {
+                logger.debug(tag, "openBottomSheet = true")
+                BottomSheetScreen(
+                    openBottomSheet,
+                    title = strings.booking_success,
+                    description = strings.booking_info,
+                    buttonText = strings.done,
+                ) {
+                    navigator.push(HubsScreen())
+                }
+
             }
 
             CustomSnackbar(
@@ -424,8 +411,6 @@ class OurPackagesScreen(private val id: Int) : Screen {
                     { data ->
                         packagesResponse.value = data
                         logger.debug(tag, " Packages response ${data}")
-
-//                        println("TAGTAG Packages: $data")
                     }
             )
 
@@ -448,7 +433,8 @@ class OurPackagesScreen(private val id: Int) : Screen {
                 },
                 onSuccess = { data ->
                     booking.value = data
-                    navigator.push(HubsScreen())
+                    openBottomSheet.value = true
+//                    navigator.push(HubsScreen())
                     logger.debug(tag, " Booking onSuccess ${data.id}")
                     logger.debug(tag, " Booking onSuccess ${data.packageName}")
                     logger.debug(tag, " Booking onSuccess ${data.workspaceName}")

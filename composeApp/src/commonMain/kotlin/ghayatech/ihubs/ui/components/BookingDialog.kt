@@ -91,6 +91,7 @@ fun BookingDialog(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
+                .clickable { /* لا تفعل شيئًا عند النقر على هذه المنطقة */ }
                 .shadow(25.dp, RoundedCornerShape(25.dp)) // ← تضيف الظل
                 .background(AppColors.White, RoundedCornerShape(25.dp))
                 .padding(21.dp)

@@ -71,6 +71,7 @@ import ghayatech.ihubs.ui.components.NetworkImage
 import ghayatech.ihubs.ui.theme.AppColors
 import ghayatech.ihubs.ui.theme.AppStringsProvider
 import ghayatech.ihubs.utils.Logger
+import ghayatech.ihubs.utils.SocialMediaOpener
 import ghayatech.ihubs.utils.UserPreferences
 import ghayatech.ihubs.utils.WhatsAppHelper
 import ghayatech.ihubs.utils.calculateRemainingMillis
@@ -95,6 +96,7 @@ class BookingDetailsScreen() : Screen {
         val settings: Settings = rememberKoinInject()
         val viewModel: MainViewModel = rememberKoinInject()
         val whatsAppHelper: WhatsAppHelper = getKoin().get()
+        val socialMediaOpener: SocialMediaOpener = rememberKoinInject()
         val logger: Logger = rememberKoinInject()
         val tag = "TAG BookingDetailsScreen:"
         val strings = AppStringsProvider.current()
@@ -148,14 +150,22 @@ class BookingDetailsScreen() : Screen {
                     showBackButton = true,
                     title = strings.booking_details,
                     endContent = {
-                        CIcon(
-                            img = painterResource(Res.drawable.profile),
-                            contentDescription = "Profile",
-                            size = 44.dp,
-                            background = AppColors.transparent,
-                            onClick = {
-                                navigator.push(ProfileScreen())
-                            })
+                        Box(
+                            Modifier
+                                .shadow(10.dp, shape = CircleShape, clip = true)
+                                .clickable { navigator.push(ProfileScreen()) }
+                        ) {
+                            Icon(
+                                painter = painterResource(Res.drawable.profile),
+                                contentDescription = "Profile",
+                                modifier = Modifier
+                                    .size(44.dp)
+                                    .clip(CircleShape)
+                                    .background(AppColors.Background)
+                                    .padding(10.dp),
+                                tint = AppColors.TextSecondary
+                            )
+                        }
                     },
                     onBackClick = {
                         navigator.pop()
@@ -388,6 +398,7 @@ class BookingDetailsScreen() : Screen {
                             Row {
                                 CButton(text = strings.contactus, onClick = {
                                     // TODO PASS CONVERSATION ID
+                                    socialMediaOpener.openWhatsAppChat("970597204724")
                                     whatsAppHelper.openWhatsApp("970597204724")
 
                                 }, modifier = Modifier.weight(1F))

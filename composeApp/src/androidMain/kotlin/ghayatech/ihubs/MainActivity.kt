@@ -20,11 +20,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import com.google.firebase.messaging.FirebaseMessaging
 import ghayatech.ihubs.ui.screens.ProfileScreen
+import ghayatech.ihubs.utils.UserPreferences
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        WindowCompat.setDecorFitsSystemWindows(window, true)
+        WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = true
+
         enableEdgeToEdge()
 
         super.onCreate(savedInstanceState)
@@ -35,11 +41,10 @@ class MainActivity : ComponentActivity() {
         setContent {
 
             AppMain()
-            FirebaseMessaging.getInstance().token
-                .addOnSuccessListener { token ->
-                    Log.d("FCM_TOKEN", "Token: $token")
-                    // أرسله إلى Laravel عند تسجيل الدخول مثلاً
-                }
+//            FirebaseMessaging.getInstance().token
+//                .addOnSuccessListener { token ->
+//                    Log.d("FCM_TOKEN", "Token: $token")
+//                }
         }
     }
 
