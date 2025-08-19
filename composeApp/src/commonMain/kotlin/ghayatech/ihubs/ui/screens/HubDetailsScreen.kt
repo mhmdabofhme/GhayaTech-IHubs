@@ -51,13 +51,14 @@ import ghayatech.ihubs.ui.components.ImageSlider
 import ghayatech.ihubs.ui.components.NetworkImage
 import ghayatech.ihubs.ui.theme.AppColors
 import ghayatech.ihubs.ui.theme.AppStringsProvider
-import ghayatech.ihubs.utils.SocialMediaOpener
+import ghayatech.ihubs.utils.SocialOpener
 import ghayatech.ihubs.utils.WhatsAppHelper
 import ihubs.composeapp.generated.resources.back
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.getKoin
+import org.koin.compose.koinInject
 import org.koin.compose.rememberKoinInject
 
 // HubDetailsScreen.kt
@@ -67,9 +68,11 @@ class HubDetailsScreen(private val id: Int) : Screen {
         val navigator = LocalNavigator.currentOrThrow
         val settings: Settings = rememberKoinInject()
         val viewModel: MainViewModel = rememberKoinInject()
+        val socialOpener: SocialOpener = koinInject()
+
 //        val socialMediaOpener: SocialMediaOpener = getKoin().get()
 
-        val whatsAppHelper: WhatsAppHelper = getKoin().get()
+//        val whatsAppHelper: WhatsAppHelper = getKoin().get()
         val strings = AppStringsProvider.current()
         val img = painterResource(Res.drawable.resource_default)
 
@@ -240,8 +243,8 @@ class HubDetailsScreen(private val id: Int) : Screen {
                         isOutlined = true,
                         onClick = {
 //                            socialMediaOpener.openWhatsAppChat("970597204724")
-
-                            whatsAppHelper.openWhatsApp("+970597204724")
+                            socialOpener.openWhatsApp("+972597204724")
+//                            whatsAppHelper.openWhatsApp("+970597204724")
 //                            navigator.push(ChatScreen(workspace.value!!.secretary.id))
                         })
 

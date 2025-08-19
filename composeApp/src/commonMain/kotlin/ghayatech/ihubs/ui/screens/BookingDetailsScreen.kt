@@ -71,7 +71,7 @@ import ghayatech.ihubs.ui.components.NetworkImage
 import ghayatech.ihubs.ui.theme.AppColors
 import ghayatech.ihubs.ui.theme.AppStringsProvider
 import ghayatech.ihubs.utils.Logger
-import ghayatech.ihubs.utils.SocialMediaOpener
+import ghayatech.ihubs.utils.SocialOpener
 import ghayatech.ihubs.utils.UserPreferences
 import ghayatech.ihubs.utils.WhatsAppHelper
 import ghayatech.ihubs.utils.calculateRemainingMillis
@@ -86,6 +86,7 @@ import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.getKoin
+import org.koin.compose.koinInject
 import org.koin.compose.rememberKoinInject
 
 
@@ -96,7 +97,8 @@ class BookingDetailsScreen() : Screen {
         val settings: Settings = rememberKoinInject()
         val viewModel: MainViewModel = rememberKoinInject()
         val whatsAppHelper: WhatsAppHelper = getKoin().get()
-        val socialMediaOpener: SocialMediaOpener = rememberKoinInject()
+//        val socialMediaOpener: SocialMediaOpener = rememberKoinInject()
+        val socialOpener: SocialOpener = koinInject()
         val logger: Logger = rememberKoinInject()
         val tag = "TAG BookingDetailsScreen:"
         val strings = AppStringsProvider.current()
@@ -394,13 +396,10 @@ class BookingDetailsScreen() : Screen {
                             Spacer(modifier = Modifier.size(13.dp))
 
 
-
                             Row {
                                 CButton(text = strings.contactus, onClick = {
                                     // TODO PASS CONVERSATION ID
-                                    socialMediaOpener.openWhatsAppChat("970597204724")
-                                    whatsAppHelper.openWhatsApp("970597204724")
-
+                                    socialOpener.openWhatsApp("972597204724")
                                 }, modifier = Modifier.weight(1F))
 //                                if (workspace.value != null) {
                                 Spacer(modifier = Modifier.size(10.dp))
@@ -416,7 +415,6 @@ class BookingDetailsScreen() : Screen {
                                     },
                                     modifier = Modifier.weight(1F)
                                 )
-//                                }
 
                             }
 
@@ -427,9 +425,7 @@ class BookingDetailsScreen() : Screen {
 
                 Spacer(Modifier.size(20.dp))
 
-//                val currentIndex by remember {
-//                    derivedStateOf { listState.firstVisibleItemIndex }
-//                }
+
                 // Indicators
 
                 if (bookingsList.isNotEmpty()) {
@@ -474,7 +470,7 @@ class BookingDetailsScreen() : Screen {
                     { data ->
                         logger.debug(tag, "onSuccess: $data")
                         bookingListSize = data.size
-//                        bookingsList.clear()
+                        bookingsList.clear()
                         bookingsList.addAll(data)
 
                     }
@@ -489,7 +485,6 @@ class BookingDetailsScreen() : Screen {
                 onSuccess =
                     { data ->
                         workspace.value = data
-
                     }
             )
 

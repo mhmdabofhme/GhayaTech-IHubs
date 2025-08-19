@@ -35,7 +35,7 @@ fun DescriptionDialog(
     onItemClick: (String) -> Unit
 ) {
     val strings = AppStringsProvider.current()
-    var description by rememberSaveable { mutableStateOf("") }
+    var description by remember { mutableStateOf("") }
 
     val initialColor = AppColors.White
     var backgroundColor by remember { mutableStateOf(initialColor) }

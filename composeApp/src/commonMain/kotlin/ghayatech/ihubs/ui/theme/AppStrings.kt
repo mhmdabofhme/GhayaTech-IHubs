@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.unit.LayoutDirection
+import kotlin.String
 
 
 object AppStringsProvider {
@@ -123,6 +124,9 @@ data class AppStrings(
     val language: String,
     val social_media: String,
     val update_required: String,
+    val over_month_ago: String,
+    val minutes: String,
+    val just_now: String,
 )
 
 fun stringsFor(language: String): AppStrings = when (language) {
@@ -233,6 +237,9 @@ fun stringsFor(language: String): AppStrings = when (language) {
         language = "اللغة",
         social_media = "مواقع التواصل : - ",
         update_required = "الرجاء تحديث التطبيق لاخر نسخة",
+        over_month_ago = "منذ اكثر من شهر",
+        minutes = "دقائق",
+        just_now = "منذ ثوانٍ قليلة",
     )
 
     else -> AppStrings(
@@ -342,6 +349,9 @@ fun stringsFor(language: String): AppStrings = when (language) {
         language = "Langauge",
         social_media = "Social Media  : - ",
         update_required = "Please update your app to the latest version",
+        over_month_ago = "over a month ago",
+        minutes = "minutes",
+        just_now = "Just now",
     )
 }
 

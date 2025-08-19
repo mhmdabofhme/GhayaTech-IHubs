@@ -4,14 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.unit.LayoutDirection
-import com.russhwolf.settings.Settings
-import kotlinx.datetime.LocalDate
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import network.chaintech.kmp_date_time_picker.ui.date_range_picker.changeDateFormat
-import ghayatech.ihubs.networking.models.User
-import ghayatech.ihubs.networking.network.ApiRoutes
 import ghayatech.ihubs.networking.util.NetworkError
+import ghayatech.ihubs.ui.theme.AppStrings
+import ghayatech.ihubs.ui.theme.AppStringsProvider
 import ihubs.composeapp.generated.resources.Res
 import ihubs.composeapp.generated.resources.diamond
 import ihubs.composeapp.generated.resources.first
@@ -22,8 +17,8 @@ import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
-import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.painterResource
+import kotlin.time.Duration.Companion.days
 
 fun getErrorMessage(error: NetworkError):String{
     return when (error) {
@@ -150,3 +145,25 @@ fun getLocale(languageCode: String): Locale {
 //    return "%04d-%02d-%02d".changeDateFormat(localDate.year, localDate.monthNumber, localDate.dayOfMonth)
 //}
 
+
+
+fun convertToRelativeTime(isoDateTime: String,strings: AppStrings): String {
+    // 1. تحليل التاريخ المدخل:
+    // تحويل النص إلى كائن Instant
+    val givenInstant = Instant.parse(isoDateTime)
+
+    // 2. الحصول على الوقت الحالي:
+    val now = Clock.System.now()
+
+    // 3. حساب الفارق الزمني (Duration):
+    val duration = now - givenInstant
+
+    // 4. تحويل الفارق إلى صيغة مقروءة:
+    return when {
+        duration > 30.days -> strings.over_month_ago
+        duration.inWholeDays > 0 ->  "${duration.inWholeDays} ${strings.days}"
+        duration.inWholeHours > 0 -> "${duration.inWholeHours} ${strings.hours}"
+        duration.inWholeMinutes > 0 ->"${duration.inWholeMinutes} ${strings.minutes}"
+        else -> strings.just_now
+    }
+}

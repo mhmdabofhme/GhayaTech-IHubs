@@ -119,6 +119,15 @@ data class Service(
 
 
 @Serializable
+data class ServiceRequestResponse(
+    val id: Int,
+    val details: String,
+    val type: String,
+    val status: String,
+    @SerialName("created_at") val createdAt: String,
+)
+
+@Serializable
 data class Booking(
     val id: Int,
     val date: String,
@@ -143,7 +152,6 @@ data class CreateBookingResponse(
 )
 
 
-
 @Serializable
 data class WorkspaceName(
     val ar: String,
@@ -151,18 +159,18 @@ data class WorkspaceName(
 )
 
 
-@Serializable
-data class NotificationResponse(
-    val notifications: List<Notification>
-)
+//@Serializable
+//data class NotificationResponse(
+//    val notifications: List<Notification>
+//)
 
-@Serializable
-data class Notification(
-    val id: Int,
-    val title: String,
-    val body: String,
-    val read: Boolean
-)
+//@Serializable
+//data class Notification(
+//    val id: Int,
+//    val title: String,
+//    val body: String,
+//    val read: Boolean
+//)
 
 
 @Serializable
@@ -237,4 +245,44 @@ data class VersionResponse(
 @Serializable
 data class FcmTokenResponse(
     @SerialName("device_token") val deviceToken: String
+)
+
+
+//{
+//    "id": "9ef3e75b-cbf1-43c4-aafe-74e136337fff",
+//    "type": "App\\Notifications\\FirebaseNotification",
+//    "data": {
+//    "title": "Your booking has been confirmed!",
+//    "body": "Your workspace booking ghayatech has been successfully confirmed. You can verify your username and password.",
+//    "data": {
+//        "booking_id": "51",
+//        "status": "confirmed",
+//        "workspace_name": "ghayatech"
+//    }
+//},
+//    "read_at": null,
+//    "created_at": "2025-08-18T09:29:36.000000Z"
+//}
+
+@Serializable
+data class NotificationResponse(
+    val id: String,
+    val type: String,
+    val data: NotificationData,
+    @SerialName("read_at") val readAt: String? = null,
+    @SerialName("created_at") val createdAt: String
+)
+
+@Serializable
+data class NotificationData(
+    val title: String,
+    val body: String,
+    val data: NotificationDetails
+)
+
+@Serializable
+data class NotificationDetails(
+    @SerialName("booking_id") val bookingId: String,
+    val status: String,
+    @SerialName("workspace_name") val workspaceName: String
 )

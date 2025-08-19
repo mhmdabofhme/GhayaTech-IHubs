@@ -152,6 +152,7 @@ class OurServicesScreen(val id: Int, val bookingId: Int) : Screen {
                     snackbarMessage = it
                 },
                 onSuccess = { data ->
+                    servicesList.clear()
                     servicesList.addAll(data.services)
                 },
             )

@@ -39,12 +39,7 @@ class MainActivity : ComponentActivity() {
 
 
         setContent {
-
             AppMain()
-//            FirebaseMessaging.getInstance().token
-//                .addOnSuccessListener { token ->
-//                    Log.d("FCM_TOKEN", "Token: $token")
-//                }
         }
     }
 

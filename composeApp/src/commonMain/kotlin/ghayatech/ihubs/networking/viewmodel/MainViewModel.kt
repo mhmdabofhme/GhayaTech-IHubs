@@ -17,12 +17,14 @@ import ghayatech.ihubs.networking.models.LoginRequest
 import ghayatech.ihubs.networking.models.LoginResponse
 import ghayatech.ihubs.networking.models.MapData
 import ghayatech.ihubs.networking.models.Message
+import ghayatech.ihubs.networking.models.NotificationResponse
 import ghayatech.ihubs.networking.models.PackagesResponse
 import ghayatech.ihubs.networking.models.RegisterRequest
 import ghayatech.ihubs.networking.models.RegisterResponse
 import ghayatech.ihubs.networking.models.SendMessage
 import ghayatech.ihubs.networking.models.Service
 import ghayatech.ihubs.networking.models.ServiceListResponse
+import ghayatech.ihubs.networking.models.ServiceRequestResponse
 import ghayatech.ihubs.networking.models.SimpleData
 import ghayatech.ihubs.networking.models.StartConversationRequest
 import ghayatech.ihubs.networking.models.StaticContentResponse
@@ -36,7 +38,7 @@ import ghayatech.ihubs.networking.models.WorkspaceDetails
 import ghayatech.ihubs.networking.repository.ApiRepository
 import ghayatech.ihubs.networking.util.NetworkError
 import ghayatech.ihubs.networking.util.Result
-import ghayatech.ihubs.utils.SocialMediaOpener
+
 import org.koin.compose.koinInject
 import org.koin.compose.rememberKoinInject
 
@@ -120,9 +122,9 @@ class MainViewModel(
 
 
     private val _createServiceState =
-        MutableStateFlow<UiState<BaseResponse<Service>>?>(null)
+        MutableStateFlow<UiState<BaseResponse<ServiceRequestResponse>>?>(null)
 
-    val createServiceState: StateFlow<UiState<BaseResponse<Service>>?> =
+    val createServiceState: StateFlow<UiState<BaseResponse<ServiceRequestResponse>>?> =
         _createServiceState
 
 
@@ -153,6 +155,10 @@ class MainViewModel(
     private val _updateFcmToken = MutableStateFlow<UiState<BaseResponse<FcmTokenResponse>>?>(null)
     val updateFcmToken: StateFlow<UiState<BaseResponse<FcmTokenResponse>>?> = _updateFcmToken
 
+    // Notifications
+    private val _notificationsState =
+        MutableStateFlow<UiState<ListBaseResponse<NotificationResponse>>?>(null)
+    val notificationsState: StateFlow<UiState<ListBaseResponse<NotificationResponse>>?> = _notificationsState
 
 //    private val pushTokenProvider: PushTokenProvider
 
@@ -358,6 +364,16 @@ class MainViewModel(
             _createServiceState
         )
     }
+
+
+    fun getNotifications() {
+        executeApiCall(
+            "getNotifications",
+            { repository.getNotifications() },
+            _notificationsState
+        )
+    }
+
 
 //    fun getBookings() {
 //        executeApiCall({ repository.getBookings() }, _bookingState)

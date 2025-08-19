@@ -59,6 +59,7 @@ class SplashScreen() : Screen {
 
         val navigator = LocalNavigator.currentOrThrow
         val backgroundColor = AppColors.White
+        var startApp by remember { mutableStateOf(false) }
         var showUpdatePage by remember { mutableStateOf(false) }
         var showLogo by remember { mutableStateOf(false) }
         var showDeveloperInfo by remember { mutableStateOf(false) }
@@ -72,18 +73,20 @@ class SplashScreen() : Screen {
         val message: String = AppStringsProvider.current().update_required
 
 //
-//        LaunchedEffect(Unit) {
-//            viewModel.getVersion()
-//        }
+        LaunchedEffect(Unit) {
+            viewModel.getVersion()
+        }
 
 
-//        HandleUiState(versionState, onMessage = {
-//
-//        }, onSuccess = { data ->
-//            showUpdatePage = !data.isLatest
-//        })
-//
-//        if (showUpdatePage) UpdatePage()
+
+        HandleUiState(
+            versionState, onMessage = {
+            }, onSuccess = { data ->
+                showUpdatePage = !data.isLatest
+                startApp = data.isLatest
+            }
+        )
+
 
         LaunchedEffect(true) {
             delay(300)
@@ -95,15 +98,19 @@ class SplashScreen() : Screen {
             alphaContent.animateTo(1f, tween(1000))
 
             logger.debug("TAG Splash screen", "${settings.getStringOrNull(Constants.TOKEN)}")
-            delay(1000)
-            if (settings.getBooleanOrNull(Constants.IS_ONBOARDING) != null) {
-                if (settings.getStringOrNull(Constants.TOKEN) != null) {
-                    navigator.push(HubsScreen())
+            if (startApp) {
+
+                delay(1000)
+                if (settings.getBooleanOrNull(Constants.IS_ONBOARDING) != null) {
+                    if (settings.getStringOrNull(Constants.TOKEN) != null) {
+                        navigator.push(HubsScreen())
+                    } else {
+                        navigator.push(LoginScreen())
+                    }
                 } else {
-                    navigator.push(LoginScreen())
+                    navigator.push(OnBoardingScreen())
                 }
-            } else {
-                navigator.push(OnBoardingScreen())
+
             }
         }
 
@@ -149,6 +156,9 @@ class SplashScreen() : Screen {
                     )
                 }
             }
+
+            if (showUpdatePage) UpdatePage()
+
         }
     }
 }

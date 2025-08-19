@@ -101,14 +101,14 @@ class ApiRepository(private val api: ApiService) {
     suspend fun createServiceRequest(
         bookingId: Int,
         data: CreateServiceRequest
-    ): Result<BaseResponse<Service>, NetworkError> =
+    ): Result<BaseResponse<ServiceRequestResponse>, NetworkError> =
         api.createServiceRequest(bookingId, data)
 
     suspend fun getServiceRequests(bookingId: Int): Result<BaseResponse<ServiceListResponse>, NetworkError> =
         api.getServiceRequests(bookingId)
 
     // Notifications
-    suspend fun getNotifications(): Result<BaseResponse<NotificationResponse>, NetworkError> =
+    suspend fun getNotifications(): Result<ListBaseResponse<NotificationResponse>, NetworkError> =
         api.getNotifications()
 
     suspend fun markNotificationsAsRead(): Result<BaseResponse<Unit>, NetworkError> =

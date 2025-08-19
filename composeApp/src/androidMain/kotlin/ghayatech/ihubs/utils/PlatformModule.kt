@@ -16,7 +16,11 @@ val androidModule = module {
     single<Settings> {
         SharedPreferencesSettings(androidContext().getSharedPreferences("app_settings", Context.MODE_PRIVATE))
     }
-    single<SocialMediaOpener> { SocialMediaOpenerAndroid(androidContext()) }
+//    single<SocialMediaOpener> { SocialMediaOpenerAndroid(androidContext()) }
+    single<SocialOpener> {
+        // Android
+        SocialOpenerAndroid(androidContext())
+    }
 
 }
 

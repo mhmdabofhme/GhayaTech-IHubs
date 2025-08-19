@@ -28,6 +28,7 @@ import ghayatech.ihubs.networking.models.RegisterResponse
 import ghayatech.ihubs.networking.models.SendMessage
 import ghayatech.ihubs.networking.models.Service
 import ghayatech.ihubs.networking.models.ServiceListResponse
+import ghayatech.ihubs.networking.models.ServiceRequestResponse
 import ghayatech.ihubs.networking.models.StartConversationRequest
 import ghayatech.ihubs.networking.models.StaticContentResponse
 import ghayatech.ihubs.networking.models.UpdateProfileRequest
@@ -321,13 +322,13 @@ class ApiService(private val client: HttpClient) {
     suspend fun createServiceRequest(
         bookingId: Int,
         data: CreateServiceRequest
-    ): Result<BaseResponse<Service>, NetworkError> {
+    ): Result<BaseResponse<ServiceRequestResponse>, NetworkError> {
         return try {
             val response =
                 client.post(ApiConstants.BASE_URL + ApiRoutes.CREATE_SERVICE_REQUEST(bookingId)) {
                     contentType(ContentType.Application.Json)
                     setBody(data)
-                }.body<BaseResponse<Service>>()
+                }.body<BaseResponse<ServiceRequestResponse>>()
             Result.Success(response)
         } catch (e: Exception) {
             println(e.message)
@@ -364,10 +365,10 @@ class ApiService(private val client: HttpClient) {
     }
 
     // Notifications
-    suspend fun getNotifications(): Result<BaseResponse<NotificationResponse>, NetworkError> {
+    suspend fun getNotifications(): Result<ListBaseResponse<NotificationResponse>, NetworkError> {
         return try {
             val response = client.get(ApiConstants.BASE_URL + ApiRoutes.GET_NOTIFICATIONS)
-                .body<BaseResponse<NotificationResponse>>()
+                .body<ListBaseResponse<NotificationResponse>>()
             Result.Success(response)
         } catch (e: Exception) {
             println(e.message)
@@ -503,7 +504,9 @@ class ApiService(private val client: HttpClient) {
 
     suspend fun updateFcmToken(fcmToken: String): Result<BaseResponse<FcmTokenResponse>, NetworkError> {
         return try {
-            val response = client.put(ApiConstants.BASE_URL + ApiRoutes.UPDATE_DEVICE_TOKEN(fcmToken))
+            val response = client.put(ApiConstants.BASE_URL + ApiRoutes.UPDATE_DEVICE_TOKEN(fcmToken)){
+                contentType(ContentType.Application.Json)
+            }
                 .body<BaseResponse<FcmTokenResponse>>()
             Result.Success(response)
         } catch (e: Exception) {
@@ -511,5 +514,17 @@ class ApiService(private val client: HttpClient) {
             Result.Error(e.toNetworkError())
         }
     }
+
+//    suspend fun updateProfile(data: UpdateProfileRequest): Result<BaseResponse<User>, NetworkError> {
+//        return try {
+//            val response = client.put(ApiConstants.BASE_URL + ApiRoutes.UPDATE_PROFILE) {
+//                contentType(ContentType.Application.Json)
+//            }.body<BaseResponse<User>>()
+//            Result.Success(response)
+//        } catch (e: Exception) {
+//            println(e.message)
+//            Result.Error(e.toNetworkError())
+//        }
+//    }
 
 }
