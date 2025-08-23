@@ -27,9 +27,7 @@ fun getPlatformDrawableId(platformName: String): Painter? {
 
     return when (cleanName) {
         "انستجرام", "instagram" -> painterResource(Res.drawable.instagram)
-        "فيسبوك", "facebook" -> painterResource(Res.drawable.linkedin)
-        "لينكدين","لينكد ان", "linkedin" -> painterResource(Res.drawable.linkedin)
-
+        "لينكدين", "لينكد ان", "linkedin" -> painterResource(Res.drawable.linkedin)
         else -> null
     }
 }
@@ -44,7 +42,7 @@ fun getPlatformDrawableId(platformName: String): Painter? {
 fun SocialMediaLogo(
     platformName: String,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit = {}
+    onClick: (Painter) -> Unit = {}
 ) {
     val logoPainter = getPlatformDrawableId(platformName)
 
@@ -52,7 +50,7 @@ fun SocialMediaLogo(
         Image(
             painter = logoPainter,
             contentDescription = "Social media logo for $platformName",
-            modifier = modifier.size(20.dp).clickable(onClick = { onClick() })
+            modifier = modifier.size(20.dp).clickable(onClick = { onClick(logoPainter) })
         )
     }
 }

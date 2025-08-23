@@ -16,6 +16,7 @@ import ihubs.composeapp.generated.resources.Res
 import ihubs.composeapp.generated.resources.error
 import ghayatech.ihubs.ui.theme.AppColors
 import ghayatech.ihubs.ui.theme.AppStringsProvider
+import ihubs.composeapp.generated.resources.update
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -27,7 +28,7 @@ fun UpdatePage(message: String = AppStringsProvider.current().update_required) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Image(painter = painterResource(Res.drawable.error), contentDescription = "update required")
+        Image(painter = painterResource(Res.drawable.update), contentDescription = "update required")
         Spacer(modifier = Modifier.height(12.dp))
         CText(
             message,

@@ -43,10 +43,10 @@ fun <T> HandleUiState(
 
         is UiState.Error -> {
             val errorMessage = state.error.getMessage()
-//            ErrorPage(errorMessage)
-//            LaunchedEffect(state) {
-//                onMessage(errorMessage)
-//            }
+            ErrorPage(errorMessage)
+            LaunchedEffect(state) {
+                onMessage(errorMessage)
+            }
         }
 
         null -> Unit

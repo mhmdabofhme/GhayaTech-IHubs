@@ -52,7 +52,7 @@ class HubsScreen : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-        val settings: Settings = rememberKoinInject()
+//        val settings: Settings = rememberKoinInject()
         val viewModel: MainViewModel = rememberKoinInject()
         val logger: Logger = rememberKoinInject()
         val strings = AppStringsProvider.current()
@@ -71,10 +71,10 @@ class HubsScreen : Screen {
         var filteredWorkspaces by remember { mutableStateOf(emptyList<Workspace>()) }
 
         // Filter State
-        var searchInput by rememberSaveable { mutableStateOf("") }
-        var hasBank by rememberSaveable { mutableStateOf<Boolean?>(null) }
-        var hasShift by rememberSaveable { mutableStateOf<Boolean?>(null) }
-        var hasFree by rememberSaveable { mutableStateOf<Boolean?>(null) }
+        var searchInput by remember { mutableStateOf("") }
+        var hasBank by remember { mutableStateOf<Boolean?>(null) }
+        var hasShift by remember { mutableStateOf<Boolean?>(null) }
+        var hasFree by remember { mutableStateOf<Boolean?>(null) }
 
         val governoratesList = remember { mutableStateListOf<Governorate>() }
         var selectedGovernorate by remember { mutableStateOf<Governorate?>(null) }

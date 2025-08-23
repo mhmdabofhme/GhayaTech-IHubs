@@ -357,9 +357,14 @@ class MainViewModel(
         )
     }
 
+    fun resetBookingState() {
+        // Reset the state to its initial value
+        _createBookingState.value = null
+    }
+
     fun createServiceRequest(id: Int, data: CreateServiceRequest) {
         executeApiCall(
-            "createBookingWithHours",
+            "createServiceRequest",
             { repository.createServiceRequest(id,data) },
             _createServiceState
         )

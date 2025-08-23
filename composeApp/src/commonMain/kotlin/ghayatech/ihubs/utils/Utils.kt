@@ -9,6 +9,7 @@ import ghayatech.ihubs.ui.theme.AppStrings
 import ghayatech.ihubs.ui.theme.AppStringsProvider
 import ihubs.composeapp.generated.resources.Res
 import ihubs.composeapp.generated.resources.diamond
+import ihubs.composeapp.generated.resources.diamond_filled
 import ihubs.composeapp.generated.resources.first
 import ihubs.composeapp.generated.resources.second
 import ihubs.composeapp.generated.resources.third
@@ -115,8 +116,8 @@ fun getPackageIcon(packageName: String): Painter {
         "hour" -> painterResource(Res.drawable.third)
         "day" -> painterResource(Res.drawable.second)
         "week" -> painterResource(Res.drawable.first)
-        "month" -> painterResource(Res.drawable.diamond)
-        else -> painterResource(Res.drawable.diamond)
+        "month" -> painterResource(Res.drawable.diamond_filled)
+        else -> painterResource(Res.drawable.diamond_filled)
     }
 }
 

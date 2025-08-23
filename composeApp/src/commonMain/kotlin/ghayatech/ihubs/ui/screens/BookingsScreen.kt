@@ -55,6 +55,7 @@ import ghayatech.ihubs.ui.theme.AppColors
 import ghayatech.ihubs.ui.theme.AppStringsProvider
 import ghayatech.ihubs.utils.Logger
 import ghayatech.ihubs.utils.getPackageIcon
+import ghayatech.ihubs.utils.splitDateTime
 import ihubs.composeapp.generated.resources.diamond
 import ihubs.composeapp.generated.resources.first
 import ihubs.composeapp.generated.resources.second
@@ -219,6 +220,7 @@ class BookingsScreen() : Screen {
 
 
                             Spacer(modifier = Modifier.size(12.dp))
+                            val (date, time) = splitDateTime(item.startAt.toString())
 
                             // booking date
                             Row(modifier = Modifier.fillMaxWidth()) {
@@ -233,7 +235,7 @@ class BookingsScreen() : Screen {
                                 )
                                 Spacer(modifier = Modifier.size(4.dp))
                                 CText(
-                                    text = item.endAt.toString(),
+                                    text = date,
                                     color = AppColors.Black,
                                     fontFamily = Res.font.bold, modifier = Modifier.weight(1F)
                                 )
@@ -243,25 +245,28 @@ class BookingsScreen() : Screen {
 
 
                             // booking time
-                            Row(modifier = Modifier.fillMaxWidth()) {
-                                Image(
-                                    painterResource(Res.drawable.time),
-                                    contentDescription = "time",
-                                )
-                                CText(
-                                    text = "${strings.books_time} :",
-                                    color = AppColors.Primary,
-                                    fontFamily = Res.font.bold
-                                )
-                                Spacer(modifier = Modifier.size(12.dp))
-                                CText(
-                                    text = item.endAt.toString(),
-                                    color = AppColors.Black,
-                                    fontFamily = Res.font.bold,
-                                )
-                            }
-                            Spacer(modifier = Modifier.size(12.dp))
+                            if (time != "00:00") {
 
+                                Row(modifier = Modifier.fillMaxWidth()) {
+                                    Image(
+                                        painterResource(Res.drawable.time),
+                                        contentDescription = "time",
+                                    )
+                                    CText(
+                                        text = "${strings.books_time} :",
+                                        color = AppColors.Primary,
+                                        fontFamily = Res.font.bold
+                                    )
+                                    Spacer(modifier = Modifier.size(12.dp))
+                                    CText(
+                                        text = time,
+                                        color = AppColors.Black,
+                                        fontFamily = Res.font.bold,
+                                    )
+                                }
+                                Spacer(modifier = Modifier.size(12.dp))
+
+                            }
 
                             //username
                             Row(modifier = Modifier.fillMaxWidth()) {
@@ -280,7 +285,7 @@ class BookingsScreen() : Screen {
                                 )
                                 Spacer(modifier = Modifier.size(12.dp))
                                 CText(
-                                    text = strings.username,
+                                    text = item.wifiUsername ?:strings.none,
                                     color = AppColors.Black,
                                     fontFamily = Res.font.bold,
                                 )
@@ -302,7 +307,7 @@ class BookingsScreen() : Screen {
                                 )
                                 Spacer(modifier = Modifier.size(12.dp))
                                 CText(
-                                    text = strings.password,
+                                    text = item.wifiPassword ?:strings.none,
                                     color = AppColors.Black,
                                     fontFamily = Res.font.bold,
                                 )

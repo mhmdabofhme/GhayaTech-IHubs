@@ -139,24 +139,24 @@ class LoginScreen() : Screen {
                     onValueChange = { password = it }
                 )
                 Spacer(modifier = Modifier.height(10.dp))
-                CText(
-                    text = strings.forget_your_password,
-                    style = TextDecoration.Underline,
-                    color = AppColors.Secondary,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 12.sp,
-                    modifier = Modifier.fillMaxWidth().padding(start = 9.dp).clickable {
-                        if (phoneNumber.isNotEmpty()) {
-                            navigator.push(
-                                ResetPasswordScreen(
-                                    phoneNumber = phoneNumber
-                                )
-                            )
-                        } else {
-                            snackbarMessage = phoneMessage
-                        }
-                    }
-                )
+//                CText(
+//                    text = strings.forget_your_password,
+//                    style = TextDecoration.Underline,
+//                    color = AppColors.Secondary,
+//                    fontWeight = FontWeight.Bold,
+//                    fontSize = 12.sp,
+//                    modifier = Modifier.fillMaxWidth().padding(start = 9.dp).clickable {
+//                        if (phoneNumber.isNotEmpty()) {
+//                            navigator.push(
+//                                ResetPasswordScreen(
+//                                    phoneNumber = phoneNumber
+//                                )
+//                            )
+//                        } else {
+//                            snackbarMessage = phoneMessage
+//                        }
+//                    }
+//                )
                 Spacer(modifier = Modifier.height(10.dp))
 
                 CButton(

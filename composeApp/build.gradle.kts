@@ -67,6 +67,9 @@ kotlin {
             implementation(libs.voyager.transitions)
             implementation(libs.kmp.date.time.picker)
             implementation(libs.kamel.image)
+
+//            implementation(libs.clipboard.manager)
+
 //            implementation(libs.image.loader)
 
 

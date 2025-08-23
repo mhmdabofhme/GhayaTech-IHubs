@@ -26,6 +26,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.platform.ClipboardManager
+import androidx.compose.ui.platform.LocalClipboard
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -51,16 +55,19 @@ import ghayatech.ihubs.ui.theme.AppStringsProvider
 import ghayatech.ihubs.utils.handleTime
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.resources.stringResource
+
 
 @Composable
 fun BookingDialog(
     paymentInfo: PaymentInfo,
     onDismiss: () -> Unit,
     onBookClick: (Request) -> Unit,
+    onCopyClick: (String) -> Unit,
     hasTime: Boolean = false,
+
 ) {
     val strings = AppStringsProvider.current()
+//    val clipboardManager = remember { ClipboardManager() }
 
     var worksHours by rememberSaveable { mutableStateOf("") }
     var request by remember { mutableStateOf<Request?>(null) }
@@ -154,13 +161,19 @@ fun BookingDialog(
                     label = strings.account_number,
                     value = paymentInfo.bankAccountNumber,
                     copyable = true,
-                    isRed = true
+                    isRed = true,
+                    onClick = {
+                        onCopyClick(paymentInfo.bankAccountNumber)
+                    }
                 )
                 TransferRow(
                     label = strings.mobile_number,
                     value = paymentInfo.mobilePaymentNumber,
                     copyable = true,
-                    isRed = true
+                    isRed = true,
+                    onClick = {
+                        onCopyClick(paymentInfo.mobilePaymentNumber)
+                    }
                 )
 
                 Spacer(modifier = Modifier.height(24.dp))
@@ -233,7 +246,13 @@ fun BookingDialog(
 
 
 @Composable
-fun TransferRow(label: String, value: String, copyable: Boolean, isRed: Boolean = false) {
+fun TransferRow(
+    label: String,
+    value: String,
+    copyable: Boolean,
+    isRed: Boolean = false,
+    onClick: () -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -246,7 +265,10 @@ fun TransferRow(label: String, value: String, copyable: Boolean, isRed: Boolean 
     ) {
         CText(text = label, color = AppColors.Secondary)
         Spacer(modifier = Modifier.width(6.dp))
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.clickable(onClick = onClick)
+        ) {
             CText(
                 text = value,
                 color = if (isRed) AppColors.Error else AppColors.Secondary,

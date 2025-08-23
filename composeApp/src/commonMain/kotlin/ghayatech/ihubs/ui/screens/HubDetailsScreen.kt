@@ -243,7 +243,7 @@ class HubDetailsScreen(private val id: Int) : Screen {
                         isOutlined = true,
                         onClick = {
 //                            socialMediaOpener.openWhatsAppChat("970597204724")
-                            socialOpener.openWhatsApp("+972597204724")
+                            socialOpener.openWhatsApp(workspace.value?.phone.toString())
 //                            whatsAppHelper.openWhatsApp("+970597204724")
 //                            navigator.push(ChatScreen(workspace.value!!.secretary.id))
                         })

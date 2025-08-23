@@ -34,28 +34,28 @@ fun ImageSlider(
     }
 
     // Auto-scroll when current image is loaded
-    LaunchedEffect(images) {
-        while (true) {
-            val currentPage = pagerState.currentPage
+//    LaunchedEffect(images) {
+//        while (true) {
+//            val currentPage = pagerState.currentPage
 
             // انتظر حتى يتم تحميل الصورة الحالية
-            while (imageLoadedStates.getOrNull(currentPage) != true) {
-                delay(200L)
-            }
+//            while (imageLoadedStates.getOrNull(currentPage) != true) {
+//                delay(200L)
+//            }
 
             // بعد التحميل، انتظر الفترة المحددة ثم انتقل
-            delay(autoScrollInterval)
-
-            val nextPage = if (pagerState.currentPage == pageCount - 1) 0 else pagerState.currentPage + 1
-            pagerState.animateScrollToPage(
-                page = nextPage,
-                animationSpec = tween(
-                    durationMillis = 1000,
-                    easing = FastOutSlowInEasing
-                )
-            )
-        }
-    }
+//            delay(autoScrollInterval)
+//
+//            val nextPage = if (pagerState.currentPage == pageCount - 1) 0 else pagerState.currentPage + 1
+//            pagerState.animateScrollToPage(
+//                page = nextPage,
+//                animationSpec = tween(
+//                    durationMillis = 1000,
+//                    easing = FastOutSlowInEasing
+//                )
+//            )
+//        }
+//    }
 
     Column(
         modifier = modifier,

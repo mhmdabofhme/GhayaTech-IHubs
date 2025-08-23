@@ -127,6 +127,9 @@ data class AppStrings(
     val over_month_ago: String,
     val minutes: String,
     val just_now: String,
+    val none: String,
+    val copy_message: String,
+
 )
 
 fun stringsFor(language: String): AppStrings = when (language) {
@@ -240,6 +243,8 @@ fun stringsFor(language: String): AppStrings = when (language) {
         over_month_ago = "منذ اكثر من شهر",
         minutes = "دقائق",
         just_now = "منذ ثوانٍ قليلة",
+        none = "لا يوجد",
+        copy_message = "تم النسخ بنجاح",
     )
 
     else -> AppStrings(
@@ -352,6 +357,8 @@ fun stringsFor(language: String): AppStrings = when (language) {
         over_month_ago = "over a month ago",
         minutes = "minutes",
         just_now = "Just now",
+        none = "None",
+        copy_message = "Copied successfully",
     )
 }
 

@@ -1,7 +1,11 @@
 package ghayatech.ihubs.ui.components
 
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextDirection
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.sp
 import ihubs.composeapp.generated.resources.Res
 import ihubs.composeapp.generated.resources.bold
@@ -33,14 +37,14 @@ fun CountdownText(
 
     val formattedTime = "${days.toString().padStart(2, '0')} :" +
             "${hours.toString().padStart(2, '0')} :" +
-            "${minutes.toString().padStart(2, '0')} :"+
+            "${minutes.toString().padStart(2, '0')} :" +
             seconds.toString().padStart(2, '0')
 
     CText(
         text = formattedTime,
         color = AppColors.Primary,
         fontSize = 35.sp,
-        fontFamily =Res.font.bold
-
+        fontFamily = Res.font.bold,
+        textDirection = TextDirection.Ltr
     )
 }

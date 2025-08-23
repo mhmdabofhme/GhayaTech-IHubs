@@ -42,7 +42,7 @@ fun BottomSheetScreen(
     onDone: () -> Unit
 ) {
     val visible = openBottomSheet.value
-    val scope = rememberCoroutineScope()
+//    val scope = rememberCoroutineScope()
     val animatedOffset = remember { Animatable(1000f) } // يبدأ خارج الشاشة
 
     LaunchedEffect(visible) {

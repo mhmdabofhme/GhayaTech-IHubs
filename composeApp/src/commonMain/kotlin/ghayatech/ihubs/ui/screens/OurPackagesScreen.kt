@@ -35,6 +35,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -73,7 +75,6 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.rememberKoinInject
 
-
 class OurPackagesScreen(private val id: Int) : Screen {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
@@ -91,9 +92,7 @@ class OurPackagesScreen(private val id: Int) : Screen {
         val openBottomSheet = remember { mutableStateOf(false) }
         var selectedPackageId by remember { mutableIntStateOf(-1) }
         var snackbarMessage by remember { mutableStateOf<String?>(null) }
-//        val paymentInfo = remember { mutableStateOf<PaymentInfo?>(null) }
-//        val workspacePackage = remember { mutableStateOf<WorkspacePackage?>(null) }
-        val packagesResponse = rememberSaveable { mutableStateOf<PackagesResponse?>(null) }
+        val packagesResponse = remember { mutableStateOf<PackagesResponse?>(null) }
         val workspacePackagesState by viewModel.workspacePackagesState.collectAsState()
 
         val workspace = remember { mutableStateOf<WorkspaceDetails?>(null) }
@@ -106,12 +105,12 @@ class OurPackagesScreen(private val id: Int) : Screen {
 
         val bookingNotAvailable = strings.booking_not_available
 
+        val clipboardManager = LocalClipboardManager.current
 
-        LaunchedEffect(id) {
+        LaunchedEffect(Unit) {
             viewModel.getWorkspacePackages(id)
             viewModel.getWorkspace(id)
         }
-
 
 
         LaunchedEffect(bookingState) {
@@ -140,7 +139,6 @@ class OurPackagesScreen(private val id: Int) : Screen {
                     .fillMaxSize()
                     .background(AppColors.White)
                     .padding(start = 22.dp, end = 22.dp, top = 60.dp),
-//                    .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
 
@@ -173,19 +171,19 @@ class OurPackagesScreen(private val id: Int) : Screen {
                     PackageTheme(
                         painterResource(Res.drawable.diamond),
                         AppColors.monthly
-                    ),    // للعنصر الأخير (Index from end = 0)
+                    ),
                     PackageTheme(
                         painterResource(Res.drawable.first),
                         AppColors.weekly
-                    ),    // للعنصر قبل الأخير (Index from end = 1)
+                    ),
                     PackageTheme(
                         painterResource(Res.drawable.second),
                         AppColors.daily
-                    ),  // للعنصر الثالث من النهاية (Index from end = 2)
+                    ),
                     PackageTheme(
                         painterResource(Res.drawable.third),
                         AppColors.hours
-                    ),   // للعنصر الرابع من النهاية (Index from end = 3)
+                    ),
                 )
 
                 LazyColumn {
@@ -193,8 +191,6 @@ class OurPackagesScreen(private val id: Int) : Screen {
 
 
                         val reverseIndex = packages.size - 1 - index
-                        // الحصول على اللون المناسب باستخدام الـ reverseIndex
-                        // getOrNull() يضمن عدم حدوث كراش إذا كان الاندكس خارج النطاق (أي إذا كانت القائمة صغيرة)
                         val packageTheme =
                             packageThemeFromEnd.getOrNull(reverseIndex) ?: PackageTheme(
                                 painterResource(Res.drawable.third),
@@ -216,21 +212,18 @@ class OurPackagesScreen(private val id: Int) : Screen {
                                         tag,
                                         " ${packagesResponse.value?.payment?.bankPaymentSupported}"
                                     )
-//                                    print("TAG Booking: ${packagesResponse.value?.payment?.bankPaymentSupported}")
 
                                     if (packagesResponse.value?.payment?.bankPaymentSupported != null && packagesResponse.value?.payment?.bankPaymentSupported.equals(
                                             "true"
                                         )
                                     ) {
                                         logger.debug(tag, " hasTime ${hasTime.value}")
-//                                        print("TAG Booking:hasTime ${hasTime.value}")
 
                                         hasTime.value = item.name == "hour"
 
                                         selectedPackageId = item.id
                                         showDialog = true
                                     } else {
-                                        //TODO SHOW ERROR MESSAGE OR HANDLE IT
                                         snackbarMessage = bookingNotAvailable
                                     }
                                 }
@@ -248,7 +241,6 @@ class OurPackagesScreen(private val id: Int) : Screen {
                                     .padding(10.dp),
                                 color = AppColors.White,
                                 fontSize = 20.sp,
-//                        fontWeight = FontWeight.Bold,
                                 fontFamily = Res.font.bold
 
                             )
@@ -258,86 +250,15 @@ class OurPackagesScreen(private val id: Int) : Screen {
                                 modifier = Modifier.padding(10.dp),
                                 color = AppColors.White,
                                 fontSize = 20.sp,
-//                        fontWeight = FontWeight.Bold,
                                 fontFamily = Res.font.bold
                             )
                             Image(
                                 painterResource(Res.drawable.ils),
                                 contentDescription = "currency"
                             )
-
                         }
                     }
                 }
-
-//                    for (item in packages) {
-
-//                        val backgroundColor: Color = when (item.id) {
-//                            packages[packages.size - 1].id -> AppColors.monthly
-//                            packages[packages.size - 2].id -> AppColors.weekly
-//                            packages[packages.size - 3].id -> AppColors.daily
-//                            else -> AppColors.hours
-//                        }
-
-
-//                        Row(
-//                            modifier = Modifier.fillMaxWidth().padding(7.dp).height(100.dp)
-//                                .background(
-//                                    backgroundColor,
-//                                    shape = RoundedCornerShape(15.dp)
-//                                )
-//                                .clickable {
-//                                    if (packagesResponse.value?.payment?.bankPaymentSupported != null && packagesResponse.value?.payment?.bankPaymentSupported.equals(
-//                                            "1"
-//                                        )
-//                                    ) {
-//                                        selectedPackageId = item.id
-//                                        showDialog = true
-//                                    } else {
-//                                        //TODO SHOW ERROR MESSAGE OR HANDLE IT
-//                                        snackbarMessage = bookingNotAvailable
-//                                    }
-//                                }.padding(20.dp),
-//                            verticalAlignment = Alignment.CenterVertically
-//                        ) {
-//                            Image(
-//                                painterResource(Res.drawable.diamond),
-//                                contentDescription = item.name
-//                            )
-//                            CText(
-//                                item.name,
-//                                modifier = Modifier.weight(1F).padding(10.dp),
-//                                color = AppColors.White,
-//                                fontSize = 20.sp,
-////                        fontWeight = FontWeight.Bold,
-//                                fontFamily = Res.font.bold
-//
-//                            )
-//
-//                            CText(
-//                                item.price,
-//                                modifier = Modifier.padding(10.dp),
-//                                color = AppColors.White,
-//                                fontSize = 20.sp,
-////                        fontWeight = FontWeight.Bold,
-//                                fontFamily = Res.font.bold
-//                            )
-//                            Image(
-//                                painterResource(Res.drawable.ils),
-//                                contentDescription = "currency"
-//                            )
-//
-//                        }
-//                    }
-//                }
-//                else {
-//                    CText(
-//                        text = stringResource(Res.string.no_data),
-//                        color = AppColors.TextSecondary,
-//                    )
-//                }
-
-
             }
 
 
@@ -351,6 +272,10 @@ class OurPackagesScreen(private val id: Int) : Screen {
                         hasTime = hasTime.value,
                         paymentInfo = packagesResponse.value!!.payment,
                         onDismiss = { showDialog = false },
+                        onCopyClick = {
+                            clipboardManager.setText(AnnotatedString(it))
+                            snackbarMessage = strings.copy_message
+                        },
                         onBookClick =
                             {
                                 if (hasTime.value) {
@@ -377,7 +302,6 @@ class OurPackagesScreen(private val id: Int) : Screen {
                                 showDialog = false
                             },
                     )
-
                 }
             }
 
@@ -390,9 +314,12 @@ class OurPackagesScreen(private val id: Int) : Screen {
                     description = strings.booking_info,
                     buttonText = strings.done,
                 ) {
+                    openBottomSheet.value = false
+                    // هنا يتم إضافة الكود لحل المشكلة
+                    // بعد التنقل، قم بمسح الحالة من الـ ViewModel
+                    viewModel.resetBookingState()
                     navigator.push(HubsScreen())
                 }
-
             }
 
             CustomSnackbar(
@@ -434,20 +361,12 @@ class OurPackagesScreen(private val id: Int) : Screen {
                 onSuccess = { data ->
                     booking.value = data
                     openBottomSheet.value = true
-//                    navigator.push(HubsScreen())
                     logger.debug(tag, " Booking onSuccess ${data.id}")
                     logger.debug(tag, " Booking onSuccess ${data.packageName}")
                     logger.debug(tag, " Booking onSuccess ${data.workspaceName}")
-
-//                    print("TAG Booking onSuccess: ${data.id}")
-//                    print("TAG Booking onSuccess: ${data.packageName}")
-//                    print("TAG Booking onSuccess: ${data.wifiPassword}")
                 }
             )
-
-
         }
-
     }
 }
 

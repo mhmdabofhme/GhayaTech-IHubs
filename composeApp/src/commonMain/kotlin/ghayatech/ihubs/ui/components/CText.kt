@@ -10,6 +10,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.material3.Text
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.unit.sp
 import ihubs.composeapp.generated.resources.Res
 import ihubs.composeapp.generated.resources.normal
@@ -27,6 +28,7 @@ fun CText(
     fontFamily: FontResource = Res.font.normal,
     textAlign: TextAlign? = null,
     style: TextDecoration = TextDecoration.None,
+    textDirection: TextDirection = TextDirection.Content,
     maxLines: Int = Int.MAX_VALUE,
     softWrap: Boolean = true
 ) {
@@ -39,10 +41,10 @@ fun CText(
         textAlign = textAlign,
         modifier = modifier,
         style = TextStyle(
-            textDecoration = style
+            textDecoration = style,
+            textDirection = textDirection
         ),
         maxLines = maxLines,
         softWrap = softWrap,
-
     )
 }

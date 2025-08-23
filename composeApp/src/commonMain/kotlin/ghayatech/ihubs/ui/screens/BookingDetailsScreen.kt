@@ -43,6 +43,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
@@ -103,8 +104,6 @@ class BookingDetailsScreen() : Screen {
         val tag = "TAG BookingDetailsScreen:"
         val strings = AppStringsProvider.current()
 
-
-        val countdownDuration = 447_720_000L
         var listSize = 0
         val pagerState = rememberPagerState(pageCount = { listSize })
 //        val pagerState = rememberPagerState()
@@ -315,27 +314,29 @@ class BookingDetailsScreen() : Screen {
                             Spacer(modifier = Modifier.size(12.dp))
 
                             // booking time
-                            Row(Modifier.fillMaxWidth()) {
-                                Image(
-                                    painterResource(Res.drawable.time),
-                                    contentDescription = "time",
-                                )
-                                Spacer(modifier = Modifier.size(4.dp))
+                            if (time != "00:00"){
+                                Row(Modifier.fillMaxWidth()) {
+                                    Image(
+                                        painterResource(Res.drawable.time),
+                                        contentDescription = "time",
+                                    )
+                                    Spacer(modifier = Modifier.size(4.dp))
 
-                                CText(
-                                    text = "${strings.books_time} :",
-                                    color = AppColors.Secondary,
-                                    fontFamily = Res.font.bold
+                                    CText(
+                                        text = "${strings.books_time} :",
+                                        color = AppColors.Secondary,
+                                        fontFamily = Res.font.bold
 
-                                )
+                                    )
+                                    Spacer(modifier = Modifier.size(12.dp))
+                                    CText(
+                                        text = time,
+                                        color = AppColors.Black,
+                                        fontFamily = Res.font.bold,
+                                    )
+                                }
                                 Spacer(modifier = Modifier.size(12.dp))
-                                CText(
-                                    text = time,
-                                    color = AppColors.Black,
-                                    fontFamily = Res.font.bold,
-                                )
                             }
-                            Spacer(modifier = Modifier.size(12.dp))
 
 
                             //username
@@ -355,7 +356,7 @@ class BookingDetailsScreen() : Screen {
                                 )
                                 Spacer(modifier = Modifier.size(12.dp))
                                 CText(
-                                    text = strings.username,
+                                    text = item.wifiUsername ?:strings.none,
                                     color = AppColors.Black,
                                     fontFamily = Res.font.bold,
                                 )
@@ -378,7 +379,7 @@ class BookingDetailsScreen() : Screen {
                                 )
                                 Spacer(modifier = Modifier.size(12.dp))
                                 CText(
-                                    text = strings.password,
+                                    text = item.wifiPassword ?:strings.none,
                                     color = AppColors.Black,
                                     fontFamily = Res.font.bold,
                                 )
@@ -391,6 +392,7 @@ class BookingDetailsScreen() : Screen {
                                 fontFamily = Res.font.bold
                             )
 
+                            logger.debug("$tag endAt" , item.endAt.toString())
                             CountdownText(calculateRemainingMillis(item.endAt.toString()))
 
                             Spacer(modifier = Modifier.size(13.dp))
@@ -399,7 +401,7 @@ class BookingDetailsScreen() : Screen {
                             Row {
                                 CButton(text = strings.contactus, onClick = {
                                     // TODO PASS CONVERSATION ID
-                                    socialOpener.openWhatsApp("972597204724")
+                                    socialOpener.openWhatsApp(workspace.value?.phone.toString())
                                 }, modifier = Modifier.weight(1F))
 //                                if (workspace.value != null) {
                                 Spacer(modifier = Modifier.size(10.dp))

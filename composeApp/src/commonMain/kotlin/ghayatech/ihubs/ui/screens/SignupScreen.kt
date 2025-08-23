@@ -57,9 +57,6 @@ import ghayatech.ihubs.utils.Logger
 import ghayatech.ihubs.utils.TokenManagerFactory
 import ghayatech.ihubs.utils.UserPreferences
 
-//import ghayatech.ihubs.app_navigation.Screen
-//import ghayatech.ihubs.app_navigation.Config
-//import ghayatech.ihubs.app_navigation.RootComponent
 
 class SignupScreen() : Screen {
     @Composable
@@ -235,16 +232,16 @@ class SignupScreen() : Screen {
             )
 
             // معالجة حالة الواجهة (Handle UI State)
-            HandleUiState(
-                state = registerState,
-                onMessage = { snackbarMessage = it },
-                onSuccess = { data ->
-                    val token = data.token
-                    userPreferences.saveToken(token)
-                    userPreferences.saveUser(user = data.user)
-                    navigator.push(HubsScreen())
-                }
-            )
+//            HandleUiState(
+//                state = registerState,
+//                onMessage = { snackbarMessage = it },
+//                onSuccess = { data ->
+//                    val token = data.token
+//                    userPreferences.saveToken(token)
+//                    userPreferences.saveUser(user = data.user)
+//                    navigator.push(HubsScreen())
+//                }
+//            )
 
             HandleUiState(
                 state = registerState,
@@ -274,6 +271,8 @@ class SignupScreen() : Screen {
                     navigator.push(HubsScreen())
                 }
             )
+
+
         }
     }
 }
