@@ -33,7 +33,15 @@ kotlin {
             isStatic = true
         }
     }
-    
+    targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>().all {
+        binaries.all {
+            // تقليل المعلومات القابلة للاستخراج في الإصدارات
+            binaryOptions["stripDebugSymbols"] = "true"
+            // لو احتجت الضبط عبر freeCompilerArgs:
+            // freeCompilerArgs += listOf("-Xbinary=stripDebugInfoFromNativeLibs=true")
+        }
+    }
+
     jvm()
     
     sourceSets {
@@ -110,15 +118,63 @@ android {
         versionCode = 1
         versionName = "1.0"
     }
+
+//    signingConfigs {
+//        create("release") {
+//            storeFile = file("keystore.jks") // ضع مسار ملف keystore هنا
+//            storePassword = "كلمة_مرور_المخزن"
+//            keyAlias = "اسم_المفتاح"
+//            keyPassword = "كلمة_مرور_المفتاح"
+//        }
+//    }
+
+    signingConfigs {
+        create("release") {
+            val storeFilePath = project.findProperty("RELEASE_STORE_FILE")?.toString()
+            val storePassword = project.findProperty("RELEASE_STORE_PASSWORD")?.toString()
+            val keyAlias = project.findProperty("RELEASE_KEY_ALIAS")?.toString()
+            val keyPassword = project.findProperty("RELEASE_KEY_PASSWORD")?.toString()
+
+            if (storeFilePath.isNullOrBlank() ||
+                storePassword.isNullOrBlank() ||
+                keyAlias.isNullOrBlank() ||
+                keyPassword.isNullOrBlank()
+            ) {
+                throw GradleException("Release signing properties are missing. Define RELEASE_* in gradle.properties")
+            }
+
+            storeFile = file(storeFilePath)
+            this.storePassword = storePassword
+            this.keyAlias = keyAlias
+            this.keyPassword = keyPassword
+        }
+    }
+
     packaging {
         resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += setOf(
+                "META-INF/*.kotlin_module",
+                "META-INF/DEPENDENCIES",
+                "META-INF/AL2.0",
+                "META-INF/LGPL2.1"
+            )
         }
     }
     buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
+        release {
+            isMinifyEnabled = true          // تشغيل R8
+            isShrinkResources = true        // حذف الموارد غير المستخدمة
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+            isDebuggable = false
+            signingConfig = signingConfigs.getByName("release")
         }
+//        debug {
+//            // اختياري: تعطيل لوجات الطرف الثالث في debug حسب حاجتك
+//            // isMinifyEnabled = false
+//        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -141,3 +197,5 @@ dependencies {
 //        }
 //    }
 //}
+
+
