@@ -89,6 +89,7 @@ import ghayatech.ihubs.ui.theme.LocalThemeViewModel
 import ghayatech.ihubs.ui.theme.ThemeViewModel
 import ghayatech.ihubs.utils.UserPreferences
 import ihubs.composeapp.generated.resources.language
+import kotlinx.coroutines.flow.StateFlow
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -177,15 +178,20 @@ class ProfileScreen() : Screen {
                         if (isEditing) {
                             Row(
                                 modifier = Modifier.clickable {
-                                    viewModel.updateProfile(
-                                        UpdateProfileRequest(
-                                            name = username,
-                                            phone = mobileNumber,
-                                            specialty = major
+                                    if (username.trim().isNotEmpty() && major.trim()
+                                            .isNotEmpty() && mobileNumber.trim().length > 9
+                                    ) {
+                                        viewModel.updateProfile(
+                                            UpdateProfileRequest(
+                                                name = username,
+                                                phone = mobileNumber,
+                                                specialty = major
+                                            )
                                         )
-                                    )
-                                    isEditing = !isEditing
-
+                                        isEditing = !isEditing
+                                    } else {
+                                        snackbarMessage = strings.edit_error_message
+                                    }
                                 },
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
@@ -285,7 +291,10 @@ class ProfileScreen() : Screen {
                             modifier = Modifier.size(22.dp)
                         )
                         Spacer(modifier = Modifier.width(8.dp))
-                        ThemeSelectionRow(themeViewModel = themeViewModel)
+                        ThemeSelectionRow(
+                            currentThemeMode = currentThemeMode,
+                            themeViewModel = themeViewModel
+                        )
 //                        CText(
 //                            stringResource(Res.string.dark_theme),
 //                            modifier = Modifier.weight(1f),
@@ -474,7 +483,7 @@ class ProfileScreen() : Screen {
                 .border(width = 8.dp, color = AppColors.White, shape = CircleShape)
                 .padding(30.dp),
 
-        )
+            )
     }
 
 
@@ -509,9 +518,10 @@ class ProfileScreen() : Screen {
     @Composable
     fun ThemeSelectionRow(
         modifier: Modifier = Modifier,
-        themeViewModel: ThemeViewModel = rememberKoinInject<ThemeViewModel>() // حقن ThemeViewModel
+        currentThemeMode: AppThemeMode,
+        themeViewModel: ThemeViewModel // حقن ThemeViewModel
     ) {
-        val currentThemeMode by themeViewModel.currentThemeMode.collectAsState()
+//        val currentThemeMode by themeViewModel.currentThemeMode.collectAsState()
         val strings = AppStringsProvider.current()
 
         Row(

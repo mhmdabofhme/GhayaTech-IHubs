@@ -3,6 +3,7 @@ package ghayatech.ihubs.ui.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -14,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.DefaultAlpha
 import ghayatech.ihubs.ui.theme.AppColors
 import ihubs.composeapp.generated.resources.Res
 import ihubs.composeapp.generated.resources.resource_default
@@ -39,11 +41,11 @@ fun NetworkImage(
     }
 
     KamelImage(
-        resource = resource,
-        contentDescription = contentDescription,
-        contentScale = ContentScale.Crop,
-        modifier = modifier,
-        onLoading = {
+        { resource }, contentDescription,
+        modifier,
+        Alignment.Center, ContentScale.Crop,
+        DefaultAlpha, null, @Composable
+        fun BoxScope.(it: Float) {
             Box(
                 modifier = modifier,
                 contentAlignment = Alignment.Center
@@ -53,23 +55,7 @@ fun NetworkImage(
                     strokeWidth = 2.dp
                 )
             }
-        },
-//        onFailure = {
-//
-//            Box(
-//                modifier = modifier
-//                    .background(AppColors.Secondary, shape = RoundedCornerShape(12.dp))
-//                    .padding(8.dp),
-//                contentAlignment = Alignment.Center
-//            ) {
-//                Image(
-//                    painter = painterResource(Res.drawable.resource_default),
-//                    contentDescription = "Default Image",
-//                    modifier = Modifier.size(48.dp),
-//                    contentScale = ContentScale.Crop
-//                )
-//            }
-//        }
+        }, null, Alignment.Center, null
     )
 }
 

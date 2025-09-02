@@ -92,7 +92,7 @@ class BookingsScreen() : Screen {
 
         LaunchedEffect(Unit) {
             logger.debug(tag, "getBookings")
-            viewModel.getBookings()
+            viewModel.getBookings("history")
         }
 
 
@@ -285,7 +285,7 @@ class BookingsScreen() : Screen {
                                 )
                                 Spacer(modifier = Modifier.size(12.dp))
                                 CText(
-                                    text = item.wifiUsername ?:strings.none,
+                                    text = item.wifiUsername ?:strings.booking_not_confirmed,
                                     color = AppColors.Black,
                                     fontFamily = Res.font.bold,
                                 )
@@ -307,7 +307,7 @@ class BookingsScreen() : Screen {
                                 )
                                 Spacer(modifier = Modifier.size(12.dp))
                                 CText(
-                                    text = item.wifiPassword ?:strings.none,
+                                    text = item.wifiPassword ?:strings.booking_not_confirmed,
                                     color = AppColors.Black,
                                     fontFamily = Res.font.bold,
                                 )

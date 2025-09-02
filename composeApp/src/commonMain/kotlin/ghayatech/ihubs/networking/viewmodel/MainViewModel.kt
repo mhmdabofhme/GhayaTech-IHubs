@@ -132,6 +132,10 @@ class MainViewModel(
         MutableStateFlow<UiState<ListBaseResponse<CreateBookingResponse>>?>(null)
     val bookingState: StateFlow<UiState<ListBaseResponse<CreateBookingResponse>>?> = _bookingState
 
+    private val _bookingsHistoryState =
+        MutableStateFlow<UiState<ListBaseResponse<CreateBookingResponse>>?>(null)
+    val bookingsHistoryState: StateFlow<UiState<ListBaseResponse<CreateBookingResponse>>?> = _bookingsHistoryState
+
     // Governorates and Regions
     private val _governoratesState =
         MutableStateFlow<UiState<ListBaseResponse<Governorate>>?>(null)
@@ -513,6 +517,15 @@ class MainViewModel(
         }, _bookingState)
 
     }
+
+//    fun getBookingsHistory(
+//        query: String? = null,
+//    ) {
+//        executeApiCall("getBookingsHistory", {
+//            repository.getBookingsHistory(query)
+//        }, _bookingsHistoryState)
+//
+//    }
 
     fun getGovernorates() {
         executeApiCall("getGovernorates", {

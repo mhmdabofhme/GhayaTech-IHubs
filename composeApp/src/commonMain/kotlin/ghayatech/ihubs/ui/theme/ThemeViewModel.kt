@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 
 class ThemeViewModel(private val appPreferences: UserPreferences) {
 
-    private val _currentThemeMode = MutableStateFlow(AppThemeMode.SYSTEM)
+    private val _currentThemeMode = MutableStateFlow(AppThemeMode.LIGHT)
     val currentThemeMode: StateFlow<AppThemeMode> = _currentThemeMode.asStateFlow()
 
     private val vmScope = CoroutineScope(Dispatchers.IO + SupervisorJob())

@@ -10,6 +10,7 @@ plugins {
     alias(libs.plugins.composeHotReload)
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.googleGmsGoogleServices)
+    alias(libs.plugins.firebase.crashlytics)
 }
 
 
@@ -42,7 +43,7 @@ kotlin {
         }
     }
 
-    jvm()
+//    jvm()
     
     sourceSets {
 
@@ -56,6 +57,8 @@ kotlin {
             implementation(libs.ktor.client.okhttp)
             implementation(libs.androidx.activity.compose)
             implementation(libs.firebase.messaging)
+            implementation(libs.firebase.crashlytics.ktx)
+            implementation(libs.firebase.analytics.ktx)
 
         }
         commonMain.dependencies {
@@ -75,11 +78,6 @@ kotlin {
             implementation(libs.voyager.transitions)
             implementation(libs.kmp.date.time.picker)
             implementation(libs.kamel.image)
-
-//            implementation(libs.clipboard.manager)
-
-//            implementation(libs.image.loader)
-
 
 
         }

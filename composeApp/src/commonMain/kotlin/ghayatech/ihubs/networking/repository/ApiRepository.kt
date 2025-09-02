@@ -96,6 +96,14 @@ class ApiRepository(private val api: ApiService) {
         )
     }
 
+//    suspend fun getBookingsHistory(
+//        query: String? = null,
+//    ): Result<ListBaseResponse<CreateBookingResponse>, NetworkError> {
+//        return api.getBookingsHistory(
+//            query = query
+//        )
+//    }
+
 
     // Service Requests
     suspend fun createServiceRequest(

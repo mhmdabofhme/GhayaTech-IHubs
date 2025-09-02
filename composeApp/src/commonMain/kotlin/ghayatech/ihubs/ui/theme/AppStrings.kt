@@ -128,6 +128,10 @@ data class AppStrings(
     val minutes: String,
     val just_now: String,
     val none: String,
+    val booking_not_confirmed: String,
+    val booking_expired: String,
+    val edit_error_message: String,
+
     val copy_message: String,
 
 )
@@ -244,6 +248,9 @@ fun stringsFor(language: String): AppStrings = when (language) {
         minutes = "دقائق",
         just_now = "منذ ثوانٍ قليلة",
         none = "لا يوجد",
+        booking_not_confirmed = "لم يتم تأكيد الحجز",
+        booking_expired = "الحجز منتهي",
+        edit_error_message = "تأكد أن الحقول معبأة وان رقم الهاتف صحيح",
         copy_message = "تم النسخ بنجاح",
     )
 
@@ -358,6 +365,9 @@ fun stringsFor(language: String): AppStrings = when (language) {
         minutes = "minutes",
         just_now = "Just now",
         none = "None",
+        booking_not_confirmed = "Booking not confirmed",
+        booking_expired = "Booking is over",
+        edit_error_message = "Make sure the fields are filled in and the phone number is correct.",
         copy_message = "Copied successfully",
     )
 }

@@ -164,7 +164,12 @@ class ApiService(private val client: HttpClient) {
                     search?.let { parameters.append("search", it) }
                     governorate?.let { parameters.append("governorate", it) }
                     region?.let { parameters.append("region", it) }
-                    hasBank?.let { parameters.append("bank_payment_supported", boolToIntString(it)) }
+                    hasBank?.let {
+                        parameters.append(
+                            "bank_payment_supported",
+                            boolToIntString(it)
+                        )
+                    }
                     hasShift?.let { parameters.append("has_evening_shift", boolToIntString(it)) }
                     hasFree?.let { parameters.append("has_free", boolToIntString(it)) }
 //                    location?.let { parameters.append("location", it) }
@@ -200,6 +205,21 @@ class ApiService(private val client: HttpClient) {
             Result.Error(e.toNetworkError())
         }
     }
+
+
+//    suspend fun getBookingsHistory(
+//        query: String? = null,
+//    ): Result<ListBaseResponse<CreateBookingResponse>, NetworkError> {
+//        return try {
+//            val endpoint = "${ApiConstants.BASE_URL}${ApiRoutes.BOOKING_HISTORY}?=\"${query}\""
+//
+//            val response = client.get(endpoint)
+//                .body<ListBaseResponse<CreateBookingResponse>>()
+//            Result.Success(response)
+//        } catch (e: Exception) {
+//            Result.Error(e.toNetworkError())
+//        }
+//    }
 
 
 //    suspend fun getFilteredWorkspaces(fullUrl: String): Result<ListBaseResponse<Workspace>, NetworkError> {
@@ -335,6 +355,7 @@ class ApiService(private val client: HttpClient) {
             Result.Error(e.toNetworkError())
         }
     }
+
     // Upload image
     suspend fun uploadImageRequest(
         bookingId: Int,
@@ -504,10 +525,11 @@ class ApiService(private val client: HttpClient) {
 
     suspend fun updateFcmToken(fcmToken: String): Result<BaseResponse<FcmTokenResponse>, NetworkError> {
         return try {
-            val response = client.put(ApiConstants.BASE_URL + ApiRoutes.UPDATE_DEVICE_TOKEN(fcmToken)){
-                contentType(ContentType.Application.Json)
-            }
-                .body<BaseResponse<FcmTokenResponse>>()
+            val response =
+                client.put(ApiConstants.BASE_URL + ApiRoutes.UPDATE_DEVICE_TOKEN(fcmToken)) {
+                    contentType(ContentType.Application.Json)
+                }
+                    .body<BaseResponse<FcmTokenResponse>>()
             Result.Success(response)
         } catch (e: Exception) {
             println(e.message)

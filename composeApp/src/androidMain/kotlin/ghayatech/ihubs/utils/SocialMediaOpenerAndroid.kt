@@ -100,12 +100,13 @@ class SocialOpenerAndroid(private val context: Context) : SocialOpener {
     }
 
     override fun openLinkedIn(profileId: String) {
+        val url = "https://www.linkedin.com/in/$profileId"
         try {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("linkedin://profile/$profileId"))
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(intent)
         } catch (e: ActivityNotFoundException) {
-            openUrl("https://www.linkedin.com/in/$profileId")
+            openUrl(url)
         }
     }
 

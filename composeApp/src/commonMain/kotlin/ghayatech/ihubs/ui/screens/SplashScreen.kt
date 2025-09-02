@@ -43,6 +43,8 @@ import ghayatech.ihubs.ui.theme.AppColors
 import ghayatech.ihubs.ui.theme.AppColors.isDarkThemeBasedOnMode
 import ghayatech.ihubs.ui.theme.AppStrings
 import ghayatech.ihubs.ui.theme.AppStringsProvider
+import ghayatech.ihubs.ui.theme.AppThemeMode
+import ghayatech.ihubs.ui.theme.ThemeViewModel
 import ghayatech.ihubs.utils.Constants
 import ghayatech.ihubs.utils.Logger
 import org.jetbrains.compose.resources.painterResource
@@ -56,6 +58,7 @@ class SplashScreen : Screen {
         val viewModel: MainViewModel = rememberKoinInject()
         val logger: Logger = rememberKoinInject()
         val strings = AppStringsProvider.current()
+//        val themeViewModel: ThemeViewModel = rememberKoinInject()
 
         val navigator = LocalNavigator.currentOrThrow
         val backgroundColor = AppColors.White
@@ -65,10 +68,13 @@ class SplashScreen : Screen {
         var showLogo by remember { mutableStateOf(false) }
         var showDeveloperInfo by remember { mutableStateOf(false) }
 
+//        val currentThemeMode by themeViewModel.currentThemeMode.collectAsState()
+
         val versionState by viewModel.versionState.collectAsState()
 
         val alphaLogo = remember { Animatable(0f) }
         val alphaContent = remember { Animatable(0f) }
+
 
         // أول مرة نفتح الشاشة، نجيب الإصدار
         LaunchedEffect(Unit) {
@@ -102,6 +108,16 @@ class SplashScreen : Screen {
                 .background(backgroundColor),
             contentAlignment = Alignment.Center
         ) {
+//
+//            if ( settings.getString(Constants.THEME_MODE) == null) {
+//                val systemTheme = if (isSystemInDarkTheme()) AppThemeMode.DARK else AppThemeMode.LIGHT
+//                themeViewModel.setThemeMode(systemTheme)
+////                settings.putString(Constants.THEME_MODE, systemTheme)
+//            } else {
+//                themeViewModel.setThemeMode(settings.getString(Constants.THEME_MODE, AppThemeMode.LIGHT))
+//            }
+
+
             if (showLogo) {
                 val logo: Painter = if (isDarkThemeBasedOnMode()) {
                     painterResource(Res.drawable.white_logo)

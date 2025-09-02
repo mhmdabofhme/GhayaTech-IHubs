@@ -105,9 +105,7 @@ class BookingDetailsScreen() : Screen {
         val strings = AppStringsProvider.current()
 
         var listSize = 0
-        val pagerState = rememberPagerState(pageCount = { listSize })
-//        val pagerState = rememberPagerState()
-        val listState = rememberLazyListState()
+//        val pagerState = rememberPagerState(pageCount = { listSize })
         val currentIndex = remember { mutableStateOf(0) }
 
 
@@ -119,21 +117,23 @@ class BookingDetailsScreen() : Screen {
 
         val workspaceState by viewModel.workspaceState.collectAsState()
         val workspace = remember { mutableStateOf<WorkspaceDetails?>(null) }
+        val pagerState = rememberPagerState(pageCount = { bookingsList.size })
 
+//        val listState = rememberLazyListState()
 
         LaunchedEffect(Unit) {
             logger.debug(tag, "getBookings")
-            viewModel.getBookings()
+            viewModel.getBookings("active")
         }
 
         // راقب تغيّر العنصر الظاهر
-        LaunchedEffect(listState) {
-            snapshotFlow { listState.firstVisibleItemIndex }
-                .distinctUntilChanged()
-                .collectLatest { index ->
-                    currentIndex.value = index
-                }
-        }
+//        LaunchedEffect(listState) {
+//            snapshotFlow { listState.firstVisibleItemIndex }
+//                .distinctUntilChanged()
+//                .collectLatest { index ->
+//                    currentIndex.value = index
+//                }
+//        }
 
         Box(Modifier.fillMaxSize()) {
 //            val screenWidth = LocalConfiguration.current.screenWidthDp.dp
@@ -172,136 +172,136 @@ class BookingDetailsScreen() : Screen {
                         navigator.pop()
                     })
 
-//                Spacer(modifier = Modifier.size(20.dp))
-//                HorizontalPager(
-//                    state = pagerState,
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .height(300.dp)
-//                ) { page ->
-//                    val item = bookingsList[page]
-
-                LazyRow(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentPadding = PaddingValues(0.dp), // لا padding
-                    state = listState,
-//                    Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(18.dp)
-                ) {
-                    logger.debug(tag, "in lazyRow: ${bookingsList.size}")
-
-                    items(bookingsList) { item ->
+//                LazyRow(
+//                    modifier = Modifier.fillMaxWidth(),
+//                    contentPadding = PaddingValues(0.dp), // لا padding
+//                    state = listState,
+//                    horizontalArrangement = Arrangement.spacedBy(18.dp)
+//                ) {
+//                    logger.debug(tag, "in lazyRow: ${bookingsList.size}")
 //
-//                        print("TAGTAG workspaceId" + item.workspaceId)
+//                    items(bookingsList) { item ->
+//
+//                        LaunchedEffect(item.workspaceId) {
+//                            viewModel.getWorkspace(item.workspaceId.toInt())
+//                        }
+//
+//
+//                    }
+//                }
 
+                HorizontalPager(
+                    state = pagerState,
+                    modifier = Modifier.fillMaxWidth()
+                ) { index ->
 
-                        LaunchedEffect(item.workspaceId) {
-                            viewModel.getWorkspace(item.workspaceId.toInt())
-                        }
+                    val item = bookingsList[index]
 
+                    LaunchedEffect(item.workspaceId) {
+                        viewModel.getWorkspace(item.workspaceId.toInt())
+                    }
 
-                        Column(
-                            modifier = Modifier
-//                                .width(340.dp)
-                                .fillParentMaxWidth()
-                                .wrapContentHeight()
-                                .padding(top = 20.dp)
-                                .padding(5.dp)
-                                .shadow(
-                                    shape = RoundedCornerShape(25.dp),
-                                    elevation = 5.dp, // قوة الظل
-                                    clip = true // اجعله false لتطبيق الظل خارج الشك
-                                )
-                                .background(
-                                    AppColors.Background,
-                                    shape = RoundedCornerShape(25.dp)
-                                )
-                                .padding(vertical = 16.dp, horizontal = 12.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-
-                            NetworkImage(
-                                workspace.value?.logo, modifier = Modifier
-                                    .size(56.dp)
-                                    .shadow(
-                                        shape = RoundedCornerShape(15.dp),
-                                        elevation = 2.dp,
-                                        clip = true
-                                    )
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight()
+                            .padding(top = 20.dp)
+                            .padding(5.dp)
+                            .shadow(
+                                shape = RoundedCornerShape(25.dp),
+                                elevation = 5.dp, // قوة الظل
+                                clip = true // اجعله false لتطبيق الظل خارج الشك
                             )
+                            .background(
+                                AppColors.Background,
+                                shape = RoundedCornerShape(25.dp)
+                            )
+                            .padding(vertical = 16.dp, horizontal = 12.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    )
+                    {
 
-                            Spacer(modifier = Modifier.size(8.dp))
+                        NetworkImage(
+                            workspace.value?.logo, modifier = Modifier
+                                .size(56.dp)
+                                .shadow(
+                                    shape = RoundedCornerShape(15.dp),
+                                    elevation = 2.dp,
+                                    clip = true
+                                )
+                        )
+
+                        Spacer(modifier = Modifier.size(8.dp))
+                        CText(
+                            text = strings.ghayatech,
+                            fontFamily = Res.font.bold
+                        )
+                        Spacer(modifier = Modifier.size(20.dp))
+
+                        // Package
+                        Row(
+                            Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
                             CText(
-                                text = strings.ghayatech,
+                                text = "${strings.`package`} :",
+                                color = AppColors.Secondary,
+                                fontFamily = Res.font.bold
+
+                            )
+                            Spacer(modifier = Modifier.size(12.dp))
+                            CText(
+                                text = item.packageName,
+                                color = AppColors.Black,
+                                fontFamily = Res.font.bold,
+                            )
+                            Spacer(modifier = Modifier.size(8.dp))
+                            Image(
+                                getPackageIcon(item.packageName),
+                                contentDescription = "package icon",
+                                modifier = Modifier.size(24.dp)
+                            )
+                        }
+                        Spacer(modifier = Modifier.size(12.dp))
+
+
+                        // Seat
+                        Row(Modifier.fillMaxWidth()) {
+                            CText(
+                                text = "${strings.seat_number} :",
+                                color = AppColors.Secondary,
                                 fontFamily = Res.font.bold
                             )
-                            Spacer(modifier = Modifier.size(20.dp))
-
-                            // Package
-                            Row(
-                                Modifier.fillMaxWidth(),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                CText(
-                                    text = "${strings.`package`} :",
-                                    color = AppColors.Secondary,
-                                    fontFamily = Res.font.bold
-
-                                )
-                                Spacer(modifier = Modifier.size(12.dp))
-                                CText(
-                                    text = item.packageName,
-                                    color = AppColors.Black,
-                                    fontFamily = Res.font.bold,
-                                )
-                                Spacer(modifier = Modifier.size(8.dp))
-                                Image(
-                                    getPackageIcon(item.packageName),
-                                    contentDescription = "package icon",
-                                    modifier = Modifier.size(24.dp)
-                                )
-                            }
                             Spacer(modifier = Modifier.size(12.dp))
+                            CText(
+                                text = item.seatNumber ?: strings.seat_free,
+                                color = AppColors.Black,
+                                fontFamily =
+                                    Res.font.bold,
+                            )
+                        }
+                        Spacer(modifier = Modifier.size(12.dp))
+                        logger.debug(tag, "Time ${item.startAt}")
+                        val (date, time) = splitDateTime(item.startAt.toString())
 
-
-                            // Seat
-                            Row(Modifier.fillMaxWidth()) {
-                                CText(
-                                    text = "${strings.seat_number} :",
-                                    color = AppColors.Secondary,
-                                    fontFamily = Res.font.bold
-                                )
-                                Spacer(modifier = Modifier.size(12.dp))
-                                CText(
-                                    text = item.seatNumber ?: strings.seat_free,
-                                    color = AppColors.Black,
-                                    fontFamily =
-                                        Res.font.bold,
-                                )
-                            }
-                            Spacer(modifier = Modifier.size(12.dp))
-                            logger.debug(tag, "Time ${item.startAt}")
-                            val (date, time) = splitDateTime(item.startAt.toString())
-//                            val date = "formatTimestamp(item.startAt.toString())"
-//                            val time = "formatTimestamp(item.startAt.toString())"
-                            // booking date
-                            Row(Modifier.fillMaxWidth()) {
-                                Image(
-                                    painterResource(Res.drawable.date),
-                                    contentDescription = "date",
-                                )
-                                Spacer(modifier = Modifier.size(4.dp))
-                                CText(
-                                    text = "${strings.books_date} :",
-                                    color = AppColors.Secondary,
-                                    fontFamily = Res.font.bold
-                                )
-                                Spacer(modifier = Modifier.size(4.dp))
-                                CText(
-                                    text = date,
-                                    color = AppColors.Black,
-                                    fontFamily = Res.font.bold, modifier = Modifier.weight(1F)
-                                )
+                        // booking date
+                        Row(Modifier.fillMaxWidth()) {
+                            Image(
+                                painterResource(Res.drawable.date),
+                                contentDescription = "date",
+                            )
+                            Spacer(modifier = Modifier.size(4.dp))
+                            CText(
+                                text = "${strings.books_date} :",
+                                color = AppColors.Secondary,
+                                fontFamily = Res.font.bold
+                            )
+                            Spacer(modifier = Modifier.size(4.dp))
+                            CText(
+                                text = date,
+                                color = AppColors.Black,
+                                fontFamily = Res.font.bold, modifier = Modifier.weight(1F)
+                            )
 //                                Spacer(modifier = Modifier.size(4.dp))
 //                                CText(
 //                                    text = "${stringResource(Res.string.left)} ${item.remainingTime}",
@@ -310,134 +310,142 @@ class BookingDetailsScreen() : Screen {
 //                                        Font(Res.font.bold)
 //                                    ),
 //                                )
-                            }
-                            Spacer(modifier = Modifier.size(12.dp))
+                        }
+                        Spacer(modifier = Modifier.size(12.dp))
 
-                            // booking time
-                            if (time != "00:00"){
-                                Row(Modifier.fillMaxWidth()) {
-                                    Image(
-                                        painterResource(Res.drawable.time),
-                                        contentDescription = "time",
-                                    )
-                                    Spacer(modifier = Modifier.size(4.dp))
-
-                                    CText(
-                                        text = "${strings.books_time} :",
-                                        color = AppColors.Secondary,
-                                        fontFamily = Res.font.bold
-
-                                    )
-                                    Spacer(modifier = Modifier.size(12.dp))
-                                    CText(
-                                        text = time,
-                                        color = AppColors.Black,
-                                        fontFamily = Res.font.bold,
-                                    )
-                                }
-                                Spacer(modifier = Modifier.size(12.dp))
-                            }
-
-
-                            //username
-                            Row(Modifier.fillMaxWidth()) {
-                                Spacer(modifier = Modifier.size(2.dp))
-
-                                Image(
-                                    painterResource(Res.drawable.profile),
-                                    contentDescription = "username",
-                                )
-                                Spacer(modifier = Modifier.size(8.dp))
-
-                                CText(
-                                    text = "${strings.username} :",
-                                    color = AppColors.Secondary,
-                                    fontFamily = Res.font.bold
-                                )
-                                Spacer(modifier = Modifier.size(12.dp))
-                                CText(
-                                    text = item.wifiUsername ?:strings.none,
-                                    color = AppColors.Black,
-                                    fontFamily = Res.font.bold,
-                                )
-                            }
-                            Spacer(modifier = Modifier.size(12.dp))
-
-
-                            //password
+                        // booking time
+                        if (time != "00:00") {
                             Row(Modifier.fillMaxWidth()) {
                                 Image(
-                                    painterResource(Res.drawable.password),
-                                    contentDescription = "password",
+                                    painterResource(Res.drawable.time),
+                                    contentDescription = "time",
                                 )
                                 Spacer(modifier = Modifier.size(4.dp))
 
                                 CText(
-                                    text = "${strings.password} :",
+                                    text = "${strings.books_time} :",
                                     color = AppColors.Secondary,
                                     fontFamily = Res.font.bold
+
                                 )
                                 Spacer(modifier = Modifier.size(12.dp))
                                 CText(
-                                    text = item.wifiPassword ?:strings.none,
+                                    text = time,
                                     color = AppColors.Black,
                                     fontFamily = Res.font.bold,
                                 )
                             }
+                            Spacer(modifier = Modifier.size(12.dp))
+                        }
 
-                            Spacer(modifier = Modifier.size(26.dp))
+
+                        //username
+                        Row(Modifier.fillMaxWidth()) {
+                            Spacer(modifier = Modifier.size(2.dp))
+
+                            Image(
+                                painterResource(Res.drawable.profile),
+                                contentDescription = "username",
+                            )
+                            Spacer(modifier = Modifier.size(8.dp))
+
+                            CText(
+                                text = "${strings.username} :",
+                                color = AppColors.Secondary,
+                                fontFamily = Res.font.bold
+                            )
+                            Spacer(modifier = Modifier.size(12.dp))
+                            CText(
+                                text = item.wifiUsername ?: strings.booking_not_confirmed,
+                                color = AppColors.Black,
+                                fontFamily = Res.font.bold,
+                            )
+                        }
+                        Spacer(modifier = Modifier.size(12.dp))
+
+
+                        //password
+                        Row(Modifier.fillMaxWidth()) {
+                            Image(
+                                painterResource(Res.drawable.password),
+                                contentDescription = "password",
+                            )
+                            Spacer(modifier = Modifier.size(4.dp))
+
+                            CText(
+                                text = "${strings.password} :",
+                                color = AppColors.Secondary,
+                                fontFamily = Res.font.bold
+                            )
+                            Spacer(modifier = Modifier.size(12.dp))
+                            CText(
+                                text = item.wifiPassword ?: strings.booking_not_confirmed,
+                                color = AppColors.Black,
+                                fontFamily = Res.font.bold,
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.size(26.dp))
+
+                        val countDownMillis = calculateRemainingMillis(item.endAt.toString())
+                        if (countDownMillis > 0) {
                             CText(
                                 text = "${strings.remaining_time} :",
                                 color = AppColors.Secondary,
                                 fontFamily = Res.font.bold
                             )
+                            logger.debug("$tag endAt", item.endAt.toString())
+                            CountdownText(countDownMillis)
+                        } else {
+                            CText(
+                                text = strings.booking_expired,
+                                color = AppColors.Secondary,
+                                fontFamily = Res.font.bold,
+                            )
 
-                            logger.debug("$tag endAt" , item.endAt.toString())
-                            CountdownText(calculateRemainingMillis(item.endAt.toString()))
+                        }
 
-                            Spacer(modifier = Modifier.size(13.dp))
+                        Spacer(modifier = Modifier.size(13.dp))
 
 
-                            Row {
-                                CButton(text = strings.contactus, onClick = {
-                                    // TODO PASS CONVERSATION ID
-                                    socialOpener.openWhatsApp(workspace.value?.phone.toString())
-                                }, modifier = Modifier.weight(1F))
+                        Row {
+                            CButton(text = strings.contactus, onClick = {
+                                // TODO PASS CONVERSATION ID
+                                socialOpener.openWhatsApp(workspace.value?.phone.toString())
+                            }, modifier = Modifier.weight(1F))
 //                                if (workspace.value != null) {
-                                Spacer(modifier = Modifier.size(10.dp))
-                                CButton(
-                                    text = strings.our_services,
-                                    onClick = {
-                                        navigator.push(
-                                            OurServicesScreen(
-                                                workspace.value!!.id,
-                                                item.id
-                                            )
+                            Spacer(modifier = Modifier.size(10.dp))
+                            CButton(
+                                text = strings.our_services,
+                                onClick = {
+                                    navigator.push(
+                                        OurServicesScreen(
+                                            workspace.value!!.id,
+                                            item.id
                                         )
-                                    },
-                                    modifier = Modifier.weight(1F)
-                                )
-
-                            }
+                                    )
+                                },
+                                modifier = Modifier.weight(1F)
+                            )
 
                         }
 
                     }
+
                 }
 
                 Spacer(Modifier.size(20.dp))
 
 
                 // Indicators
-
                 if (bookingsList.isNotEmpty()) {
                     Row(
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         repeat(bookingsList.size) { index ->
-//                            val isSelected = pagerState.currentPage == index
-                            val isSelected = index == currentIndex.value
+                            val isSelected = pagerState.currentPage == index
+//                            val isSelected = index == currentIndex.value
                             Box(
                                 modifier = Modifier
                                     .padding(horizontal = 4.dp)
@@ -452,7 +460,6 @@ class BookingDetailsScreen() : Screen {
                             )
                         }
                     }
-
                 }
             }
 

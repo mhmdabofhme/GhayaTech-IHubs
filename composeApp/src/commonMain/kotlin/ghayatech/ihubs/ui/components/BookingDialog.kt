@@ -33,6 +33,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
@@ -65,7 +66,7 @@ fun BookingDialog(
     onCopyClick: (String) -> Unit,
     hasTime: Boolean = false,
 
-) {
+    ) {
     val strings = AppStringsProvider.current()
 //    val clipboardManager = remember { ClipboardManager() }
 
@@ -110,34 +111,6 @@ fun BookingDialog(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-
-                if (hasTime) {
-                    CTextField(
-                        value = worksHours,
-                        onValueChange = { worksHours = it },
-                        placeholder = strings.works_hours,
-                        inputType = KeyboardType.Number,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-
-//                WheelDatePickerView(height = 56.dp)
-
-                    selectedTime =
-                        selectedTime.ifEmpty { strings.books_date }
-
-                    Spacer(modifier = Modifier.size(12.dp))
-                    BookingItem(
-                        text = selectedTime,
-                        icon = painterResource(Res.drawable.time),
-                        onItemClick = {
-                            showTimePicker = true
-                        }
-                    )
-
-                    Spacer(modifier = Modifier.size(12.dp))
-
-                }
-
                 selectedDate =
                     selectedDate.ifEmpty { strings.books_date }
 
@@ -147,6 +120,38 @@ fun BookingDialog(
                     onItemClick = {
                         showDatePicker = true
                     })
+
+                Spacer(modifier = Modifier.size(12.dp))
+
+
+                if (hasTime) {
+                    selectedTime = selectedTime.ifEmpty { strings.books_time }
+
+                    BookingItem(
+                        text = selectedTime,
+                        icon = painterResource(Res.drawable.time),
+                        onItemClick = {
+                            showTimePicker = true
+                        }
+                    )
+
+
+
+
+                    Spacer(modifier = Modifier.size(12.dp))
+
+                    CTextField(
+                        value = worksHours,
+                        onValueChange = { worksHours = it },
+                        placeholder = strings.works_hours,
+                        inputType = KeyboardType.Number,
+                        imeAction = ImeAction.Done,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                }
+
+
 
                 Spacer(modifier = Modifier.height(20.dp))
 
@@ -198,6 +203,8 @@ fun BookingDialog(
             showDatePicker = showDatePicker,
             dateTimePickerView = DateTimePickerView.DIALOG_VIEW,
             rowCount = 3,
+            doneLabel = strings.done,
+            title = strings.books_date,
             minDate = LocalDate.now(),
             doneLabelStyle = TextStyle(
                 color = AppColors.Primary,
@@ -223,6 +230,9 @@ fun BookingDialog(
             showTimePicker = showTimePicker,
             dateTimePickerView = DateTimePickerView.DIALOG_VIEW,
             rowCount = 3,
+            minTime = LocalTime.now(),
+            doneLabel = strings.done,
+            title = strings.books_time,
             timeFormat = TimeFormat.AM_PM,
             doneLabelStyle = TextStyle(
                 color = AppColors.Primary,
